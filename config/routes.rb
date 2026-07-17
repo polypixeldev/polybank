@@ -14,9 +14,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "static_pages#index"
 
-  scope :plaid, controller: :plaid do
+  scope :plaid, controller: :plaid, as: "plaid" do
     post "webhook"
     get "link"
+    get "linked"
     post "generate_link_token"
   end
 
