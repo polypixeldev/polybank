@@ -4,6 +4,8 @@
 
 <% unless current_user.plaid_linked? %>
   <%= link_to "link plaid", plaid_link_path %>
+<% else %>
+  <p>plaid linked!</p>
 <% end %>
 
 <%= button_to "sign out", session_path(current_session), method: :delete %>
