@@ -43,6 +43,22 @@ module PlaidService
     plaid_client.item_public_token_exchange(request)
   end
 
+  def self.get_item_data(access_token)
+    item_get_request = Plaid::ItemGetRequest.new({
+      access_token:
+    })
+
+    plaid_client.item_get(item_get_request).item
+  end
+
+  def self.get_item_accounts(access_token)
+    accounts_get_request = Plaid::AccountsGetRequest.new({
+      access_token:
+    })
+
+    plaid_client.accounts_get(accounts_get_request).accounts
+  end
+
   def self.plaid_client
     configuration = Plaid::Configuration.new
     configuration.server_index = Plaid::Configuration::Environment["production"]

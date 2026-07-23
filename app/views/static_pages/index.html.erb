@@ -5,7 +5,15 @@
 <% unless current_user.plaid_linked? %>
   <%= link_to "link plaid", plaid_link_path %>
 <% else %>
-  <p>plaid linked!</p>
+  <h2>your institutions</h2>
+  <% current_user.plaid_items.each do |item| %>
+    <p><%= item.name %></p>
+    <ul>
+      <% item.accounts.each do |account| %>
+        <li><%= account.name%></li>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>
 
 <%= button_to "sign out", session_path(current_session), method: :delete %>
