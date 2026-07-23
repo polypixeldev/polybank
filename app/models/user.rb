@@ -2,13 +2,13 @@
 #
 # Table name: users
 #
-#  id                 :integer          not null, primary key
-#  email_address      :string           not null
-#  name               :string           not null
-#  password_digest    :string           not null
-#  plaid_access_token :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id              :integer          not null, primary key
+#  email_address   :string           not null
+#  name            :string           not null
+#  password_digest :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  plaid_id        :string
 #
 # Indexes
 #
@@ -22,11 +22,20 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
 
+  has_many :plaid_items
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  encrypts :plaid_access_token
+  after_create_commit :create_plaid_user
 
   def plaid_linked?
-    plaid_access_token.present?
+    plaid_items.any?
+  end
+
+  private
+
+  def create_plaid_user
+    plaid_id = PlaidService.create_user(public_id)
+    update!(plaid_id:)
   end
 end

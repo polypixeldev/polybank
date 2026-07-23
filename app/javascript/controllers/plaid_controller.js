@@ -13,16 +13,15 @@ export default class extends Controller {
         'X-CSRF-Token': csrf(), 
       }
     }).then(r => r.json()).then(json => {
+      const linkToken = json["link_token"]
       const handler = Plaid.create({
-        token: json["link_token"],
-        onSuccess: (public_token, metadata) => {
-          console.log("GOT PUBLIC TOKEN!")
-          console.log(public_token)
-          window.location.path = `/plaid/linked?public_token=${public_token}`
+        token: linkToken,
+        onSuccess: () => {
+          console.log("done!")
 
           const url = new URL(window.location.href);
           url.pathname = "/plaid/linked"
-          url.searchParams.set('public_token', public_token)
+          url.searchParams.set('link_token', linkToken)
 
           window.location.href = url.toString();
         },

@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_17_023739) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_022011) do
+  create_table "plaid_items", force: :cascade do |t|
+    t.string "access_token", null: false
+    t.datetime "created_at", null: false
+    t.string "item_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_plaid_items_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -25,7 +34,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_17_023739) do
     t.string "email_address", null: false
     t.string "name", null: false
     t.string "password_digest", null: false
-    t.string "plaid_access_token"
+    t.string "plaid_id"
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end

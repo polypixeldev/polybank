@@ -1,11 +1,22 @@
 module PlaidService
-  def self.generate_link_token(public_id)
+  def self.create_user(public_id)
+    user_create_request = Plaid::UserCreateRequest.new({
+      client_user_id: public_id
+    })
+
+    user_create_response = PlaidService.plaid_client.user_create(user_create_request)
+
+    user_create_response.user_id
+  end
+
+  def self.generate_link_token(plaid_user_id)
     link_token_create_request = Plaid::LinkTokenCreateRequest.new({
-      user: { client_user_id: public_id },
-      client_name: "My app",
-      products: %w[auth transactions],
+      user_id: plaid_user_id,
+      client_name: "Polybank",
+      products: [ "transactions" ],
       country_codes: [ "US" ],
-      language: "en"
+      language: "en",
+      enable_multi_item_link: true
     })
 
     link_token_response = PlaidService.plaid_client.link_token_create(
@@ -15,12 +26,21 @@ module PlaidService
     link_token_response.link_token
   end
 
+  def self.get_link_token_session_info(link_token)
+    link_token_get_request = Plaid::LinkTokenGetRequest.new({
+      link_token:
+    })
+
+    link_token_response = PlaidService.plaid_client.link_token_get(link_token_get_request)
+
+    link_token_response.link_sessions.last
+  end
+
   def self.exchange_public_token(public_token)
     request = Plaid::ItemPublicTokenExchangeRequest.new
     request.public_token = public_token
 
-    response = plaid_client.item_public_token_exchange(request)
-    response.access_token
+    plaid_client.item_public_token_exchange(request)
   end
 
   def self.plaid_client
