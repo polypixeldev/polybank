@@ -1,3 +1,16 @@
 <% title "#{@transaction.memo} | Polybank" %>
 
-<h2 class="font-bold text-2xl mb-3"><%= @transaction.memo %> for <%= number_to_currency @transaction.amount %></h2>
+<p class="text-sm text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
+<h2 class="font-bold text-2xl mb-3"><%= @transaction.memo %></h2>
+
+<div class="flex gap-5">
+  <div class="card">
+    <p>Amount</p>
+    <p class="card-headline"><%= number_to_currency @transaction.amount %></p>
+  </div>
+
+  <div class="card">
+    <p>Date</p>
+    <p class="card-headline"><%= local_date @transaction.display_date %></p>
+  </div>
+</div>

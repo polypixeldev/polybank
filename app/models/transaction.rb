@@ -6,7 +6,7 @@
 #  amount_cents           :integer          not null
 #  category               :string
 #  currency               :string           default("USD"), not null
-#  datetime               :datetime         not null
+#  date                   :date
 #  deleted_at             :datetime
 #  memo                   :string
 #  pending                :boolean          default(FALSE), not null
@@ -47,7 +47,7 @@ class Transaction < ApplicationRecord
       amount_cents: plaid_object.amount * -100,
       currency: plaid_object.iso_currency_code,
       category: plaid_object.personal_finance_category.primary,
-      datetime: plaid_object.datetime.presence || plaid_object.date.presence || Time.now,
+      date: plaid_object.date.presence || Date.today,
       memo: plaid_object.original_description,
       pending: plaid_object.pending,
       pending_transaction: plaid_object.pending ? nil : find_by(plaid_id: plaid_object.pending_transaction_id),
@@ -58,5 +58,9 @@ class Transaction < ApplicationRecord
 
   def amount
     amount_cents / 100.0
+  end
+
+  def display_date
+    plaid_object["authorized_date"].presence || date
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_24_190805) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_24_212147) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_24_190805) do
     t.string "category"
     t.datetime "created_at", null: false
     t.string "currency", default: "USD", null: false
-    t.datetime "datetime", null: false
+    t.date "date"
     t.datetime "deleted_at"
     t.string "memo"
     t.boolean "pending", default: false, null: false

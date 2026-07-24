@@ -179,6 +179,7 @@ GEM
       zeitwerk (>= 2.6.18, < 3.0)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
+    local_time (3.0.3)
     logger (1.7.0)
     loofah (2.25.2)
       crass (~> 1.0.2)
@@ -439,6 +440,7 @@ DEPENDENCIES
   jbuilder
   jwt
   kamal
+  local_time
   plaid
   propshaft
   puma (>= 5.0)

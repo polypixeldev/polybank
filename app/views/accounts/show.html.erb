@@ -17,10 +17,11 @@
 <h3 class="text-xl mt-5 mb-2">Transactions</h3>
 
 <div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
-  <% @account.transactions.order(datetime: :desc).each do |txn| %>
-    <%= link_to transaction_path(txn), class: "flex justify-between px-4 py-3 bg-slate-800 rounded-md" do %>
-      <p><%= txn.memo %></p>
-      <p class="<%= txn.amount_cents < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency txn.amount %></p>
+  <% @account.transactions.order(date: :desc).each do |txn| %>
+    <%= link_to transaction_path(txn), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md" do %>
+      <p><%= local_date txn.display_date %></p>
+      <p class="col-span-8"><%= txn.memo %></p>
+      <p class="justify-self-end <%= txn.amount_cents < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency txn.amount %></p>
     <% end %>
   <% end %>
 </div>
