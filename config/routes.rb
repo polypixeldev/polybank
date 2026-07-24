@@ -20,5 +20,5 @@ Rails.application.routes.draw do
     post "generate_link_token"
   end
 
-  resources :users, only: [ :new, :create, :show ]
+  resources :users, only: [ :new, :create ]
 end
