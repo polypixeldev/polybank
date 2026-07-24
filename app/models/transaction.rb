@@ -55,4 +55,8 @@ class Transaction < ApplicationRecord
       plaid_object:
     }
   end
+
+  def amount
+    amount_cents / 100.0
+  end
 end

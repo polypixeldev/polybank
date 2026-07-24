@@ -29,4 +29,6 @@ Rails.application.routes.draw do
       post "sync"
     end
   end
+
+  resources :transactions, only: [ :show ]
 end
