@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_024459) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_24_182411) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_024459) do
     t.datetime "created_at", null: false
     t.string "item_id", null: false
     t.string "name"
+    t.string "transaction_cursor"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_plaid_items_on_user_id"
@@ -39,6 +40,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_024459) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.integer "amount_cents", null: false
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.string "currency", default: "USD", null: false
+    t.datetime "datetime", null: false
+    t.datetime "deleted_at"
+    t.string "memo"
+    t.boolean "pending", default: false, null: false
+    t.integer "pending_transaction_id"
+    t.string "plaid_id"
+    t.json "plaid_object"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["pending_transaction_id"], name: "index_transactions_on_pending_transaction_id"
   end
 
   create_table "users", force: :cascade do |t|

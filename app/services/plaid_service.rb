@@ -16,7 +16,11 @@ module PlaidService
       products: [ "transactions" ],
       country_codes: [ "US" ],
       language: "en",
-      enable_multi_item_link: true
+      enable_multi_item_link: true,
+      transactions: {
+        days_requested: 730
+      },
+      webhook: Rails.application.routes.url_helpers.plaid_webhook_url
     })
 
     link_token_response = PlaidService.plaid_client.link_token_create(
@@ -57,6 +61,26 @@ module PlaidService
     })
 
     plaid_client.accounts_get(accounts_get_request).accounts
+  end
+
+  def self.get_webhook_verification_key(key_id)
+    webhook_verification_key_get_request = Plaid::WebhookVerificationKeyGetRequest.new({
+      key_id:
+    })
+
+    plaid_client.webhook_verification_key_get(webhook_verification_key_get_request).key
+  end
+
+  def self.sync_transactions(access_token, cursor: nil)
+    transactions_sync_request = Plaid::TransactionsSyncRequest.new({
+      access_token:,
+      cursor:,
+      options: {
+        include_original_description: true
+      }
+    })
+
+    plaid_client.transactions_sync(transactions_sync_request)
   end
 
   def self.plaid_client

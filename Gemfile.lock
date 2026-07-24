@@ -75,6 +75,9 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
+    acts_as_paranoid (0.11.0)
+      activerecord (>= 6.1, < 8.2)
+      activesupport (>= 6.1, < 8.2)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     annotaterb (4.22.0)
@@ -161,6 +164,8 @@ GEM
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     json (2.21.1)
+    jwt (3.1.2)
+      base64
     kamal (2.12.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -408,6 +413,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  acts_as_paranoid (~> 0.11.0)
   annotaterb
   bcrypt (~> 3.1.7)
   bootsnap
@@ -421,6 +427,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  jwt
   kamal
   plaid
   propshaft

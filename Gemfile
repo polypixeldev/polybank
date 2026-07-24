@@ -73,3 +73,7 @@ end
 gem "plaid"
 
 gem "hashid-rails"
+
+gem "jwt"
+
+gem "acts_as_paranoid", "~> 0.11.0"

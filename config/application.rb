@@ -23,5 +23,7 @@ module Polybank
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    Rails.application.routes.default_url_options[:host] = ENV["HOST_URL"]
   end
 end

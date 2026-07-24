@@ -17,4 +17,6 @@
 #
 class Account < ApplicationRecord
   belongs_to :plaid_item, optional: true
+
+  has_many :transactions
 end
