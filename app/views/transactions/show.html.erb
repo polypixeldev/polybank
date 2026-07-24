@@ -13,4 +13,35 @@
     <p>Date</p>
     <p class="card-headline"><%= local_date @transaction.display_date %></p>
   </div>
+
+  <div class="card">
+    <p>Category</p>
+    <p class="card-headline"><%= @transaction.category.humanize %></p>
+  </div>
+
+  <div class="card">
+    <p>Payment channel</p>
+    <p class="card-headline"><%= @transaction.plaid_object["payment_channel"].humanize %></p>
+  </div>
+
+  <% if @transaction.plaid_object["check_number"].present? %>
+    <div class="card">
+      <p>Check #</p>
+      <p class="card-headline"><%= transaction.plaid_object[:check_number] %></p>
+    </div>
+  <% end %>
+
+  <% @transaction.plaid_object["counterparties"].each do |party| %>
+    <div class="card">
+      <p><%= party["type"].humanize %></p>
+      <div class="flex gap-2 items-center mt-3">
+        <% if party["logo_url"].present? %>
+          <img src="<%= party["logo_url"] %>" class="w-8 h-8 rounded-sm">
+        <% end %>
+        <p class="card-headline mt-0!"><%= party["name"] %></p>
+      </div>
+      <%# add modal showing other merchant details: location, website %>
+    </div>
+  <% end %>
 </div>
+
