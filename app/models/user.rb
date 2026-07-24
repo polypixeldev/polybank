@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   has_many :plaid_items
+  has_many :accounts, through: :plaid_items
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

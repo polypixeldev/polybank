@@ -11,9 +11,6 @@ class PlaidController < ApplicationController
     end
   end
 
-  def link
-  end
-
   def linked
     link_token = params[:link_token]
 

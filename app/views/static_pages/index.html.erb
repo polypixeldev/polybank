@@ -1,19 +1,30 @@
-<h1>Polybank</h1>
+<% title "Dashboard | Polybank" %>
 
-<p>bank fun wahoo</p>
+<h2 class="font-bold text-2xl mb-3">Accounts</h2>
 
 <% unless current_user.plaid_linked? %>
-  <%= link_to "link plaid", plaid_link_path %>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+  <div class="card" data-controller="plaid">
+    <p>
+      Plaid isn't linked yet.
+    </p>
+    <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
+  </div>
 <% else %>
-  <h2>your institutions</h2>
-  <% current_user.plaid_items.each do |item| %>
-    <p><%= item.name %></p>
-    <ul>
-      <% item.accounts.each do |account| %>
-        <li><%= account.name%></li>
-      <% end %>
-    </ul>
-  <% end %>
+  <div class="flex flex-row gap-3">
+    <% current_user.accounts.each do |account| %>
+      <div class="card grow">
+        <p class="font-semibold text-lg mb-0"><%= account.name %></p>
+
+        <% if account.plaid_item.present? %>
+          <p class="mt-0 text-sm text-gray-100"><%= account.plaid_item.name %></p>
+        <% end %>
+
+        <p class="mt-3 text-2xl font-bold"><%= number_to_currency account.balance %></p>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 
-<%= button_to "sign out", session_path(current_session), method: :delete %>
+

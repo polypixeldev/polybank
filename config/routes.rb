@@ -16,7 +16,6 @@ Rails.application.routes.draw do
 
   scope :plaid, controller: :plaid, as: "plaid" do
     post "webhook"
-    get "link"
     get "linked"
     post "generate_link_token"
   end

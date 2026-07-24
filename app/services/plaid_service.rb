@@ -56,11 +56,13 @@ module PlaidService
   end
 
   def self.get_item_accounts(access_token)
-    accounts_get_request = Plaid::AccountsGetRequest.new({
-      access_token:
-    })
+    Rails.cache.fetch("item_#{access_token}_accounts", expires_in: 1.minute) do
+      accounts_get_request = Plaid::AccountsGetRequest.new({
+        access_token:
+      })
 
-    plaid_client.accounts_get(accounts_get_request).accounts
+      plaid_client.accounts_get(accounts_get_request).accounts
+    end
   end
 
   def self.get_webhook_verification_key(key_id)

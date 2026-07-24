@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.card {
+  @apply bg-slate-900 rounded-md border-slate-950 border-2 p-5 w-fit flex flex-col
+}

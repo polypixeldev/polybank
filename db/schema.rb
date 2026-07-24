@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_24_182411) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_24_190805) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -19,7 +19,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_24_182411) do
     t.string "plaid_id"
     t.integer "plaid_item_id"
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["plaid_item_id"], name: "index_accounts_on_plaid_item_id"
+    t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
   create_table "plaid_items", force: :cascade do |t|
