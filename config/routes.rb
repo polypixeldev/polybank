@@ -23,4 +23,10 @@ Rails.application.routes.draw do
   resources :users, only: [ :new, :create ]
 
   resources :accounts, only: [ :show ]
+
+  resources :plaid_items, only: [] do
+    member do
+      post "sync"
+    end
+  end
 end
