@@ -1,0 +1,16 @@
+<%= render "modal" do %>
+  <div class="flex gap-2 mb-5">
+    <% if @counterparty["logo_url"].present? %>
+      <img src="<%= @counterparty["logo_url"] %>" class="w-8 h-8 rounded-sm">
+    <% end %>
+    <p class="font-bold text-xl"><%= @counterparty["type"].humanize %> info</p>
+  </div>
+
+  <% if @counterparty["website"].present? %>
+    <p>Website: <%= link_to @counterparty["website"], nil, class: "underline" %></p>
+  <% end %>
+
+  <% if @counterparty["location"]&.[]("address").present? %>
+    <p>Address: <%= @counterparty["location"]["address"] %></p>
+  <% end %>
+<% end%>

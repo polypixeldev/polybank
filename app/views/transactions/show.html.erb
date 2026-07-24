@@ -38,7 +38,9 @@
         <% if party["logo_url"].present? %>
           <img src="<%= party["logo_url"] %>" class="w-8 h-8 rounded-sm">
         <% end %>
-        <p class="card-headline mt-0!"><%= party["name"] %></p>
+        <p class="card-headline mt-0!">
+          <%= link_to party["name"], counterparty_data_transaction_path(@transaction, entity_id: party["entity_id"]), data: { turbo_frame: "modal" } %>
+        </p>
       </div>
       <%# add modal showing other merchant details: location, website %>
     </div>
