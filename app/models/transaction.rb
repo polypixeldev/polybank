@@ -44,7 +44,7 @@ class Transaction < ApplicationRecord
 
   def self.attributes_from_plaid_object(plaid_object)
     {
-      amount_cents: plaid_object.amount * 100,
+      amount_cents: plaid_object.amount * -100,
       currency: plaid_object.iso_currency_code,
       category: plaid_object.personal_finance_category.primary,
       datetime: plaid_object.datetime.presence || plaid_object.date.presence || Time.now,

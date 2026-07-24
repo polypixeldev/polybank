@@ -1,6 +1,7 @@
 class PlaidController < ApplicationController
   before_action :verify_signature, only: [ :webhook ]
   skip_forgery_protection only: :webhook
+  skip_after_action :verify_authorized
 
   def webhook
     if params[:webhook_type] = "TRANSACTIONS" && params[:webhook_code] = "SYNC_UPDATES_AVAILABLE"

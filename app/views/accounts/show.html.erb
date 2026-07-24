@@ -1,0 +1,19 @@
+<% title "#{@account.name} | Polybank" %>
+
+<h2 class="font-bold text-2xl mb-3"><%= @account.name %></h2>
+
+<div class="card">
+  <p class="text-sm text-gray-100 mb-0">Balance</p>
+  <p class="card-headline mt-0!"><%= number_to_currency @account.balance %></p>
+</div>
+
+<h3 class="text-xl mt-5 mb-2">Transactions</h3>
+
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
+  <% @account.transactions.order(datetime: :desc).each do |txn| %>
+    <div class="flex justify-between px-4 py-3 bg-slate-800 rounded-md">
+      <p><%= txn.memo %></p>
+      <p class="<%= txn.amount_cents < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency (txn.amount_cents / 100.0) %></p>
+    </div>
+  <% end %>
+</div>

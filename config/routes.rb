@@ -21,4 +21,6 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [ :new, :create ]
+
+  resources :accounts, only: [ :show ]
 end

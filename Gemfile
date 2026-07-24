@@ -79,3 +79,5 @@ gem "jwt"
 gem "acts_as_paranoid", "~> 0.11.0"
 
 gem "tailwindcss-rails", "~> 4.6"
+
+gem "pundit", "~> 2.5"
