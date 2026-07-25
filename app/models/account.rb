@@ -32,7 +32,7 @@ class Account < ApplicationRecord
 
       account_data.balances.current
     else
-      transactions.sum(:amount_cents)
+      transactions.sum(:amount_cents) / 100.0
     end
   end
 

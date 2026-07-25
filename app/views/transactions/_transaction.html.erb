@@ -1,0 +1,12 @@
+<%# locals: (transaction:) %>
+
+<%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md" do %>
+  <% if transaction.plaid_object["logo_url"].present? %>
+      <img src="<%= transaction.plaid_object["logo_url"] %>" class="w-8 h-8 rounded-sm">
+  <% else %>
+    <p></p>
+  <% end %>
+  <p><%= local_date transaction.display_date %></p>
+  <p class="col-span-7"><%= transaction.memo %></p>
+  <p class="justify-self-end <%= transaction.amount_cents < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency transaction.amount %></p>
+<% end %>
