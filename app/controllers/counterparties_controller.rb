@@ -19,7 +19,7 @@ class CounterpartiesController < ApplicationController
   def show
     authorize @counterparty
 
-    @total_amount = @counterparty.transactions_by_user(current_user).sum(:amount_cents) / 100.0
+    @total_amount = @counterparty.amount_by_user(current_user)
   end
 
   private

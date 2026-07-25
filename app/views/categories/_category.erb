@@ -1,5 +1,8 @@
 <%# locals: (category:) %>
 
-<%= link_to category_path(category), class: "px-4 py-3 bg-slate-800 rounded-md" do %>
-  <p><%= category.display_name %></p>
+<% sum = category.amount_by_user(current_user) %>
+
+<%= link_to category_path(category), class: "grid grid-cols-10 px-4 py-3 bg-slate-800 rounded-md" do %>
+  <p class="col-span-9"><%= category.display_name %></p>
+  <p class="justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum  %></p>
 <% end %>

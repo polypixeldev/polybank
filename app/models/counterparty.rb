@@ -24,4 +24,8 @@ class Counterparty < ApplicationRecord
   def transactions_by_user(user)
     transactions.joins(:account).where("accounts.user_id = ?", user.id)
   end
+
+  def amount_by_user(user)
+    transactions_by_user(user).sum(:amount_cents) / 100.0
+  end
 end

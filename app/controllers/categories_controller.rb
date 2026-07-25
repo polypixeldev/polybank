@@ -20,7 +20,7 @@ class CategoriesController < ApplicationController
   def show
     authorize @category
 
-    @total_amount = @category.transactions_by_user(current_user).sum(:amount_cents) / 100.0
+    @total_amount = @category.amount_by_user(current_user)
   end
 
   private

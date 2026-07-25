@@ -1,10 +1,13 @@
 <%# locals: (counterparty:) %>
 
+<% sum = counterparty.amount_by_user(current_user) %>
+
 <%= link_to counterparty_path(counterparty), class: "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md" do %>
   <% if counterparty["logo_url"].present? %>
     <img src="<%= counterparty["logo_url"] %>" class="w-8 h-8 rounded-sm">
   <% else %>
     <p></p>
   <% end %>
-  <p class="col-span-14"><%= counterparty.name %></p>
+  <p class="col-span-13"><%= counterparty.name %></p>
+  <p class="justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum %></p>
 <% end %>
