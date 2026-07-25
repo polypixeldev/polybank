@@ -5,16 +5,15 @@ class CounterpartiesController < ApplicationController
 
     @query = params[:query]
 
-    if @query.present?
-      @counterparties = current_user.counterparties
-        .where("counterparties.name LIKE ?", "%#{@query}%")
+    @counterparties = current_user.counterparties.order(name: :asc)
 
-      @total_amount = Transaction
-        .joins(:account, :counterparties)
-        .where(accounts: { user_id: current_user.id })
-        .where("counterparties.name LIKE ?", "%#{@query}%")
-        .sum(:amount_cents) / 100.0
-    end
+    @counterparties = @counterparties.where("counterparties.name LIKE ?", "%#{@query}%") if @query.present?
+
+    @total_amount = Transaction
+      .joins(:account, :counterparties)
+      .where(accounts: { user_id: current_user.id })
+      .where("counterparties.name LIKE ?", "%#{@query}%")
+      .sum(:amount_cents) / 100.0
   end
 
   def show

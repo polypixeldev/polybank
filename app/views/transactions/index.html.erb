@@ -11,24 +11,22 @@
   </div>
 <% end %>
 
-<% if defined?(@transactions) %>
-  <div class="flex gap-5">
-    <div class="card">
-      <p>Total amount</p>
+<div class="flex gap-5">
+  <div class="card">
+    <p>Total amount</p>
 
-      <p class="card-headline"><%= number_to_currency @total_amount %></p>
-    </div>
+    <p class="card-headline"><%= number_to_currency @total_amount %></p>
   </div>
+</div>
 
-  <div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md mt-3">
-    <p class="mb-2 font-bold text-xl">Transactions</p>
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md mt-3">
+  <p class="mb-2 font-bold text-xl">Transactions</p>
 
-    <% if @transactions.any? %>
-      <% @transactions.each do |transaction| %>
-        <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
-      <% end %>
-    <% else %>
-      <p>No results</p>
+  <% if @transactions.any? %>
+    <% @transactions.each do |transaction| %>
+      <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
     <% end %>
-  </div>
-<% end %>
+  <% else %>
+    <p>No results</p>
+  <% end %>
+</div>

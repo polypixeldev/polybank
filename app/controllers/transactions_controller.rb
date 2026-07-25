@@ -16,13 +16,11 @@ class TransactionsController < ApplicationController
 
     @query = params[:query]
 
-    if @query.present?
-      @transactions = current_user.transactions
+    @transactions = current_user.transactions.order(pending: :desc, date: :desc)
 
-      @transactions = @transactions.where("memo LIKE ?", "%#{@query}%")
+    @transactions = @transactions.where("memo LIKE ?", "%#{@query}%") if @query.present?
 
-      @total_amount = @transactions.sum(:amount_cents) / 100.0
-    end
+    @total_amount = @transactions.sum(:amount_cents) / 100.0
   end
 
   private
