@@ -27,4 +27,16 @@
   </div>
 <% end %>
 
+<h2 class="mt-3 mb-2 font-bold text-2xl">Recent transactions</h2>
+
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
+  <% if @recent_transactions.any? %>
+    <% @recent_transactions.each do |transaction| %>
+      <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
+    <% end %>
+  <% else %>
+    <p>No results</p>
+  <% end %>
+</div>
+
 
