@@ -1,0 +1,10 @@
+<% title "#{@counterparty.name} | Polybank" %>
+
+<h2 class="font-bold text-2xl mb-3"><%= @counterparty.name %></h2>
+
+<div class="flex gap-5">
+  <div class="card">
+    <p>Total amount</p>
+    <p class="card-headline"><%= number_to_currency @total_amount %></p>
+  </div>
+</div>

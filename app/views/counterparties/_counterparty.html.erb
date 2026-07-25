@@ -1,0 +1,5 @@
+<%# locals: (counterparty:) %>
+
+<%= link_to counterparty_path(counterparty), class: "px-4 py-3 bg-slate-800 rounded-md" do %>
+  <p class="col-span-7"><%= counterparty.name %></p>
+<% end %>

@@ -30,7 +30,8 @@
       <nav class="flex justify-between w-full">
         <div class="flex gap-5">
           <%= link_to "Dashboard", root_path, class: "hover:underline" %>
-          <%= link_to "Transactions", search_transactions_path, class: "hover:underline" %>
+          <%= link_to "Transactions", transactions_path, class: "hover:underline" %>
+          <%= link_to "Counterparties", counterparties_path, class: "hover:underline" %>
         </div>
 
         <%= button_to "Sign out", session_path(current_session), method: :delete, class: "cursor-pointer hover:underline" %>

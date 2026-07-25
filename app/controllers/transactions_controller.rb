@@ -11,7 +11,7 @@ class TransactionsController < ApplicationController
     @counterparty = @transaction.plaid_object["counterparties"].find { |party| party["entity_id"] == params[:entity_id] }
   end
 
-  def search
+  def index
     skip_authorization
 
     @query = params[:query]

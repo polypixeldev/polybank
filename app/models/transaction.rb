@@ -28,9 +28,16 @@ class Transaction < ApplicationRecord
   belongs_to :account
   belongs_to :pending_transaction, optional: true, class_name: "Transaction"
 
+  has_one :user, through: :account
+
+  has_many :counterparty_transactions
+  has_many :counterparties, through: :counterparty_transactions
+
   before_update if: -> { plaid_object_changed? } do
     update!(attributes_from_plaid_object(plaid_object))
   end
+
+  after_update :update_counterparties_from_plaid, if: -> { plaid_object_previously_changed? }
 
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
@@ -62,5 +69,41 @@ class Transaction < ApplicationRecord
 
   def display_date
     plaid_object["authorized_date"].presence || date
+  end
+
+  private
+
+  def update_counterparties_from_plaid
+    plaid_counterparties = plaid_object["counterparties"]
+
+    ActiveRecord::Base.transaction do
+      counterparty_transactions.destroy_all
+
+      plaid_counterparties.each do |plaid_counterparty|
+        counterparty = Counterparty.find_by(plaid_id: plaid_counterparty["entity_id"])
+
+        if counterparty.nil?
+          counterparty = Counterparty.find_by(name: plaid_counterparty["name"])
+        end
+
+        if counterparty.nil?
+          counterparty = Counterparty.create!(
+            plaid_id: plaid_counterparty["entity_id"],
+            name: plaid_counterparty["name"]
+          )
+        end
+
+        counterparty.update!({
+          plaid_id: plaid_counterparty["entity_id"],
+          name: plaid_counterparty["name"],
+          counterparty_type: plaid_counterparty["type"],
+          website: plaid_counterparty["website"],
+          logo_url: plaid_counterparty["logo_url"]
+        }.compact_blank)
+
+
+        counterparties << counterparty
+      end
+    end
   end
 end

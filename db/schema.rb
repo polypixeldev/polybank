@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_24_212147) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_25_032015) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -22,6 +22,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_24_212147) do
     t.integer "user_id"
     t.index ["plaid_item_id"], name: "index_accounts_on_plaid_item_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "counterparties", force: :cascade do |t|
+    t.string "counterparty_type"
+    t.datetime "created_at", null: false
+    t.string "logo_url"
+    t.string "name"
+    t.string "plaid_id"
+    t.datetime "updated_at", null: false
+    t.string "website"
+    t.index ["plaid_id"], name: "index_counterparties_on_plaid_id", unique: true
+  end
+
+  create_table "counterparty_transactions", force: :cascade do |t|
+    t.integer "counterparty_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "transaction_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["counterparty_id"], name: "index_counterparty_transactions_on_counterparty_id"
+    t.index ["transaction_id"], name: "index_counterparty_transactions_on_transaction_id"
   end
 
   create_table "plaid_items", force: :cascade do |t|

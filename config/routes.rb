@@ -30,13 +30,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :transactions, only: [ :show ] do
-    collection do
-      get "search"
-    end
-
+  resources :transactions, only: [ :index, :show ] do
     member do
       get "counterparty_data"
     end
   end
+
+  resources :counterparties, only: [ :index, :show ]
 end

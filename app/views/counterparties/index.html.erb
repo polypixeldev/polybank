@@ -1,8 +1,8 @@
-<% title "Transactions | Polybank" %>
+<% title "Counterparties | Polybank" %>
 
-<h2 class="font-bold text-2xl mb-3">Transaction Search</h2>
+<h2 class="font-bold text-2xl mb-3">Counterparty Search</h2>
 
-<%= form_with url: search_transactions_path, method: :get do |form| %>
+<%= form_with url: counterparties_path, method: :get do |form| %>
   <div class="card">
     <div class="flex gap-2">
       <%= form.text_field :query, value: @query, class: "bg-white rounded-md text-black" %>
@@ -11,7 +11,7 @@
   </div>
 <% end %>
 
-<% if defined?(@transactions) %>
+<% if defined?(@counterparties) %>
   <div class="flex gap-5">
     <div class="card">
       <p>Total amount</p>
@@ -21,11 +21,11 @@
   </div>
 
   <div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md mt-3">
-    <p class="mb-2 font-bold text-xl">Transactions</p>
+    <p class="mb-2 font-bold text-xl">Counterparties</p>
 
-    <% if @transactions.any? %>
-      <% @transactions.each do |transaction| %>
-        <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
+    <% if @counterparties.any? %>
+      <% @counterparties.each do |counterparty| %>
+        <%= render partial: "counterparties/counterparty", locals: { counterparty: counterparty } %>
       <% end %>
     <% else %>
       <p>No results</p>
