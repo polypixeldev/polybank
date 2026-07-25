@@ -36,12 +36,12 @@ class Transaction < ApplicationRecord
   has_many :counterparty_transactions
   has_many :counterparties, through: :counterparty_transactions
 
-  before_update if: -> { plaid_object_changed? } do
+  before_save if: -> { plaid_object_changed? } do
     update!(attributes_from_plaid_object(plaid_object))
   end
 
-  after_update :update_counterparties_from_plaid, if: -> { plaid_object_previously_changed? }
-  after_update :update_category_from_plaid, if: -> { plaid_object_previously_changed? }
+  after_save :update_counterparties_from_plaid, if: -> { plaid_object_previously_changed? }
+  after_save :update_category_from_plaid, if: -> { plaid_object_previously_changed? }
 
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
@@ -57,7 +57,6 @@ class Transaction < ApplicationRecord
     {
       amount_cents: plaid_object.amount * -100,
       currency: plaid_object.iso_currency_code,
-      category: plaid_object.personal_finance_category.primary,
       date: plaid_object.date.presence || Date.today,
       memo: plaid_object.original_description,
       pending: plaid_object.pending,

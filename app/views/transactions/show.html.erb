@@ -14,10 +14,12 @@
     <p class="card-headline"><%= local_date @transaction.display_date %></p>
   </div>
 
-  <div class="card">
-    <p>Category</p>
-    <p class="card-headline"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
-  </div>
+  <% if @transaction.category.present? %>
+    <div class="card">
+      <p>Category</p>
+      <p class="card-headline"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
+    </div>
+  <% end %>
 
   <div class="card">
     <p>Payment channel</p>

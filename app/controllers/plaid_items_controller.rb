@@ -9,6 +9,14 @@ class PlaidItemsController < ApplicationController
     redirect_back_or_to root_path
   end
 
+  def refresh
+    authorize @item
+
+    @item.refresh_plaid_transactions
+
+    redirect_back_or_to root_path
+  end
+
   private
 
   def set_item

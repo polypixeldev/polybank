@@ -43,6 +43,10 @@ class PlaidItem < ApplicationRecord
     update!(transaction_cursor: all_data[:next_cursor])
   end
 
+  def refresh_plaid_transactions
+    PlaidService.refresh_transactions(access_token)
+  end
+
   private
 
   private

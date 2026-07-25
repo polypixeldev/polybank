@@ -85,6 +85,14 @@ module PlaidService
     plaid_client.transactions_sync(transactions_sync_request)
   end
 
+  def self.refresh_transactions(access_token)
+    transactions_refresh_request = Plaid::TransactionsRefreshRequest.new({
+      access_token:
+    })
+
+    plaid_client.transactions_refresh(transactions_refresh_request)
+  end
+
   def self.plaid_client
     configuration = Plaid::Configuration.new
     configuration.server_index = Plaid::Configuration::Environment["production"]

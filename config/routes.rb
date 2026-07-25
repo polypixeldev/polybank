@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :plaid_items, only: [] do
     member do
       post "sync"
+      post "refresh"
     end
   end
 
