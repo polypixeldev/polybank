@@ -1,0 +1,32 @@
+<% title "Categories | Polybank" %>
+
+<h2 class="font-bold text-2xl mb-3">Category Search</h2>
+
+<%= form_with url: categories_path, method: :get do |form| %>
+  <div class="card">
+    <div class="flex gap-2">
+      <%= form.text_field :query, value: @query, class: "bg-white rounded-md text-black" %>
+      <%= form.submit "Search", class: "cursor-pointer" %>
+    </div>
+  </div>
+<% end %>
+
+<div class="flex gap-5">
+  <div class="card">
+    <p>Total amount</p>
+
+    <p class="card-headline"><%= number_to_currency @total_amount %></p>
+  </div>
+</div>
+
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md mt-3">
+  <p class="mb-2 font-bold text-xl">Categories</p>
+
+  <% if @categories.any? %>
+    <% @categories.each do |category| %>
+      <%= render partial: "categories/category", locals: { category: } %>
+    <% end %>
+  <% else %>
+    <p>No results</p>
+  <% end %>
+</div>

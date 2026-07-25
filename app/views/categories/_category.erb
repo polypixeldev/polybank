@@ -1,0 +1,5 @@
+<%# locals: (category:) %>
+
+<%= link_to category_path(category), class: "px-4 py-3 bg-slate-800 rounded-md" do %>
+  <p><%= category.display_name %></p>
+<% end %>

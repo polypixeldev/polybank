@@ -14,12 +14,14 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  account_id             :integer          not null
+#  category_id            :integer
 #  pending_transaction_id :integer
 #  plaid_id               :string
 #
 # Indexes
 #
 #  index_transactions_on_account_id              (account_id)
+#  index_transactions_on_category_id             (category_id)
 #  index_transactions_on_pending_transaction_id  (pending_transaction_id)
 #
 class Transaction < ApplicationRecord
@@ -27,6 +29,7 @@ class Transaction < ApplicationRecord
 
   belongs_to :account
   belongs_to :pending_transaction, optional: true, class_name: "Transaction"
+  belongs_to :category, optional: true
 
   has_one :user, through: :account
 
@@ -38,6 +41,7 @@ class Transaction < ApplicationRecord
   end
 
   after_update :update_counterparties_from_plaid, if: -> { plaid_object_previously_changed? }
+  after_update :update_category_from_plaid, if: -> { plaid_object_previously_changed? }
 
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
@@ -109,5 +113,13 @@ class Transaction < ApplicationRecord
         counterparties << counterparty
       end
     end
+  end
+
+  def update_category_from_plaid
+    plaid_category = plaid_object["personal_finance_category"]["primary"]
+
+    category = Category.find_or_create_by!(plaid_name: plaid_category)
+
+    update!(category:)
   end
 end

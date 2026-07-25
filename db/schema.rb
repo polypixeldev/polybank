@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_25_032015) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_25_221612) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -22,6 +22,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_032015) do
     t.integer "user_id"
     t.index ["plaid_item_id"], name: "index_accounts_on_plaid_item_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "custom_name"
+    t.string "plaid_name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "counterparties", force: :cascade do |t|
@@ -68,6 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_032015) do
     t.integer "account_id", null: false
     t.integer "amount_cents", null: false
     t.string "category"
+    t.integer "category_id"
     t.datetime "created_at", null: false
     t.string "currency", default: "USD", null: false
     t.date "date"
@@ -79,6 +87,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_032015) do
     t.json "plaid_object"
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["category_id"], name: "index_transactions_on_category_id"
     t.index ["pending_transaction_id"], name: "index_transactions_on_pending_transaction_id"
   end
 

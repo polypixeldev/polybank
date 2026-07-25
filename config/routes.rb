@@ -37,4 +37,6 @@ Rails.application.routes.draw do
   end
 
   resources :counterparties, only: [ :index, :show ]
+
+  resources :categories, only: [ :index, :show ]
 end
