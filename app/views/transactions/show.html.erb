@@ -16,7 +16,7 @@
 
   <div class="card">
     <p>Category</p>
-    <p class="card-headline"><%= @transaction.category.display_name %></p>
+    <p class="card-headline"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
   </div>
 
   <div class="card">
@@ -31,18 +31,17 @@
     </div>
   <% end %>
 
-  <% @transaction.plaid_object["counterparties"].each do |party| %>
+  <% @transaction.counterparties.each do |party| %>
     <div class="card">
-      <p><%= party["type"].humanize %></p>
+      <p><%= party.counterparty_type.humanize %></p>
       <div class="flex gap-2 items-center mt-3">
-        <% if party["logo_url"].present? %>
-          <img src="<%= party["logo_url"] %>" class="w-8 h-8 rounded-sm">
+        <% if party.logo_url.present? %>
+          <img src="<%= party.logo_url %>" class="w-8 h-8 rounded-sm">
         <% end %>
         <p class="card-headline mt-0!">
-          <%= link_to party["name"], counterparty_data_transaction_path(@transaction, entity_id: party["entity_id"]), data: { turbo_frame: "modal" } %>
+          <%= link_to party.name, counterparty_path(party) %>
         </p>
       </div>
-      <%# add modal showing other merchant details: location, website %>
     </div>
   <% end %>
 </div>
