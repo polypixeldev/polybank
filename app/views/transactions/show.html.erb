@@ -1,7 +1,7 @@
 <% title "#{@transaction.memo} | Polybank" %>
 
 <p class="text-sm text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
-<h2 class="font-bold text-2xl mb-3"><%= @transaction.memo %></h2>
+<h2 class="font-bold text-2xl mb-3"><%= "PENDING: " if @transaction.pending %> <%= @transaction.memo %></h2>
 
 <div class="flex gap-5">
   <div class="card">
