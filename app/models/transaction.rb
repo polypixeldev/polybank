@@ -80,7 +80,11 @@ class Transaction < ApplicationRecord
       counterparty_transactions.destroy_all
 
       plaid_counterparties.each do |plaid_counterparty|
-        counterparty = Counterparty.find_by(plaid_id: plaid_counterparty["entity_id"])
+        counterparty = nil
+
+        if plaid_counterparty["entity_id"].present?
+          Counterparty.find_by(plaid_id: plaid_counterparty["entity_id"])
+        end
 
         if counterparty.nil?
           counterparty = Counterparty.find_by(name: plaid_counterparty["name"])
