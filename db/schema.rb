@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_25_221612) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_26_204143) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -26,8 +26,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_221612) do
 
   create_table "categories", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "custom_name"
-    t.string "plaid_name"
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 

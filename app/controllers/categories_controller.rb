@@ -6,14 +6,14 @@ class CategoriesController < ApplicationController
 
     @query = params[:query]
 
-    @categories = current_user.categories.order(custom_name: :asc, plaid_name: :asc)
+    @categories = current_user.categories.order(name: :asc)
 
-    @categories = @categories.where("categories.plaid_name LIKE ? OR categories.custom_name LIKE ?", "%#{@query}%", "%#{@query}%") if @query.present?
+    @categories = @categories.where("categories.name LIKE ?", "%#{@query}%") if @query.present?
 
     @total_amount = Transaction
       .joins(:account, :category)
       .where(accounts: { user_id: current_user.id })
-      .where("categories.plaid_name LIKE ? OR categories.custom_name LIKE ?", "%#{@query}%", "%#{@query}%")
+      .where("categories.name LIKE ?", "%#{@query}%")
       .sum(:amount_cents) / 100.0
   end
 
