@@ -33,11 +33,11 @@ class PlaidItem < ApplicationRecord
     end
 
     all_data[:modified].each do |txn|
-      Transaction.find_by(plaid_id: txn[:transaction_id], plaid_object: txn)
+      Transaction.find_by(plaid_id: txn.transaction_id, plaid_object: txn)
     end
 
     all_data[:removed].each do |txn|
-      Transaction.find_by(plaid_id: txn[:transaction_id]).destroy
+      Transaction.find_by(plaid_id: txn.transaction_id).destroy
     end
 
     update!(transaction_cursor: all_data[:next_cursor])
