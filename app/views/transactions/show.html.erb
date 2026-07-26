@@ -26,7 +26,16 @@
   <% if @transaction.category.present? %>
     <div class="card">
       <p>Category</p>
-      <p class="card-headline"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
+
+      <%= turbo_frame_tag "#{@transaction.id}_edit_category" do %>
+        <div class="flex mt-3">
+          <p class="card-headline mt-0!"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
+
+          <%= link_to edit_category_transaction_path, class: "cursor-pointer" do %>
+            <%= inline_icon :edit, size: 32 %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 

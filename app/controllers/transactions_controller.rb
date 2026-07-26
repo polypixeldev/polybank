@@ -1,6 +1,8 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, except: :index
 
+  # before_action :disable_caching, only: [ :edit_category ]
+
   def index
     skip_authorization
 
@@ -21,6 +23,10 @@ class TransactionsController < ApplicationController
     authorize @transaction
   end
 
+  def edit_category
+    authorize @transaction
+  end
+
   def update
     authorize @transaction
 
@@ -36,6 +42,6 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:memo)
+    params.require(:transaction).permit(:memo, :category_id)
   end
 end

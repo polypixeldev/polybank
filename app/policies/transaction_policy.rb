@@ -7,5 +7,7 @@ class TransactionPolicy < ApplicationPolicy
     record.account.user == user
   end
 
+  alias_method :edit_category?, :edit_memo?
+
   alias_method :update?, :edit_memo?
 end

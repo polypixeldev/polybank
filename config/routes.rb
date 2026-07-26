@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [ :index, :show, :update ] do
     member do
       get "edit_memo"
+      get "edit_category"
     end
   end
 
