@@ -31,9 +31,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :transactions, only: [ :index, :show ] do
+  resources :transactions, only: [ :index, :show, :update ] do
     member do
-      get "counterparty_data"
+      get "edit_memo"
     end
   end
 

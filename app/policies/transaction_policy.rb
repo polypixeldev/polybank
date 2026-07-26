@@ -3,5 +3,9 @@ class TransactionPolicy < ApplicationPolicy
     record.account.user == user
   end
 
-  alias_method :counterparty_data?, :show?
+  def edit_memo?
+    record.account.user == user
+  end
+
+  alias_method :update?, :edit_memo?
 end

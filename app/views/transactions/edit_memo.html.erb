@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "#{@transaction.id}_edit_memo" do %>
+  <%= form_with model: @transaction, method: :put do |form| %>
+    <%= form.text_field :memo, class: "bg-white rounded-md px-2 py-1 my-1 text-black" %>
+  <% end %>
+<% end %>

@@ -1,7 +1,16 @@
 <% title "#{@transaction.memo} | Polybank" %>
 
 <p class="text-sm text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
-<h2 class="font-bold text-2xl mb-3"><%= "PENDING: " if @transaction.pending %> <%= @transaction.memo %></h2>
+
+<%= turbo_frame_tag "#{@transaction.id}_edit_memo" do %>
+  <div class="flex gap-2">
+    <h2 class="font-bold text-2xl mb-3"><%= "PENDING: " if @transaction.pending %> <%= @transaction.memo %></h2>
+
+    <%= link_to edit_memo_transaction_path(@transaction), class: "cursor-pointer" do %>
+      <%= inline_icon :edit, size: 32 %>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="flex gap-5">
   <div class="card">
