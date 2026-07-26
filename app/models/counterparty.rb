@@ -4,8 +4,9 @@
 #
 #  id                :integer          not null, primary key
 #  counterparty_type :string
+#  custom_name       :string
 #  logo_url          :string
-#  name              :string
+#  plaid_name        :string
 #  website           :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -20,6 +21,10 @@ class Counterparty < ApplicationRecord
   has_many :transactions, through: :counterparty_transactions, source: :associated_transaction
 
   has_many :users, through: :transactions
+
+  def name
+    custom_name.presence || plaid_name
+  end
 
   def transactions_by_user(user)
     transactions.joins(:account).where("accounts.user_id = ?", user.id)

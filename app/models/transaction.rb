@@ -90,19 +90,19 @@ class Transaction < ApplicationRecord
         end
 
         if counterparty.nil?
-          counterparty = Counterparty.find_by(name: plaid_counterparty["name"])
+          counterparty = Counterparty.find_by(plaid_name: plaid_counterparty["name"])
         end
 
         if counterparty.nil?
           counterparty = Counterparty.create!(
             plaid_id: plaid_counterparty["entity_id"],
-            name: plaid_counterparty["name"]
+            plaid_name: plaid_counterparty["name"]
           )
         end
 
         counterparty.update!({
           plaid_id: plaid_counterparty["entity_id"],
-          name: plaid_counterparty["name"],
+          plaid_name: plaid_counterparty["name"],
           counterparty_type: plaid_counterparty["type"],
           website: plaid_counterparty["website"],
           logo_url: plaid_counterparty["logo_url"]

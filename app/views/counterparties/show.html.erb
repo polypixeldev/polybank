@@ -1,6 +1,14 @@
 <% title "#{@counterparty.name} | Polybank" %>
 
-<h2 class="font-bold text-2xl mb-3"><%= @counterparty.name %></h2>
+<%= turbo_frame_tag "#{@counterparty.id}_edit_name" do %>
+  <div class="flex gap-2">
+    <h2 class="font-bold text-2xl mb-3"><%= @counterparty.name %></h2>
+
+    <%= link_to edit_name_counterparty_path(@counterparty), class: "cursor-pointer" do %>
+      <%= inline_icon :edit, size: 32 %>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="flex gap-5">
   <div class="card">

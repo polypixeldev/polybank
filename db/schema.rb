@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_26_204143) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_26_204519) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -33,9 +33,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_204143) do
   create_table "counterparties", force: :cascade do |t|
     t.string "counterparty_type"
     t.datetime "created_at", null: false
+    t.string "custom_name"
     t.string "logo_url"
-    t.string "name"
     t.string "plaid_id"
+    t.string "plaid_name"
     t.datetime "updated_at", null: false
     t.string "website"
     t.index ["plaid_id"], name: "index_counterparties_on_plaid_id", unique: true

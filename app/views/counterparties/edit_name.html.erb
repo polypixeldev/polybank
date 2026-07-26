@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "#{@counterparty.id}_edit_name" do %>
+  <%= form_with model: @counterparty, method: :put do |form| %>
+    <%= form.text_field :custom_name, class: "bg-white rounded-md px-2 py-1 my-1 text-black", value: @counterparty.name %>
+  <% end %>
+<% end %>

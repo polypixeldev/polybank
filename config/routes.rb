@@ -38,7 +38,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :counterparties, only: [ :index, :show ]
+  resources :counterparties, only: [ :index, :show, :update ] do
+    member do
+      get "edit_name"
+    end
+  end
 
   resources :categories, only: [ :index, :show ]
 end
