@@ -20,8 +20,15 @@
 
   <div class="card">
     <p>Date</p>
-    <p class="card-headline"><%= local_date @transaction.display_date %></p>
+    <p class="card-headline"><%= @transaction.date.to_fs(:long) %></p>
   </div>
+
+  <% if @transaction.plaid_object&.[]("authorized_date").present? %>
+    <div class="card">
+      <p>Authorized on</p>
+      <p class="card-headline"><%= Date.parse(@transaction.plaid_object["authorized_date"]).to_fs(:long) %></p>
+    </div>
+  <% end %>
 
   <% if @transaction.category.present? %>
     <div class="card">
@@ -44,10 +51,10 @@
     <p class="card-headline"><%= @transaction.plaid_object["payment_channel"].humanize %></p>
   </div>
 
-  <% if @transaction.plaid_object["check_number"].present? %>
+  <% if @transaction.plaid_object&.[]("check_number").present? %>
     <div class="card">
       <p>Check #</p>
-      <p class="card-headline"><%= transaction.plaid_object[:check_number] %></p>
+      <p class="card-headline"><%= transaction.plaid_object["check_number"] %></p>
     </div>
   <% end %>
 
@@ -92,7 +99,7 @@
 
     <div class="card">
       <p>Date</p>
-      <p class="card-headline"><%= local_date @transaction.display_date %></p>
+      <p class="card-headline"><%= @transaction.date.to_fs(:long) %></p>
     </div>
   </div>
 <% end %>

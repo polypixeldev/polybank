@@ -88,10 +88,6 @@ class Transaction < ApplicationRecord
     amount_cents / 100.0
   end
 
-  def display_date
-    plaid_object["authorized_date"].presence || date
-  end
-
   private
 
   def update_counterparties_from_plaid
