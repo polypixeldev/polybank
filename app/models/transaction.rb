@@ -38,6 +38,9 @@ class Transaction < ApplicationRecord
   has_many :counterparty_transactions
   has_many :counterparties, through: :counterparty_transactions
 
+  has_many :tag_transactions
+  has_many :tags, through: :tag_transactions
+
   before_save if: -> { plaid_object_changed? } do
     assign_attributes(Transaction.attributes_from_plaid_object(plaid_object))
   end

@@ -1,0 +1,9 @@
+<%= render "application/modal" do %>
+  <p class="font-bold text-xl">Add tag</p>
+
+  <% current_user.tags.each do |tag| %>
+    <%= button_to add_tag_transaction_path(@transaction, tag_id: tag.id) do %>
+      <span class="p-1 rounded-full" style="background-color: <%= tag.color %>"><%= tag.name %></span>
+    <% end %>
+  <% end %>
+<% end %>

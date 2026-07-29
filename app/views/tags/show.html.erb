@@ -1,0 +1,21 @@
+<% title "#{@tag.name} | Polybank" %>
+
+<div class="flex gap-2 items-center mb-3">
+  <div class="rounded-full w-5 h-5" style="background-color: <%= @tag.color %>"></div>
+  <h2 class="font-bold text-2xl"><%= @tag.name %></h2>
+</div>
+
+<div class="flex gap-5">
+  <div class="card">
+    <p>Total amount</p>
+    <p class="card-headline"><%= number_to_currency @total_amount %></p>
+  </div>
+</div>
+
+<h3 class="text-xl mt-5 mb-2">Transactions</h3>
+
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
+  <% @tag.transactions.effective.order(pending: :desc, date: :desc).each do |txn| %>
+    <%= render partial: "transactions/transaction", locals: { transaction: txn } %>
+  <% end %>
+</div>

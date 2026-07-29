@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     member do
       get "edit_memo"
       get "edit_category"
+
+      get "add_tag_modal"
+      post "add_tag"
     end
   end
 
@@ -45,4 +48,6 @@ Rails.application.routes.draw do
   end
 
   resources :categories, only: [ :index, :show ]
+
+  resources :tags, only: [ :index, :new, :create, :show ]
 end

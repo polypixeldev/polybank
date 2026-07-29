@@ -27,6 +27,20 @@ class TransactionsController < ApplicationController
     authorize @transaction
   end
 
+  def add_tag_modal
+    authorize @transaction
+  end
+
+  def add_tag
+    authorize @transaction
+
+    tag = Tag.find(params[:tag_id])
+
+    @transaction.tags << tag
+
+    redirect_back_or_to @transaction
+  end
+
   def update
     authorize @transaction
 

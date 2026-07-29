@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_many :transactions, through: :accounts
   has_many :counterparties, -> { distinct }, through: :transactions
   has_many :categories, -> { distinct }, through: :transactions
+  has_many :tags
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
