@@ -73,7 +73,7 @@ class Transaction < ApplicationRecord
       amount_cents: plaid_object_hash[:amount] * -100,
       currency: plaid_object_hash[:iso_currency_code],
       date: plaid_object_hash[:date].presence || Date.today,
-      memo: plaid_object_hash[:original_description],
+      memo: pending_transaction.present? ? pending_transaction.memo : plaid_object_hash[:original_description],
       pending: plaid_object_hash[:pending],
       pending_transaction:,
       plaid_id: plaid_object_hash[:transaction_id],
