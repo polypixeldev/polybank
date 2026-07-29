@@ -66,3 +66,33 @@
   <% end %>
 </div>
 
+<% if @transaction.pending_transaction.present? %>
+  <div class="mb-3 mt-5 flex gap-2">
+    <h3 class="font-bold text-xl">Pending transaction</h3>
+    <%= link_to @transaction.pending_transaction do %>
+      <%= inline_icon :link, size: 32 %>
+    <% end %>
+  </div>
+
+  <div class="flex gap-5">
+    <div class="card">
+      <p>Amount</p>
+      <p class="card-headline"><%= number_to_currency @transaction.amount %></p>
+    </div>
+
+    <div class="card">
+      <p>Date</p>
+      <p class="card-headline"><%= local_date @transaction.display_date %></p>
+    </div>
+  </div>
+<% end %>
+
+<% if @transaction.settled_transaction.present? %>
+  <div class="mb-3 mt-5 flex gap-2">
+    <h3 class="font-bold text-xl">Settled transaction</h3>
+    <%= link_to @transaction.settled_transaction do %>
+      <%= inline_icon :link, size: 32 %>
+    <% end %>
+  </div>
+<% end %>
+
