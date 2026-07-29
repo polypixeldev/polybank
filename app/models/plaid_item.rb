@@ -37,7 +37,7 @@ class PlaidItem < ApplicationRecord
     end
 
     all_data[:removed].each do |txn|
-      Transaction.find_by(plaid_id: txn.transaction_id).destroy
+      Transaction.find_by(plaid_id: txn.transaction_id).destroy unless txn.settled_transaction.present?
     end
 
     update!(transaction_cursor: all_data[:next_cursor])

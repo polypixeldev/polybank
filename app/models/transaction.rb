@@ -31,6 +31,8 @@ class Transaction < ApplicationRecord
   belongs_to :pending_transaction, optional: true, class_name: "Transaction"
   belongs_to :category, optional: true
 
+  has_one :settled_transaction, class_name: "Transaction", foreign_key: :pending_transaction_id
+
   has_one :user, through: :account
 
   has_many :counterparty_transactions
@@ -43,6 +45,9 @@ class Transaction < ApplicationRecord
   after_save :update_counterparties_from_plaid, if: -> { plaid_object_previously_changed? }
   after_save :update_category_from_plaid, if: -> { plaid_object_previously_changed? }
   after_save :update_pending_transaction_from_plaid, if: -> { plaid_object_previously_changed? }
+
+  scope :effective, -> { where(pending: false).or(pending) }
+  scope :pending, -> { where(pending: true).where.missing(:settled_transaction) }
 
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
@@ -58,13 +63,19 @@ class Transaction < ApplicationRecord
     plaid_object_hash = plaid_object.is_a?(Hash) ? plaid_object : plaid_object.to_hash
     plaid_object_hash.symbolize_keys!
 
+    pending_transaction = nil
+    if !plaid_object_hash[:pending] && plaid_object_hash[:pending_transaction_id].present?
+      pending_transaction = with_deleted.find_by(plaid_id: plaid_object_hash[:pending_transaction_id])
+      pending_transaction.recover
+    end
+
     {
       amount_cents: plaid_object_hash[:amount] * -100,
       currency: plaid_object_hash[:iso_currency_code],
       date: plaid_object_hash[:date].presence || Date.today,
       memo: plaid_object_hash[:original_description],
       pending: plaid_object_hash[:pending],
-      pending_transaction: plaid_object_hash[:pending] ? nil : find_by(plaid_id: plaid_object_hash[:pending_transaction_id]),
+      pending_transaction:,
       plaid_id: plaid_object_hash[:transaction_id],
       plaid_object:
     }
@@ -124,8 +135,5 @@ class Transaction < ApplicationRecord
     category = Category.find_or_create_by!(name: plaid_category)
 
     update!(category:)
-  end
-
-  def update_pending_transaction_from_plaid
   end
 end
