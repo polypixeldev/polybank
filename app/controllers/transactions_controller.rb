@@ -7,12 +7,14 @@ class TransactionsController < ApplicationController
     @query = params[:query]
     @start_date = params[:start_date]
     @end_date = params[:end_date]
+    @category = current_user.categories.find_by(id: params[:category_id])
 
     @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
 
     @transactions = @transactions.where("memo LIKE ?", "%#{@query}%") if @query.present?
     @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
     @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
+    @transactions = @transactions.where(category: @category) if @category.present?
 
     @total_amount = @transactions.sum(:amount_cents) / 100.0
   end
