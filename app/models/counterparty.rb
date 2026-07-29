@@ -27,7 +27,7 @@ class Counterparty < ApplicationRecord
   end
 
   def transactions_by_user(user)
-    transactions.joins(:account).where("accounts.user_id = ?", user.id)
+    transactions.effective.joins(:account).where("accounts.user_id = ?", user.id)
   end
 
   def amount_by_user(user)

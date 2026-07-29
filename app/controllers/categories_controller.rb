@@ -11,6 +11,7 @@ class CategoriesController < ApplicationController
     @categories = @categories.where("categories.name LIKE ?", "%#{@query}%") if @query.present?
 
     @total_amount = Transaction
+      .effective
       .joins(:account, :category)
       .where(accounts: { user_id: current_user.id })
       .where("categories.name LIKE ?", "%#{@query}%")
