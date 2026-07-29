@@ -8,7 +8,7 @@ class TransactionsController < ApplicationController
 
     @query = params[:query]
 
-    @transactions = current_user.transactions.order(pending: :desc, date: :desc)
+    @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
 
     @transactions = @transactions.where("memo LIKE ?", "%#{@query}%") if @query.present?
 

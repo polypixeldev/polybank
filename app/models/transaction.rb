@@ -46,7 +46,7 @@ class Transaction < ApplicationRecord
   after_save :update_category_from_plaid, if: -> { plaid_object_previously_changed? }
   after_save :update_pending_transaction_from_plaid, if: -> { plaid_object_previously_changed? }
 
-  scope :effective, -> { where(pending: false).or(pending) }
+  scope :effective, -> { left_outer_joins(:settled_transaction).where(pending: false).or(pending) }
   scope :pending, -> { where(pending: true).where.missing(:settled_transaction) }
 
   def self.create_from_plaid_object(item, plaid_object)

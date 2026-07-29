@@ -18,7 +18,7 @@
 <h3 class="text-xl mt-5 mb-2">Transactions</h3>
 
 <div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
-  <% @account.transactions.order(pending: :desc, date: :desc).each do |txn| %>
+  <% @account.transactions.effective.order(pending: :desc, date: :desc).each do |txn| %>
     <%= render partial: "transactions/transaction", locals: { transaction: txn } %>
   <% end %>
 </div>
