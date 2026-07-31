@@ -9,34 +9,16 @@ class TransactionsController < ApplicationController
     skip_authorization
 
     @show_filters = ActiveModel::Type::Boolean.new.cast(params[:show_filters])
-    @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
 
-    @query = params[:query]
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
-    @category = current_user.categories.find_by(id: params[:category_id])
-    @counterparty = current_user.counterparties.find_by(id: params[:counterparty_id])
-    @tag = current_user.tags.find_by(id: params[:tag_id])
-    @min_amount = params[:min_amount]
-    @max_amount = params[:max_amount]
-    @direction = params[:direction]
+    apply_filters
 
-    @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
-    @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
-    @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
-    @transactions = @transactions.where(category: @category) if @category.present?
-    @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
-    @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?
-    @transactions = @transactions.where("abs(transactions.amount_cents) >= ?", @min_amount.to_f * 100) if @min_amount.present?
-    @transactions = @transactions.where("abs(transactions.amount_cents) < ?", @max_amount.to_f * 100) if @max_amount.present?
+    render csv: @transactions
+  end
 
-    if @direction == "incoming"
-      @transactions = @transactions.where("transactions.amount_cents > 0")
-    elsif @direction == "outgoing"
-      @transactions = @transactions.where("transactions.amount_cents < 0")
-    end
+  def export
+    skip_authorization
 
-    @total_amount = @transactions.sum(:amount_cents) / 100.0
+    apply_filters
   end
 
   def show
@@ -81,5 +63,35 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:memo, :category_id)
+  end
+
+  def apply_filters
+        @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
+    @query = params[:query]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @category = current_user.categories.find_by(id: params[:category_id])
+    @counterparty = current_user.counterparties.find_by(id: params[:counterparty_id])
+    @tag = current_user.tags.find_by(id: params[:tag_id])
+    @min_amount = params[:min_amount]
+    @max_amount = params[:max_amount]
+    @direction = params[:direction]
+
+    @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
+    @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
+    @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
+    @transactions = @transactions.where(category: @category) if @category.present?
+    @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
+    @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?
+    @transactions = @transactions.where("abs(transactions.amount_cents) >= ?", @min_amount.to_f * 100) if @min_amount.present?
+    @transactions = @transactions.where("abs(transactions.amount_cents) < ?", @max_amount.to_f * 100) if @max_amount.present?
+
+    if @direction == "incoming"
+      @transactions = @transactions.where("transactions.amount_cents > 0")
+    elsif @direction == "outgoing"
+      @transactions = @transactions.where("transactions.amount_cents < 0")
+    end
+
+    @total_amount = @transactions.sum(:amount_cents) / 100.0
   end
 end

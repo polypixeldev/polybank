@@ -1,4 +1,5 @@
-<%= form_with url: list_transactions_path, method: :get, class: "flex gap-5 flex-wrap" do |form| %>
+
+<%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-5 flex-wrap" do |form| %>
   <%= form.hidden_field :show_filters, value: @show_filters %>
 
   <div class="card">
@@ -67,4 +68,6 @@
   <div class="card justify-center">
     <%= form.submit "Search", class: "cursor-pointer" %>
   </div>
+
+  <%= button_to "Export", export_transactions_path, class: "card justify-center! cursor-pointer" %>
 <% end %>

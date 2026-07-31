@@ -52,6 +52,17 @@ class Transaction < ApplicationRecord
   scope :effective, -> { left_outer_joins(:settled_transaction).where(pending: false).or(pending) }
   scope :pending, -> { where(pending: true).where.missing(:settled_transaction) }
 
+  comma do
+    account_id "account_id"
+    date
+    memo
+    amount_cents
+    currency
+    pending
+    category_name "category"
+    pending_transaction_id
+  end
+
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
 
@@ -86,6 +97,10 @@ class Transaction < ApplicationRecord
 
   def amount
     amount_cents / 100.0
+  end
+
+  def category_name
+    category.name
   end
 
   private

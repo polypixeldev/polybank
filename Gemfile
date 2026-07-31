@@ -83,3 +83,5 @@ gem "tailwindcss-rails", "~> 4.6"
 gem "pundit", "~> 2.5"
 
 gem "local_time"
+
+gem "comma"
