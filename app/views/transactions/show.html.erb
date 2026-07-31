@@ -1,6 +1,6 @@
 <% title "#{@transaction.memo} | Polybank" %>
 
-<p class="text-sm text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
+<p class="text-md text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
 
 <%= turbo_frame_tag "#{@transaction.id}_edit_memo" do %>
   <div class="flex gap-2">
@@ -35,7 +35,7 @@
       <p>Category</p>
 
       <%= turbo_frame_tag "#{@transaction.id}_edit_category" do %>
-        <div class="flex mt-3">
+        <div class="flex mt-3 gap-2">
           <p class="card-headline mt-0!"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
 
           <%= link_to edit_category_transaction_path, class: "cursor-pointer" do %>
@@ -75,13 +75,15 @@
   <% end %>
 
   <div class="card">
-    <p class="mb-2">Tags</p>
+    <p class="mb-3">Tags</p>
     
-    <% @transaction.tags.each do |tag| %>
-      <span class="p-1 rounded-full" style="background-color: <%= tag.color %>"><%= tag.name %></span>
-    <% end %>
+    <div class="flex gap-3">
+      <% @transaction.tags.each do |tag| %>
+        <%= render partial: "tags/tag", locals: { tag:, transaction: @transaction } %>
+      <% end %>
 
-    <%= link_to "Add", add_tag_modal_transaction_path(@transaction), class: "bg-gray-800 py-1 px-3 rounded-full", data: {turbo_frame: "modal"} %>
+      <%= link_to "+ Add", add_tag_modal_transaction_path(@transaction), class: "py-2 px-3 rounded-full bg-gray-800", data: {turbo_frame: "modal"} %>
+    </div>
   </div>
 </div>
 

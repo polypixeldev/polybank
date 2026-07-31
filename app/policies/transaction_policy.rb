@@ -10,5 +10,5 @@ class TransactionPolicy < ApplicationPolicy
   alias_method :edit_category?, :update?
   alias_method :edit_memo?, :update?
   alias_method :add_tag_modal?, :update?
-  alias_method :add_tag?, :update?
+  alias_method :toggle_tag?, :update?
 end

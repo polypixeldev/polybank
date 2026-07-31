@@ -48,12 +48,16 @@ class TransactionsController < ApplicationController
     authorize @transaction
   end
 
-  def add_tag
+  def toggle_tag
     authorize @transaction
 
     tag = Tag.find(params[:tag_id])
 
-    @transaction.tags << tag
+    if @transaction.tags.include? tag
+      TagTransaction.find_by(tag:, associated_transaction: @transaction).destroy
+    else
+      @transaction.tags << tag
+    end
 
     redirect_back_or_to @transaction
   end

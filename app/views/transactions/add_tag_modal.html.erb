@@ -1,9 +1,13 @@
 <%= render "application/modal" do %>
-  <p class="font-bold text-xl">Add tag</p>
+  <p class="font-bold text-2xl mb-3">Add tag</p>
 
-  <% current_user.tags.each do |tag| %>
-    <%= button_to add_tag_transaction_path(@transaction, tag_id: tag.id) do %>
-      <span class="p-1 rounded-full" style="background-color: <%= tag.color %>"><%= tag.name %></span>
+  <div class="flex gap-5">
+    <% current_user.tags.each do |tag| %>
+      <%= button_to toggle_tag_transaction_path(@transaction, tag_id: tag.id), data: { turbo_frame: "_top"  } do %>
+        <%= render partial: "tags/tag", locals: { tag: } %>
+      <% end %>
     <% end %>
-  <% end %>
+
+    <%= link_to "Create tag", new_modal_tags_path(attach: @transaction.id), class: "py-2 px-3 rounded-full bg-gray-800" %>
+  </div>
 <% end %>

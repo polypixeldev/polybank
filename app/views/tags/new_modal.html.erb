@@ -1,0 +1,5 @@
+<%= render "application/modal" do %>
+  <p class="font-bold text-2xl mb-3">Add tag</p>
+
+  <%= render partial: "tags/form", locals: { attach: @attach } %>
+<% end %>

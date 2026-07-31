@@ -7,3 +7,11 @@
 .card-headline {
   @apply mt-3 text-2xl font-bold
 }
+
+.btn {
+  @apply px-5 py-3 bg-slate-950 w-fit cursor-pointer rounded-sm
+}
+
+.inline-btn {
+  @apply bg-slate-900 px-3 py-2 rounded-sm cursor-pointer
+}

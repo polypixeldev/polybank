@@ -1,9 +1,13 @@
-<%# locals: (tag:) %>
+<%# locals: (tag:, transaction: nil) %>
 
-<% sum = tag.amount %>
+<div class="py-2 px-3 rounded-full flex gap-2" style="background-color: <%= tag.color %>">
+  <% if transaction.present? %>
+    <%= link_to tag_path(tag), class: "cursor-pointer" do %>
+      <p><%= tag.name %></p>
+    <% end %>
 
-<%= link_to tag_path(tag), class: "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md" do %>
-  <div class="rounded-full w-5 h-5" style="background-color: <%= tag.color %>"></div>
-  <p class="col-span-13"><%= tag.name %></p>
-  <p class="justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum %></p>
-<% end %>
+    <%= button_to "X", toggle_tag_transaction_path(transaction, tag_id: tag.id), class: "cursor-pointer" %>
+  <% else %>
+    <p><%= tag.name %></p>
+  <% end %>
+</div>

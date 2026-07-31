@@ -51,7 +51,7 @@ Rails.application.routes.draw do
       get "edit_category"
 
       get "add_tag_modal"
-      post "add_tag"
+      post "toggle_tag"
     end
   end
 
@@ -63,7 +63,11 @@ Rails.application.routes.draw do
 
   resources :categories, only: [ :index, :show ]
 
-  resources :tags, only: [ :index, :new, :create, :show ]
+  resources :tags, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
+    collection do
+      get "new_modal"
+    end
+  end
 
   scope :stats, controller: :stats, as: :stats do
     get "/", action: :index
