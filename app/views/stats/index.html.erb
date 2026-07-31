@@ -21,19 +21,19 @@
 
 <%= sankey_chart({
   data: @categories.map { |c| { name: c.display_name }} + @categories.map { |c| { name: "#{c.display_name} " }} + [{ name: "Bank" }],
-  links: @transactions.where("amount_cents > 0").group(:category).sum(:amount_cents).to_a.map { |c| { source: c[0].display_name, target: "Bank", value: c[1].abs / 100.0 } } + 
-         @transactions.where("amount_cents < 0").group(:category).sum(:amount_cents).to_a.map { |c| { target: "#{c[0].display_name} ", source: "Bank", value: c[1].abs / 100.0 } }
+  links: @transactions.where("transactions.amount_cents > 0").group(:category).sum("transactions.amount_cents").to_a.map { |c| { source: c[0].display_name, target: "Bank", value: c[1].abs / 100.0 } } + 
+         @transactions.where("transactions.amount_cents < 0").group(:category).sum("transactions.amount_cents").to_a.map { |c| { target: "#{c[0].display_name} ", source: "Bank", value: c[1].abs / 100.0 } }
 }, { theme: "dark", options: { tooltip: { trigger: "item", triggerOn: "mousemove", valueFormatter: RailsCharts.js("(value) => '$' + value") }} }) %>
 
 <div class="grid grid-cols-2 gap-x-5 gap-y-10">
   <div>
     <p class="font-bold text-lg text-center">Income by category</p>
-    <%= pie_chart @transactions.where("amount_cents > 0").group(:category).sum(:amount_cents).transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
+    <%= pie_chart @transactions.where("transactions.amount_cents > 0").group(:category).sum("transactions.amount_cents").transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Expenses by category</p>
-    <%= pie_chart @transactions.where("amount_cents < 0").group(:category).sum(:amount_cents).transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
+    <%= pie_chart @transactions.where("transactions.amount_cents < 0").group(:category).sum("transactions.amount_cents").transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
   </div>
 
   <div>
