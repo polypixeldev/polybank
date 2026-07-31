@@ -4,7 +4,6 @@
 #
 #  id                     :integer          not null, primary key
 #  amount_cents           :integer          not null
-#  category               :string
 #  currency               :string           default("USD"), not null
 #  date                   :date
 #  deleted_at             :datetime
