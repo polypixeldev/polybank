@@ -16,6 +16,7 @@ class TransactionsController < ApplicationController
     @end_date = params[:end_date]
     @category = current_user.categories.find_by(id: params[:category_id])
     @counterparty = current_user.counterparties.find_by(id: params[:counterparty_id])
+    @tag = current_user.tags.find_by(id: params[:tag_id])
     @min_amount = params[:min_amount]
     @max_amount = params[:max_amount]
     @direction = params[:direction]
@@ -25,6 +26,7 @@ class TransactionsController < ApplicationController
     @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
     @transactions = @transactions.where(category: @category) if @category.present?
     @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
+    @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?
     @transactions = @transactions.where("abs(transactions.amount_cents) >= ?", @min_amount.to_f * 100) if @min_amount.present?
     @transactions = @transactions.where("abs(transactions.amount_cents) < ?", @max_amount.to_f * 100) if @max_amount.present?
 
