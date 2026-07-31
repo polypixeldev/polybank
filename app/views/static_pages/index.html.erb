@@ -2,14 +2,24 @@
 
 <h2 class="font-bold text-2xl mb-3">Accounts</h2>
 
-<% unless current_user.plaid_linked? %>
+<% if current_user.accounts.none? %>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 
-  <div class="card" data-controller="plaid">
-    <p>
-      Plaid isn't linked yet.
-    </p>
-    <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
+  <div class="flex gap-5">
+    <div class="card" data-controller="plaid">
+      <p>
+        Plaid isn't linked yet.
+      </p>
+      <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
+    </div>
+
+    <div class="card" data-controller="plaid">
+      <p>
+        Generate demo data
+      </p>
+
+      <%= button_to "Generate", generate_demo_accounts_path, class: "px-5 py-3 bg-slate-950 w-fit cursor-pointer" %>
+    </div>
   </div>
 <% else %>
   <div class="flex flex-row gap-3">

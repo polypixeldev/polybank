@@ -11,6 +11,10 @@
       <%= form.select :time_frame, [["Week", "week"], ["Month", "month"], ["Year", "year"]], { selected: @time_frame, include_blank: "All" }, class: "bg-white rounded-md text-black", onchange: "this.form.submit()" %>
     </div>
   </div>
+
+  <%= form.submit "Export", formaction: export_transactions_path,
+                          formmethod: :post,
+                          class: "card justify-center! cursor-pointer", data: { turbo: false } %>
 <% end %>
 
 <p class="font-bold text-lg text-center">Money Flow</p>

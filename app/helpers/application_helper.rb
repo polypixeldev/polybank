@@ -1,4 +1,7 @@
 module ApplicationHelper
+  include RailsCharts::Helpers
+  include Chartkick::Helper
+
   def title(text)
     content_for :title, text
   end
@@ -24,5 +27,11 @@ module ApplicationHelper
     end
     options.each { |key, value| svg[key.to_s] = value }
     doc.to_html.html_safe
+  end
+
+  %i[pie_chart line_chart].each do |method_name|
+    define_method(method_name) do |*args, **kwargs, &block|
+      Chartkick::Helper.instance_method(method_name).bind(self).call(*args, **kwargs, &block)
+    end
   end
 end

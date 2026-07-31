@@ -37,29 +37,31 @@ class Account < ApplicationRecord
   end
 
   def balance_by_day
-    days = (Date.today - created_at.to_date).to_i + 1
+    start_date = transactions.effective.order(date: :asc).first.date
+    days = (Date.today - start_date).to_i + 1
 
     balances_from_start = {}
 
     days.times do |i|
-      day = created_at.to_date + i.days
+      day = start_date + i.days
 
-      balances_from_start[day.to_s] = transactions.effective.where("date >= ? AND date <= ?", created_at, day).sum(:amount_cents)
+      balances_from_start[day.to_s] = transactions.effective.where("transactions.date >= ? AND transactions.date <= ?", start_date, day).sum(:amount_cents)
     end
 
-    current_balance = balance * 100
+    if plaid_item.present?
+      current_balance = balance * 100
+      difference = current_balance - balances_from_start[Date.today.to_s]
 
-    difference = current_balance - balances_from_start[Date.today.to_s]
-
-    balances = balances_from_start.transform_values { |b| (b + difference) / 100.0 }
-
-    balances
+      balances_from_start.transform_values { |b| (b + difference) / 100.0 }
+    else
+      balances_from_start.transform_values { |b| b / 100.0 }
+    end
   end
 
   private
 
   def plaid_item_belongs_to_user
-    if plaid_item&.user != user
+    if plaid_item.present? && plaid_item&.user != user
       errors.add(:plaid_item, "must belong to user")
     end
   end

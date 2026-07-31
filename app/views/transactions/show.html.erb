@@ -46,10 +46,12 @@
     </div>
   <% end %>
 
-  <div class="card">
-    <p>Payment channel</p>
-    <p class="card-headline"><%= @transaction.plaid_object["payment_channel"].humanize %></p>
-  </div>
+  <% if @transaction.plaid_object&.[]("payment_channel").present? %>
+    <div class="card">
+      <p>Payment channel</p>
+      <p class="card-headline"><%= @transaction.plaid_object["payment_channel"].humanize %></p>
+    </div>
+  <% end %>
 
   <% if @transaction.plaid_object&.[]("check_number").present? %>
     <div class="card">

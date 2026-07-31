@@ -86,8 +86,10 @@ gem "local_time"
 
 gem "comma"
 
-gem "chartkick"
-
 gem "rails_charts"
 
+gem "chartkick"
+
 gem "grover"
+
+gem "faker"
