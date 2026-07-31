@@ -85,3 +85,5 @@ gem "pundit", "~> 2.5"
 gem "local_time"
 
 gem "comma"
+
+gem "chartkick"

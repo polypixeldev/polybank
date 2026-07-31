@@ -55,4 +55,8 @@ Rails.application.routes.draw do
   resources :categories, only: [ :index, :show ]
 
   resources :tags, only: [ :index, :new, :create, :show ]
+
+  scope :stats, controller: :stats, as: :stats do
+    get "/", action: :index
+  end
 end

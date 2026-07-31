@@ -1,6 +1,6 @@
 <%# locals: (transaction:) %>
 
-<%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}" do %>
+<%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
   <% if transaction.plaid_object["logo_url"].present? %>
     <img src="<%= transaction.plaid_object["logo_url"] %>" class="w-8 h-8 rounded-sm">
   <% else %>
