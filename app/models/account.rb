@@ -44,7 +44,7 @@ class Account < ApplicationRecord
     days.times do |i|
       day = created_at.to_date + i.days
 
-      balances_from_start[day.to_s] = transactions.where("date >= ? AND date <= ?", created_at, day).sum(:amount_cents)
+      balances_from_start[day.to_s] = transactions.effective.where("date >= ? AND date <= ?", created_at, day).sum(:amount_cents)
     end
 
     current_balance = balance * 100

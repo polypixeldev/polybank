@@ -89,3 +89,5 @@ gem "comma"
 gem "chartkick"
 
 gem "rails_charts"
+
+gem "grover"

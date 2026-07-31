@@ -1,7 +1,12 @@
 class StatsController < ApplicationController
   def index
     skip_authorization
+    apply_filters
+  end
 
+  private
+
+  def apply_filters
     @time_frame = params[:time_frame]
 
     @start_date = case @time_frame
@@ -15,7 +20,9 @@ class StatsController < ApplicationController
       nil
     end
 
-    @transactions = current_user.transactions
+    @end_date = Date.today
+
+    @transactions = current_user.transactions.effective
     @transactions = @transactions.where("date >= ?", @start_date) if @start_date.present?
 
     @categories = current_user.categories

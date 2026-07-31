@@ -1,0 +1,71 @@
+<html>
+  <body>
+    <h1>Polybank</h1>
+
+    <h2>Transaction export from <%= @start_date.presence || "creation" %> to <%= @end_date.presence || Date.today %></h2>
+
+    <% if @query.present? || @category.present? || @counterparty.present? || @tag.present? || @min_amount.present? || @max_amount.present? || @direction.present? %>
+      <p>Filters applied:</p>
+      <ul>
+        <% if @query.present? %>
+          <li><strong>Query:</strong> <%= @query %></li>
+        <% end %>
+
+        <% if @category.present? %>
+          <li><strong>Category:</strong> <%= @category.display_name %></li>
+        <% end %>
+
+        <% if @counterparty.present? %>
+          <li><strong>Counterparty:</strong> <%= @counterparty.name %></li>
+        <% end %>
+
+        <% if @tag.present? %>
+          <li><strong>Tag:</strong> <%= @tag.name %></li>
+        <% end %>
+
+        <% if @min_amount.present? %>
+          <li><strong>Minimum amount:</strong> <%= @min_amount %></li>
+        <% end %>
+
+        <% if @max_amount.present? %>
+          <li><strong>Maximum amount:</strong> <%= @max_amount %></li>
+        <% end %>
+
+        <% if @direction.present? %>
+          <li><strong>Direction:</strong> <%= @direction %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Account</th>
+          <th>Date</th>
+          <th>Memo</th>
+          <th>Amount</th>
+          <th>Currency</th>
+          <th>Pending</th>
+          <th>Category</th>
+          <th>Pending transaction ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |txn| %>
+          <tr>
+            <td><%= txn.id %></td>
+            <td><%= txn.account.name %></td>
+            <td><%= txn.date %></td>
+            <td><%= txn.memo %></td>
+            <td><%= number_to_currency txn.amount %></td>
+            <td><%= txn.currency %></td>
+            <td><%= txn.pending ? "Yes" : "No" %></td>
+            <td><%= txn.category.display_name %></td>
+            <td><%= txn.pending_transaction_id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

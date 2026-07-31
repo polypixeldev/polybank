@@ -53,6 +53,7 @@ class Transaction < ApplicationRecord
   scope :pending, -> { where(pending: true).where.missing(:settled_transaction) }
 
   comma do
+    id
     account_id "account_id"
     date
     memo

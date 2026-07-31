@@ -146,6 +146,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.4.0)
       activesupport (>= 6.1)
+    grover (1.2.10)
+      nokogiri (~> 1)
     hashid-rails (1.4.1)
       activerecord (>= 4.0)
       hashids (~> 1.0)
@@ -443,6 +445,7 @@ DEPENDENCIES
   comma
   debug
   dotenv
+  grover
   hashid-rails
   image_processing (~> 1.2)
   importmap-rails
