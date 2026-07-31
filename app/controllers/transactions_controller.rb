@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
         html = render_to_string(template: "transactions/export", layout: "pdf")
         pdf = Grover.new(html).to_pdf
 
-        send_data pdf, filename: "transactions_export_#{Date.today.to_s.gsub("-", "_")}", type: "application/pdf"
+        send_data pdf, filename: "transaction_export_#{Date.today.to_s.gsub("-", "_")}", type: "application/pdf"
       end
     end
   end
