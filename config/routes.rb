@@ -32,6 +32,10 @@ Rails.application.routes.draw do
   end
 
   resources :transactions, only: [ :index, :show, :update ] do
+    collection do
+      get "list"
+    end
+
     member do
       get "edit_memo"
       get "edit_category"

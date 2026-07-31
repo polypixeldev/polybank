@@ -1,8 +1,15 @@
 class TransactionsController < ApplicationController
-  before_action :set_transaction, except: :index
+  before_action :set_transaction, except: [ :index, :list ]
 
   def index
     skip_authorization
+  end
+
+  def list
+    skip_authorization
+
+    @show_filters = ActiveModel::Type::Boolean.new.cast(params[:show_filters])
+    @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
 
     @query = params[:query]
     @start_date = params[:start_date]
@@ -12,8 +19,6 @@ class TransactionsController < ApplicationController
     @min_amount = params[:min_amount]
     @max_amount = params[:max_amount]
     @direction = params[:direction]
-
-    @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
 
     @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
     @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?

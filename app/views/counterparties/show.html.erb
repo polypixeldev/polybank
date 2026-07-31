@@ -10,17 +10,4 @@
   </div>
 <% end %>
 
-<div class="flex gap-5">
-  <div class="card">
-    <p>Total amount</p>
-    <p class="card-headline"><%= number_to_currency @total_amount %></p>
-  </div>
-</div>
-
-<h3 class="text-xl mt-5 mb-2">Transactions</h3>
-
-<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
-  <% @counterparty.transactions.effective.order(pending: :desc, date: :desc).each do |txn| %>
-    <%= render partial: "transactions/transaction", locals: { transaction: txn } %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, counterparty_id: @counterparty.id) %>
