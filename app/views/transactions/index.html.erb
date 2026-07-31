@@ -2,7 +2,7 @@
 
 <h2 class="font-bold text-2xl mb-3">Transaction Search</h2>
 
-<%= form_with url: transactions_path, method: :get, class: "flex gap-5" do |form| %>
+<%= form_with url: transactions_path, method: :get, class: "flex gap-5 flex-wrap" do |form| %>
   <div class="card">
     <div class="flex flex-col gap-2">
       <%= form.label :query, "Memo" %>
@@ -27,7 +27,14 @@
   <div class="card">
     <div class="flex flex-col gap-2">
       <%= form.label :category_id, "Category" %>
-      <%= form.collection_select :category_id, current_user.categories.order(:name), :id, :display_name, { value: @category&.id, include_blank: "All" }, class: "bg-white rounded-md text-black" %>
+      <%= form.collection_select :category_id, current_user.categories.order(:name), :id, :display_name, { selected: @category&.id, include_blank: "All" }, class: "bg-white rounded-md text-black" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flex flex-col gap-2">
+      <%= form.label :counterparty_id, "Counterparty" %>
+      <%= form.collection_select :counterparty_id, current_user.counterparties.order(custom_name: :asc, plaid_name: :asc), :id, :name, { selected: @counterparty&.id, include_blank: "All" }, class: "bg-white rounded-md text-black" %>
     </div>
   </div>
 
