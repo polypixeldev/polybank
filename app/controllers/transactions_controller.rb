@@ -81,6 +81,7 @@ class TransactionsController < ApplicationController
     @query = params[:query]
     @start_date = params[:start_date]
     @end_date = params[:end_date]
+    @account = current_user.accounts.find_by(id: params[:account_id])
     @category = current_user.categories.find_by(id: params[:category_id])
     @counterparty = current_user.counterparties.find_by(id: params[:counterparty_id])
     @tag = current_user.tags.find_by(id: params[:tag_id])
@@ -91,6 +92,7 @@ class TransactionsController < ApplicationController
     @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
     @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
     @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
+    @transactions = @transactions.where(account: @account) if @account.present?
     @transactions = @transactions.where(category: @category) if @category.present?
     @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
     @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?

@@ -1,5 +1,5 @@
 
-<%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-5 flex-wrap", data: { controller: "multi-submit", turbo_frame: "transactions_list" } do |form| %>
+<%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-5 flex-wrap", data: { controller: "multi-submit", turbo_frame: "" } do |form| %>
   <%= form.hidden_field :show_filters, value: @show_filters %>
 
   <%= hidden_field_tag :authenticity_token, value: "" %>
@@ -22,6 +22,13 @@
     <div class="flex flex-col gap-2">
       <%= form.label :end_date, "End date" %>
       <%= form.date_field :end_date, value: @end_date, class: "bg-white rounded-md text-black" %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flex flex-col gap-2">
+      <%= form.label :account_id, "Account" %>
+      <%= form.collection_select :account_id, current_user.accounts.order(:name), :id, :name, { selected: @account&.id, include_blank: "All" }, class: "bg-white rounded-md text-black" %>
     </div>
   </div>
 
