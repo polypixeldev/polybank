@@ -36,6 +36,26 @@ class Account < ApplicationRecord
     end
   end
 
+  def balance_by_day
+    days = (Date.today - created_at.to_date).to_i + 1
+
+    balances_from_start = {}
+
+    days.times do |i|
+      day = created_at.to_date + i.days
+
+      balances_from_start[day.to_s] = transactions.where("date >= ? AND date <= ?", created_at, day).sum(:amount_cents)
+    end
+
+    current_balance = balance * 100
+
+    difference = current_balance - balances_from_start[Date.today.to_s]
+
+    balances = balances_from_start.transform_values { |b| (b + difference) / 100.0 }
+
+    balances
+  end
+
   private
 
   def plaid_item_belongs_to_user

@@ -10,9 +10,13 @@
 
 <h2 class="font-bold text-2xl mb-3"><%= @account.name %></h2>
 
-<div class="card">
-  <p class="text-sm text-gray-100 mb-0">Balance</p>
-  <p class="card-headline mt-0!"><%= number_to_currency @account.balance %></p>
+<div class="flex items-center">
+  <div class="card">
+    <p class="text-sm text-gray-100 mb-0">Balance</p>
+    <p class="card-headline mt-0!"><%= number_to_currency @account.balance %></p>
+  </div>
+
+  <%= line_chart @account.balance_by_day, height: "300px" %>
 </div>
 
 <h3 class="text-xl mt-5 mb-2">Transactions</h3>
