@@ -30,18 +30,20 @@
     <header class="p-5 flex flex-row items-center gap-10">
       <h1 class="font-bold text-3xl">Polybank</h1>
 
-      <nav class="flex justify-between w-full">
-        <div class="flex gap-8">
-          <%= link_to "Dashboard", root_path, class: "hover:underline" %>
-          <%= link_to "Transactions", transactions_path, class: "hover:underline" %>
-          <%= link_to "Counterparties", counterparties_path, class: "hover:underline" %>
-          <%= link_to "Categories", categories_path, class: "hover:underline" %>
-          <%= link_to "Tags", tags_path, class: "hover:underline" %>
-          <%= link_to "Stats", stats_path, class: "hover:underline" %>
-        </div>
+      <% if signed_in? %>
+        <nav class="flex justify-between w-full">
+          <div class="flex gap-8">
+            <%= link_to "Dashboard", root_path, class: "hover:underline" %>
+            <%= link_to "Transactions", transactions_path, class: "hover:underline" %>
+            <%= link_to "Counterparties", counterparties_path, class: "hover:underline" %>
+            <%= link_to "Categories", categories_path, class: "hover:underline" %>
+            <%= link_to "Tags", tags_path, class: "hover:underline" %>
+            <%= link_to "Stats", stats_path, class: "hover:underline" %>
+          </div>
 
-        <%= button_to "Sign out", session_path(current_session), method: :delete, class: "cursor-pointer hover:underline" %>
-      </nav>
+          <%= button_to "Sign out", session_path(current_session), method: :delete, class: "cursor-pointer hover:underline" %>
+        </nav>
+      <% end %>
     </header>
 
     <main class="container mt-5 px-5 flex flex-col">

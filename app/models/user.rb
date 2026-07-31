@@ -15,6 +15,8 @@
 #  index_users_on_email_address  (email_address) UNIQUE
 #
 class User < ApplicationRecord
+  DEMO_EMAIL = "me+demo@sfernandez.dev"
+
   include Hashid::Rails
   include PublicIdentifiable
   set_public_id_prefix :usr
@@ -32,6 +34,14 @@ class User < ApplicationRecord
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   after_create_commit :create_plaid_user
+
+  def self.demo_user
+    u = User.find_by(email_address: DEMO_EMAIL)
+
+    return u if u.present?
+
+    User.create!(email_address: DEMO_EMAIL, name: "Demo User", password_digest: "password")
+  end
 
   def plaid_linked?
     plaid_items.any?

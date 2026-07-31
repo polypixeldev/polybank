@@ -1,11 +1,25 @@
+<h2 class="font-bold text-xl mb-3">Login</h2>
+
 <%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
 <%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+<div class="w-full grid grid-cols-2 gap-5">
+  <%= form_with url: session_path, class: "flex flex-col gap-2 w-96" do |form| %>
+    <div class="flex gap-2 items-center">
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "bg-white w-full rounded-md py-1 px-2 text-black" %>
+    </div>
 
-<%= link_to "Forgot password?", new_password_path %>
+    <div class="flex gap-2 items-center">
+      <%= form.label :password, "Password" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", class: "bg-white rounded-md py-1 px-2 text-black w-full" %>
+    </div>
+
+    <div class="flex gap-5 items-center">
+      <%= form.submit "Sign in", class: "card cursor-pointer" %>
+      <%= link_to "Forgot password?", new_password_path %>
+    </div>
+  <% end %>
+
+  <%= button_to "Login to demo user", demo_session_path, class: "card cursor-pointer" %>
+</div>
