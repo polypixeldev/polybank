@@ -87,3 +87,5 @@ gem "local_time"
 gem "comma"
 
 gem "chartkick"
+
+gem "rails_charts"

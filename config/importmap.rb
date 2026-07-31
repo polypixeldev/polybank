@@ -9,3 +9,5 @@ pin_all_from "app/javascript/common", under: "common"
 pin "local-time" # @3.0.3
 pin "chartkick", to: "chartkick.js"
 pin "Chart.bundle", to: "Chart.bundle.js"
+pin "echarts", to: "echarts.min.js"
+pin "echarts/theme/dark", to: "echarts/theme/dark.js"

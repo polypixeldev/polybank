@@ -21,6 +21,9 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <%= javascript_include_tag "echarts.min" %>
+    <%= javascript_include_tag "echarts/theme/v5" %>
   </head>
 
   <body class="bg-gray-950 text-white">

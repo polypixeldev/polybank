@@ -18,6 +18,7 @@ class StatsController < ApplicationController
     @transactions = current_user.transactions
     @transactions = @transactions.where("date >= ?", @start_date) if @start_date.present?
 
+    @categories = current_user.categories
     @counterparties = current_user.counterparties
     @tags = current_user.tags
   end

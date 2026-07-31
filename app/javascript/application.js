@@ -9,3 +9,4 @@ LocalTime.start()
 document.addEventListener("turbo:morph", () => {
   LocalTime.run()
 })
+import "echarts"
