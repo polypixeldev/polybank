@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [ :index, :show, :update ] do
     collection do
       get "list"
-      get "export"
+      post "export"
     end
 
     member do

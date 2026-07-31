@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  before_action :set_transaction, except: [ :index, :list ]
+  before_action :set_transaction, except: [ :index, :list, :export ]
 
   def index
     skip_authorization
@@ -11,14 +11,14 @@ class TransactionsController < ApplicationController
     @show_filters = ActiveModel::Type::Boolean.new.cast(params[:show_filters])
 
     apply_filters
-
-    render csv: @transactions
   end
 
   def export
     skip_authorization
 
     apply_filters
+
+    render csv: @transactions
   end
 
   def show
