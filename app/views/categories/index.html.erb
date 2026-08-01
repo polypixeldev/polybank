@@ -19,9 +19,9 @@
   </div>
 </div>
 
-<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md mt-3">
-  <p class="mb-2 font-bold text-xl">Categories</p>
+<p class="mb-2 mt-5 font-bold text-xl">Categories</p>
 
+<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
   <% if @categories.any? %>
     <% @categories.each do |category| %>
       <%= render partial: "categories/category", locals: { category: } %>
