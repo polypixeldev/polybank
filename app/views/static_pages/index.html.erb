@@ -6,12 +6,14 @@
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 
   <div class="flex gap-5">
-    <div class="card" data-controller="plaid">
-      <p>
-        Plaid isn't linked yet.
-      </p>
-      <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
-    </div>
+    <% if PlaidService.plaid_configured? %>
+      <div class="card" data-controller="plaid">
+        <p>
+          Plaid isn't linked yet.
+        </p>
+        <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
+      </div>
+    <% end %>
 
     <div class="card" data-controller="plaid">
       <p>

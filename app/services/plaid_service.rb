@@ -105,4 +105,8 @@ module PlaidService
 
     Plaid::PlaidApi.new(api_client)
   end
+
+  def self.plaid_configured?
+    ENV["PLAID_CLIENT_ID"].present?
+  end
 end

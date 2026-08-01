@@ -50,6 +50,8 @@ class User < ApplicationRecord
   private
 
   def create_plaid_user
+    return unless PlaidService.plaid_configured?
+
     plaid_id = PlaidService.create_user(public_id)
     update!(plaid_id:)
   end
