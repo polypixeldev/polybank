@@ -72,4 +72,6 @@ Rails.application.routes.draw do
   scope :stats, controller: :stats, as: :stats do
     get "/", action: :index
   end
+
+  resources :comments, only: [ :create, :edit, :update, :destroy ]
 end

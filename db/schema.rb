@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_31_214719) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_01_004653) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -28,6 +28,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_214719) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.integer "commentable_id", null: false
+    t.string "commentable_type", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
   end
 
   create_table "counterparties", force: :cascade do |t|
