@@ -14,7 +14,7 @@ It currently supports:
 - Viewing account balances
 - Viewing, searching, and filtering transactions
 - Exporting transactions to CSV or PDF
-- Categorizing and tagging transactions
+- Categorizing, tagging, and commenting on transactions
 - Viewing transaction counterparties
 - Viewing income and spending graphs, including a Sankey diagram 
 
