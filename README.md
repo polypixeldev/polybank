@@ -1,6 +1,7 @@
 # Polybank
 
 ![](https://cdn.hackclub.com/019fbac1-2a74-7c63-84b2-3008f1c330bc/pawelzmarlak-2026-08-01T00_37_16.399Z.png)
+![](https://cdn.hackclub.com/019fbac3-8e30-7554-bf80-097e76d04670/pawelzmarlak-2026-08-01T00_40_01.776Z.png)
 
 Polybank is a website for managing your finances!
 It serves as a simple and easy-to-use interface for all of your
