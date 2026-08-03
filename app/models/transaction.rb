@@ -81,7 +81,7 @@ class Transaction < ApplicationRecord
     pending_transaction = nil
     if !plaid_object_hash[:pending] && plaid_object_hash[:pending_transaction_id].present?
       pending_transaction = with_deleted.find_by(plaid_id: plaid_object_hash[:pending_transaction_id])
-      pending_transaction.recover
+      pending_transaction&.recover
     end
 
     {
