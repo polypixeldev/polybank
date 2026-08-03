@@ -28,19 +28,22 @@ class PlaidItem < ApplicationRecord
   def sync_plaid_transactions
     all_data = fetch_new_sync_data(transaction_cursor)
 
-    all_data[:added].each do |txn|
-      Transaction.create_from_plaid_object(self, txn)
-    end
+    ActiveRecord::Base.transaction do
+      all_data[:added].each do |txn|
+        Transaction.create_from_plaid_object(self, txn)
+      end
 
-    all_data[:modified].each do |txn|
-      Transaction.find_by(plaid_id: txn.transaction_id, plaid_object: txn)
-    end
+      all_data[:modified].each do |txn|
+        Transaction.find_by(plaid_id: txn.transaction_id, plaid_object: txn)
+      end
 
-    all_data[:removed].each do |txn|
-      Transaction.find_by(plaid_id: txn.transaction_id).destroy unless txn.settled_transaction.present?
-    end
+      all_data[:removed].each do |txn|
+        db_txn = Transaction.find_by(plaid_id: txn.transaction_id)
+        db_txn.destroy unless db_txn.settled_transaction.present?
+      end
 
-    update!(transaction_cursor: all_data[:next_cursor])
+      update!(transaction_cursor: all_data[:next_cursor])
+    end
   end
 
   def refresh_plaid_transactions
