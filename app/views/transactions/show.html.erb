@@ -98,12 +98,17 @@
   <div class="flex gap-5">
     <div class="card">
       <p>Amount</p>
-      <p class="card-headline"><%= number_to_currency @transaction.amount %></p>
+      <p class="card-headline"><%= number_to_currency @transaction.pending_transaction.amount %></p>
     </div>
 
     <div class="card">
       <p>Date</p>
-      <p class="card-headline"><%= @transaction.date.to_fs(:long) %></p>
+      <p class="card-headline"><%= @transaction.pending_transaction.date.to_fs(:long) %></p>
+    </div>
+
+    <div class="card">
+      <p>Memo</p>
+      <p class="card-headline"><%= @transaction.pending_transaction.memo %></p>
     </div>
   </div>
 <% end %>
