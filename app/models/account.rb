@@ -30,7 +30,11 @@ class Account < ApplicationRecord
       item_accounts = PlaidService.get_item_accounts(plaid_item.access_token)
       account_data = item_accounts.find { |a| a.account_id == plaid_id }
 
-      account_data.balances.current
+      if account_type == "credit"
+        account_data.balances.current
+      else
+        account_data.balances.available || account_data.balances.current
+      end
     else
       transactions.sum(:amount_cents) / 100.0
     end
