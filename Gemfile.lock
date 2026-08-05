@@ -89,6 +89,11 @@ GEM
     bcrypt_pbkdf (1.1.2)
     bigdecimal (4.1.2)
     bindex (0.8.1)
+    blazer (3.5.1)
+      activerecord (>= 7.2)
+      csv
+      railties (>= 7.2)
+      safely_block (>= 1)
     bootsnap (1.24.6)
       msgpack (~> 1.2)
     brakeman (8.0.5)
@@ -349,6 +354,7 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (3.4.1)
+    safely_block (1.0.0)
     securerandom (0.4.1)
     selenium-webdriver (4.46.0)
       base64 (~> 0.2)
@@ -438,6 +444,7 @@ DEPENDENCIES
   acts_as_paranoid (~> 0.11.0)
   annotaterb
   bcrypt (~> 3.1.7)
+  blazer
   bootsnap
   brakeman
   bundler-audit

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Blazer::Engine, at: "blazer"
+
   resource :session do
     collection do
       post "demo"
@@ -34,6 +36,10 @@ Rails.application.routes.draw do
   end
 
   resources :plaid_items, only: [] do
+    collection do
+      post "refresh_and_sync_all"
+    end
+
     member do
       post "sync"
       post "refresh"

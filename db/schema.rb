@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_01_004653) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_04_000340) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -22,6 +22,62 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_01_004653) do
     t.integer "user_id"
     t.index ["plaid_item_id"], name: "index_accounts_on_plaid_item_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "blazer_audits", force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "data_source"
+    t.integer "query_id"
+    t.text "statement"
+    t.integer "user_id"
+    t.index ["query_id"], name: "index_blazer_audits_on_query_id"
+    t.index ["user_id"], name: "index_blazer_audits_on_user_id"
+  end
+
+  create_table "blazer_checks", force: :cascade do |t|
+    t.string "check_type"
+    t.datetime "created_at", null: false
+    t.integer "creator_id"
+    t.text "emails"
+    t.datetime "last_run_at"
+    t.text "message"
+    t.integer "query_id"
+    t.string "schedule"
+    t.text "slack_channels"
+    t.string "state"
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_checks_on_creator_id"
+    t.index ["query_id"], name: "index_blazer_checks_on_query_id"
+  end
+
+  create_table "blazer_dashboard_queries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dashboard_id"
+    t.integer "position"
+    t.integer "query_id"
+    t.datetime "updated_at", null: false
+    t.index ["dashboard_id"], name: "index_blazer_dashboard_queries_on_dashboard_id"
+    t.index ["query_id"], name: "index_blazer_dashboard_queries_on_query_id"
+  end
+
+  create_table "blazer_dashboards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "creator_id"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_dashboards_on_creator_id"
+  end
+
+  create_table "blazer_queries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "creator_id"
+    t.string "data_source"
+    t.text "description"
+    t.string "name"
+    t.text "statement"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -117,11 +173,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_01_004653) do
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["category_id"], name: "index_transactions_on_category_id"
     t.index ["pending_transaction_id"], name: "index_transactions_on_pending_transaction_id"
+    t.index ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true, where: "deleted_at IS NULL"
   end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
+    t.boolean "is_admin", default: false, null: false
     t.string "name", null: false
     t.string "password_digest", null: false
     t.string "plaid_id"

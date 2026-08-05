@@ -93,3 +93,5 @@ gem "chartkick"
 gem "grover"
 
 gem "faker"
+
+gem "blazer"

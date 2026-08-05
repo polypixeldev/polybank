@@ -37,7 +37,7 @@ class Account < ApplicationRecord
   end
 
   def balance_by_day
-    start_date = transactions.effective.order(date: :asc).first.date
+    start_date = transactions.effective.order(date: :asc).first&.date || created_at.to_date
     days = (Date.today - start_date).to_i + 1
 
     balances_from_start = {}

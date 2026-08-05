@@ -4,6 +4,7 @@
 #
 #  id              :integer          not null, primary key
 #  email_address   :string           not null
+#  is_admin        :boolean          default(FALSE), not null
 #  name            :string           not null
 #  password_digest :string           not null
 #  created_at      :datetime         not null
@@ -45,6 +46,10 @@ class User < ApplicationRecord
 
   def plaid_linked?
     plaid_items.any?
+  end
+
+  def admin?
+    is_admin
   end
 
   private

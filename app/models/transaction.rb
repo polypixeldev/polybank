@@ -22,6 +22,7 @@
 #  index_transactions_on_account_id              (account_id)
 #  index_transactions_on_category_id             (category_id)
 #  index_transactions_on_pending_transaction_id  (pending_transaction_id)
+#  index_transactions_on_plaid_id                (plaid_id) UNIQUE WHERE deleted_at IS NULL
 #
 class Transaction < ApplicationRecord
   acts_as_paranoid
