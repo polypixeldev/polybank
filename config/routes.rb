@@ -58,6 +58,10 @@ Rails.application.routes.draw do
 
       get "add_tag_modal"
       post "toggle_tag"
+
+      get "reimburse_modal"
+      post "mark_reimbursed"
+      post "remove_reimbursement_for"
     end
   end
 

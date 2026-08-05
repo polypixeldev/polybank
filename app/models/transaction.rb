@@ -16,6 +16,7 @@
 #  category_id            :integer
 #  pending_transaction_id :integer
 #  plaid_id               :string
+#  reimbursement_for_id   :integer
 #
 # Indexes
 #
@@ -23,15 +24,18 @@
 #  index_transactions_on_category_id             (category_id)
 #  index_transactions_on_pending_transaction_id  (pending_transaction_id)
 #  index_transactions_on_plaid_id                (plaid_id) UNIQUE WHERE deleted_at IS NULL
+#  index_transactions_on_reimbursement_for_id    (reimbursement_for_id)
 #
 class Transaction < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :account
   belongs_to :pending_transaction, optional: true, class_name: "Transaction"
+  belongs_to :reimbursement_for, optional: true, class_name: "Transaction"
   belongs_to :category, optional: true
 
   has_one :settled_transaction, class_name: "Transaction", foreign_key: :pending_transaction_id
+  has_many :reimbursing_transactions, class_name: "Transaction", foreign_key: :reimbursement_for_id
 
   has_one :user, through: :account
 
@@ -41,6 +45,8 @@ class Transaction < ApplicationRecord
   has_many :tag_transactions
   has_many :tags, through: :tag_transactions
   has_many :comments, as: :commentable
+
+  validate :reimbursements_flow_correctly
 
   before_save if: -> { plaid_object_changed? } do
     assign_attributes(Transaction.attributes_from_plaid_object(plaid_object))
@@ -105,6 +111,18 @@ class Transaction < ApplicationRecord
     category.name
   end
 
+  def reimbursed_amount_cents
+    reimbursing_transactions.sum(:amount_cents)
+  end
+
+  def reimbursed?
+    reimbursed_amount_cents == amount_cents.abs
+  end
+
+  def budget_amount
+    amount_cents.abs - reimbursed_amount_cents
+  end
+
   private
 
   def update_counterparties_from_plaid
@@ -151,5 +169,17 @@ class Transaction < ApplicationRecord
     category = Category.find_or_create_by!(name: plaid_category)
 
     update!(category:)
+  end
+
+  def reimbursements_flow_correctly
+    if reimbursement_for.present?
+      if amount_cents < 0
+        errors.add(:base, "a negative transaction cannot reimburse another transaction")
+      end
+
+      if reimbursement_for.amount_cents > 0
+        errors.add(:base, "a transaction cannot reimburse a positive transaction")
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_04_000340) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_05_003833) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -169,11 +169,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_04_000340) do
     t.integer "pending_transaction_id"
     t.string "plaid_id"
     t.json "plaid_object"
+    t.integer "reimbursement_for_id"
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["category_id"], name: "index_transactions_on_category_id"
     t.index ["pending_transaction_id"], name: "index_transactions_on_pending_transaction_id"
     t.index ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true, where: "deleted_at IS NULL"
+    t.index ["reimbursement_for_id"], name: "index_transactions_on_reimbursement_for_id"
   end
 
   create_table "users", force: :cascade do |t|

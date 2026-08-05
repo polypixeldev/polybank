@@ -9,6 +9,7 @@ class TransactionsController < ApplicationController
     skip_authorization
 
     @show_filters = ActiveModel::Type::Boolean.new.cast(params[:show_filters])
+    @reimburse_transaction_id = params[:reimburse_transaction_id]
 
     apply_filters
   end
@@ -66,6 +67,29 @@ class TransactionsController < ApplicationController
     authorize @transaction
 
     @transaction.update!(transaction_params)
+
+    redirect_back_or_to @transaction
+  end
+
+  def reimburse_modal
+    authorize @transaction
+  end
+
+  def mark_reimbursed
+    reimbursing_transaction = current_user.transactions.find(params[:reimbursing_transaction_id])
+
+    authorize @transaction
+    authorize reimbursing_transaction
+
+    reimbursing_transaction.update!(reimbursement_for: @transaction)
+
+    redirect_back_or_to @transaction
+  end
+
+  def remove_reimbursement_for
+    authorize @transaction
+
+    @transaction.update!(reimbursement_for: nil)
 
     redirect_back_or_to @transaction
   end

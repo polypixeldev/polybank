@@ -1,0 +1,5 @@
+<%= render "application/modal" do %>
+  <p class="font-bold text-2xl mb-3">Mark transaction as reimbursed</p>
+
+  <%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, reimburse_transaction_id: @transaction) %>
+<% end %>

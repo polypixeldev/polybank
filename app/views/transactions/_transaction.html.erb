@@ -1,6 +1,6 @@
-<%# locals: (transaction:) %>
+<%# locals: (transaction:, reimburse_transaction_id: nil) %>
 
-<%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
+<% content = capture do %>
   <% if transaction.plaid_object&.[]("logo_url").present? %>
     <img src="<%= transaction.plaid_object["logo_url"] %>" class="w-8 h-8 rounded-sm">
   <% else %>
@@ -9,4 +9,14 @@
   <p><%= transaction.date.to_fs(:long) %></p>
   <p class="col-span-7"><%= transaction.memo %></p>
   <p class="justify-self-end <%= transaction.amount_cents < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency transaction.amount %></p>
+<% end %>
+
+<% if reimburse_transaction_id.present? %>
+  <%= button_to mark_reimbursed_transaction_path(id: reimburse_transaction_id, reimbursing_transaction_id: transaction.id), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
+    <%= content %>
+  <% end %>
 <% end %>

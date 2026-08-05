@@ -6,7 +6,7 @@ class CreateTag < ActiveRecord::Migration[8.1]
 
       t.belongs_to :user, null: false
 
-      t.timestamps, null: false
+      t.timestamps
     end
   end
 end

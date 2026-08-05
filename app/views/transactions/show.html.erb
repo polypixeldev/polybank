@@ -85,7 +85,40 @@
       <%= link_to "+ Add", add_tag_modal_transaction_path(@transaction), class: "py-2 px-3 rounded-full bg-gray-800", data: {turbo_frame: "modal"} %>
     </div>
   </div>
+
+  <% if @transaction.reimbursement_for.present? %>
+    <div class="card">
+      <p>Reimbursing</p>
+      <p class="card-headline"><%= link_to @transaction.reimbursement_for.memo, @transaction.reimbursement_for, class: "underline" %></p>
+    </div>
+  <% end %>
 </div>
+
+<% if @transaction.amount_cents < 0 %>
+  <h3 class="font-bold text-xl mt-5 mb-3">Reimbursed by</h3>
+
+  <div class="flex flex-col gap-3">
+    <% if @transaction.reimbursing_transactions.any? %>
+      <ul class="list-disc list-inside">
+        <% @transaction.reimbursing_transactions.each do |txn| %>
+          <div class="flex gap-5 w-full items-center">
+            <%= button_to "X", remove_reimbursement_for_transaction_path(txn), class: "text-red-500 cursor-pointer" %>
+
+            <div class="grow">
+              <%= render partial: "transactions/transaction", locals: { transaction: txn } %>
+            </div>
+          </div>
+        <% end %>
+      </ul>
+
+      <% unless @transaction.reimbursed? %>
+        <%= link_to "Add reimbursing transactions", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
+      <% end %>
+    <% else%>
+      <%= link_to "Mark as reimbursed", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @transaction.pending_transaction.present? %>
   <div class="mb-3 mt-5 flex gap-2">

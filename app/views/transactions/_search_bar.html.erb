@@ -1,6 +1,7 @@
 
 <%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-x-5 gap-y-8 flex-wrap", data: { controller: "multi-submit", turbo_frame: "transactions_list" } do |form| %>
   <%= form.hidden_field :show_filters, value: @show_filters %>
+  <%= form.hidden_field :reimburse_transaction_id, value: @reimburse_transaction_id %>
 
   <%= hidden_field_tag :authenticity_token, value: "" %>
 
