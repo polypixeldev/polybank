@@ -1,9 +1,12 @@
 <%= turbo_frame_tag "comment_#{@comment.id}" do %>
   <div class="card">
-    <%= form_with model: @comment do |form| %>
-      <%= form.text_field :content, class: "bg-white rounded-md text-black p-1" %>
+    <p class="font-bold">Edit comment</p>
 
-      <%= form.submit "Save", class: "inline-btn" %>
+    <%= form_with model: @comment, class: "flex flex-col items-start gap-1" do |form| %>
+      <%= form.text_field :content, class: "bg-white rounded-md text-black p-1" %>
+      <%= form.file_field :attachment %>
+
+      <%= form.submit "Save", class: "btn" %>
     <% end %>
   </div>
 <% end %>

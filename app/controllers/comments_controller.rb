@@ -8,11 +8,7 @@ class CommentsController < ApplicationController
 
     authorize commentable, :comment?
 
-    Comment.create!(
-      commentable:,
-      content: params[:comment][:content],
-      author: current_user
-    )
+    commentable.comments.create!(comment_params.merge(author: current_user))
 
     redirect_back_or_to commentable
   end
@@ -24,7 +20,7 @@ class CommentsController < ApplicationController
   def update
     authorize @comment
 
-    @comment.update!(content: params[:comment][:content])
+    @comment.update!(comment_params)
 
     redirect_back_or_to @comment.commentable
   end
@@ -41,5 +37,9 @@ class CommentsController < ApplicationController
 
   def set_comment
     @comment = Comment.find(params[:id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content, :attachment)
   end
 end

@@ -8,6 +8,16 @@
       <div class="card">
         <p class="text-lg"><strong><%= comment.author.name %>:</strong> <%= comment.content %></p>
 
+        <% if comment.attachment.attached? %>
+          <% if comment.attachment.representable? %>
+            <%= image_tag comment.attachment.representation(resize_to_limit: [100, 100]) %>
+          <% else %>
+            <%= link_to rails_blob_path(comment.attachment, disposition: "attachment") do %>
+              <%= image_tag "placeholder.png", alt: "Download file" %>
+            <% end %>
+          <% end %>
+        <% end %>
+
         <div class="flex gap-3">
           <%= button_to "Delete", comment_path(comment), method: :delete, class: "underline cursor-pointer" %>
           <%= link_to "Edit", edit_comment_path(comment), class: "underline cursor-pointer" %>
@@ -17,12 +27,16 @@
   <% end %>
 </div>
 
-<p class="mt-3">New comment</p>
-<%= form_with model: Comment.new do |form| %>
-  <%= form.hidden_field :commentable_type, value: commentable.class.to_s %>
-  <%= form.hidden_field :commentable_id, value: commentable.id %>
+<div class="card mt-3">
+  <p class="font-bold">New comment</p>
+  <%= form_with model: Comment.new, class: "flex flex-col items-start gap-1" do |form| %>
+    <%= form.hidden_field :commentable_type, value: commentable.class.to_s %>
+    <%= form.hidden_field :commentable_id, value: commentable.id %>
 
-  <%= form.text_field :content, class: "bg-white rounded-md text-black p-1" %>
+    <%= form.text_field :content, class: "bg-white rounded-md text-black p-1" %>
 
-  <%= form.submit "Add", class: "inline-btn" %>
-<% end %>
+    <%= form.file_field :attachment %>
+
+    <%= form.submit "Add", class: "btn" %>
+  <% end %>
+</div>

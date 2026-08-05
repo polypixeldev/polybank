@@ -18,4 +18,6 @@
 class Comment < ApplicationRecord
   belongs_to :author, class_name: "User"
   belongs_to :commentable, polymorphic: true
+
+  has_one_attached :attachment
 end
