@@ -119,7 +119,7 @@ class Transaction < ApplicationRecord
     reimbursed_amount_cents == amount_cents.abs
   end
 
-  def budget_amount
+  def budget_amount_cents
     amount_cents.abs - reimbursed_amount_cents
   end
 

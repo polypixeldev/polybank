@@ -20,39 +20,38 @@
 <p class="font-bold text-lg text-center">Money Flow</p>
 
 <%= sankey_chart({
-  data: @categories.map { |c| { name: c.display_name }} + @categories.map { |c| { name: "#{c.display_name} " }} + [{ name: "Bank" }],
-  links: @transactions.where("transactions.amount_cents > 0").group(:category).sum("transactions.amount_cents").to_a.map { |c| { source: c[0].display_name, target: "Bank", value: c[1].abs / 100.0 } } + 
-         @transactions.where("transactions.amount_cents < 0").group(:category).sum("transactions.amount_cents").to_a.map { |c| { target: "#{c[0].display_name} ", source: "Bank", value: c[1].abs / 100.0 } }
-}, { theme: "dark", options: { tooltip: { trigger: "item", triggerOn: "mousemove", valueFormatter: RailsCharts.js("(value) => '$' + value") }} }) %>
+  data: @categories.map { |c| { name: c.display_name } } + @categories.map { |c| { name: "#{c.display_name} " } } + [{ name: "Bank" }],
+  links: @income_by_category.to_a.map { |c| { source: c[0], target: "Bank", value: c[1].abs } } + @expenses_by_category.to_a.map { |c| { target: "#{c[0]} ", source: "Bank", value: c[1].abs } }
+}, { theme: "dark", options: { tooltip: { trigger: "item", triggerOn: "mousemove", valueFormatter: RailsCharts.js("(value) => '$' + value") } } }) %>
 
 <div class="grid grid-cols-2 gap-x-10 gap-y-20 mt-10">
   <div>
     <p class="font-bold text-lg text-center">Income by category</p>
-    <%= pie_chart @transactions.where("transactions.amount_cents > 0").group(:category).sum("transactions.amount_cents").transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
+    <%= pie_chart @income_by_category, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Expenses by category</p>
-    <%= pie_chart @transactions.where("transactions.amount_cents < 0").group(:category).sum("transactions.amount_cents").transform_keys { |c| c.display_name }.transform_values { |v| v / 100.0 }, round: 2, zeros: true %>
+    <%= pie_chart @expenses_by_category, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Income by counterparty</p>
-    <%= pie_chart @counterparties.map { |c| [c.name, c.transactions_by_user(current_user).effective.where("transactions.amount_cents > 0 AND transactions.date >= ?", @start_date || Date.new(1000, 1, 1)).sum(:amount_cents) / 100.0] }.reject { |c| c[1] == 0 }.to_h, round: 2, zeros: true %>
+    <%= pie_chart @income_by_counterparty, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Expenses by counterparty</p>
-    <%= pie_chart @counterparties.map { |c| [c.name, c.transactions_by_user(current_user).effective.where("transactions.amount_cents < 0 AND transactions.date >= ?", @start_date || Date.new(1000, 1, 1)).sum(:amount_cents) / 100.0] }.reject { |c| c[1] == 0 }.to_h, round: 2, zeros: true %>
+    <%= pie_chart @expenses_by_counterparty, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Income by tag</p>
-    <%= pie_chart @tags.map { |t| [t.name, t.transactions.effective.where("transactions.amount_cents > 0 AND transactions.date >= ?", @start_date || Date.new(1000, 1, 1)).sum(:amount_cents) / 100.0] }.reject { |t| t[1] == 0 }.to_h, round: 2, zeros: true %>
+    <%= pie_chart @income_by_tag, round: 2, zeros: true %>
   </div>
 
   <div>
     <p class="font-bold text-lg text-center">Expenses by tag</p>
-    <%= pie_chart @tags.map { |t| [t.name, t.transactions.effective.where("transactions.amount_cents < 0 AND transactions.date >= ?", @start_date || Date.new(1000, 1, 1)).sum(:amount_cents) / 100.0] }.reject { |t| t[1] == 0 }.to_h, round: 2, zeros: true %>
+    <%= pie_chart @expenses_by_tag, round: 2, zeros: true %>
   </div>
 </div>
