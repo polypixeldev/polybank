@@ -119,13 +119,13 @@ class TransactionsController < ApplicationController
 
     @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
     @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
-    @transactions = @transactions.where("transactions.date < ?", @end_date) if @end_date.present?
+    @transactions = @transactions.where("transactions.date <= ?", @end_date) if @end_date.present?
     @transactions = @transactions.where(account: @account) if @account.present?
     @transactions = @transactions.where(category: @category) if @category.present?
     @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
     @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?
     @transactions = @transactions.where("abs(transactions.amount_cents) >= ?", @min_amount.to_f * 100) if @min_amount.present?
-    @transactions = @transactions.where("abs(transactions.amount_cents) < ?", @max_amount.to_f * 100) if @max_amount.present?
+    @transactions = @transactions.where("abs(transactions.amount_cents) <= ?", @max_amount.to_f * 100) if @max_amount.present?
 
     if @direction == "incoming"
       @transactions = @transactions.where("transactions.amount_cents > 0")
