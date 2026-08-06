@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_083555) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_06_162316) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -106,6 +106,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_083555) do
     t.string "status"
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
+  end
+
+  create_table "budgets", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.integer "limit_amount_cents", null: false
+    t.string "name", null: false
+    t.string "period", null: false
+    t.integer "target_id", null: false
+    t.string "target_type", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["target_type", "target_id"], name: "index_budgets_on_target"
+    t.index ["user_id"], name: "index_budgets_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|

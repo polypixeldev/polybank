@@ -71,6 +71,32 @@ class Transaction < ApplicationRecord
     pending_transaction_id
   end
 
+  def self.within_period(period, day = Date.today)
+    period_start_date = case period
+    when "week"
+      day.beginning_of_week
+    when "month"
+      day.beginning_of_month
+    when "year"
+      day.beginning_of_year
+    else
+      Date.new(1, 1, 1000)
+    end
+
+    period_end_date = case period
+    when "week"
+      day.end_of_week
+    when "month"
+      day.end_of_month
+    when "year"
+      day.end_of_year
+    else
+      Date.new(1, 1, 10000)
+    end
+
+    where("transactions.date >= ? AND transactions.date <= ?", period_start_date, period_end_date)
+  end
+
   def self.create_from_plaid_object(item, plaid_object)
     account = Account.find_by(plaid_id: plaid_object.account_id, plaid_item_id: item.id)
 

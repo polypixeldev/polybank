@@ -14,6 +14,8 @@
 #  index_tags_on_user_id  (user_id)
 #
 class Tag < ApplicationRecord
+  include Budgetable
+
   belongs_to :user
 
   has_many :tag_transactions
@@ -21,5 +23,11 @@ class Tag < ApplicationRecord
 
   def amount
     @amount ||= transactions.effective.sum(:amount_cents) / 100.0
+  end
+
+  def budgetable_transactions(user)
+    return [] if user != self.user
+
+    transactions
   end
 end

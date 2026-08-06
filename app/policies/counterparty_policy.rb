@@ -8,4 +8,5 @@ class CounterpartyPolicy < ApplicationPolicy
   end
 
   alias_method :edit_name?, :update?
+  alias_method :budget?, :show?
 end

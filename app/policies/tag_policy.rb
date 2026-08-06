@@ -6,4 +6,5 @@ class TagPolicy < ApplicationPolicy
   alias_method :edit?, :show?
   alias_method :update?, :show?
   alias_method :destroy?, :show?
+  alias_method :budget?, :show?
 end

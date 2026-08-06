@@ -17,6 +17,8 @@
 #  index_counterparties_on_plaid_id  (plaid_id) UNIQUE
 #
 class Counterparty < ApplicationRecord
+  include Budgetable
+
   has_many :counterparty_transactions
   has_many :transactions, through: :counterparty_transactions, source: :associated_transaction
 
@@ -33,4 +35,6 @@ class Counterparty < ApplicationRecord
   def amount_by_user(user)
     transactions_by_user(user).sum(:amount_cents) / 100.0
   end
+
+  alias_method :budgetable_transactions, :transactions_by_user
 end

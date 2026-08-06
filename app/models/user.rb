@@ -31,6 +31,7 @@ class User < ApplicationRecord
   has_many :counterparties, -> { distinct }, through: :transactions
   has_many :categories, -> { distinct }, through: :transactions
   has_many :tags
+  has_many :budgets
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

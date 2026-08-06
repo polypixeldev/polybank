@@ -8,6 +8,8 @@
 #  updated_at :datetime         not null
 #
 class Category < ApplicationRecord
+  include Budgetable
+
   has_many :transactions
   has_many :users, through: :transactions
 
@@ -22,4 +24,6 @@ class Category < ApplicationRecord
   def amount_by_user(user)
     transactions_by_user(user).sum(:amount_cents) / 100.0
   end
+
+  alias_method :budgetable_transactions, :transactions_by_user
 end

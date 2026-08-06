@@ -18,6 +18,8 @@
 #  index_accounts_on_user_id        (user_id)
 #
 class Account < ApplicationRecord
+  include Budgetable
+
   belongs_to :plaid_item, optional: true
   belongs_to :user
 
@@ -60,6 +62,12 @@ class Account < ApplicationRecord
     else
       balances_from_start.transform_values { |b| b / 100.0 }
     end
+  end
+
+  def budgetable_transactions(user)
+    return [] if user != self.user
+
+    transactions
   end
 
   private
