@@ -1,57 +1,67 @@
 <% title "Dashboard | Polybank" %>
 
-<div class="flex gap-3 items-baseline">
-  <h2 class="font-bold text-2xl mb-3">Accounts</h2>
-  <%= button_to "(sync all)", refresh_and_sync_all_plaid_items_path, class: "cursor-pointer" %>
-</div>
-
-<% if current_user.accounts.none? %>
-  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-
-  <div class="flex gap-5">
-    <% if PlaidService.plaid_configured? %>
-      <div class="card" data-controller="plaid">
-        <p>
-          Plaid isn't linked yet.
-        </p>
-        <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
-      </div>
-    <% end %>
-
-    <div class="card" data-controller="plaid">
-      <p>
-        Generate demo data
-      </p>
-
-      <%= button_to "Generate", generate_demo_accounts_path, class: "btn" %>
+<div class="grid grid-cols-5 gap-5">
+  <div class="col-span-2">
+    <div class="flex gap-3 items-baseline mb-3">
+      <h2 class="font-bold text-2xl">Accounts</h2>
+      <%= button_to "(sync all)", refresh_and_sync_all_plaid_items_path, class: "cursor-pointer" %>
     </div>
-  </div>
-<% else %>
-  <div class="flex flex-row gap-3">
-    <% current_user.accounts.each do |account| %>
-      <%= link_to account_path(account), class: "card grow" do %>
-        <p class="font-semibold text-lg mb-0"><%= account.name %></p>
 
-        <% if account.plaid_item.present? %>
-          <p class="mt-0 text-sm text-gray-100"><%= account.plaid_item.name %></p>
+    <% if current_user.accounts.none? %>
+      <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+      <div class="flex gap-5">
+        <% if PlaidService.plaid_configured? %>
+          <div class="card" data-controller="plaid">
+            <p>
+              Plaid isn't linked yet.
+            </p>
+            <button class="px-5 py-3 bg-slate-950 w-fit cursor-pointer" data-action="click->plaid#link">Link</button>
+          </div>
         <% end %>
 
-        <p class="card-headline"><%= number_to_currency account.balance %></p>
-      <% end %>
+        <div class="card" data-controller="plaid">
+          <p>
+            Generate demo data
+          </p>
+
+          <%= button_to "Generate", generate_demo_accounts_path, class: "btn" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="grid grid-cols-2 gap-3">
+        <% current_user.accounts.each do |account| %>
+          <%= link_to account_path(account), class: "card w-full!" do %>
+            <p class="font-semibold text-lg mb-0"><%= account.name %></p>
+
+            <% if account.plaid_item.present? %>
+              <p class="mt-0 text-sm text-gray-100"><%= account.plaid_item.name %></p>
+            <% end %>
+
+            <p class="card-headline"><%= number_to_currency account.balance %></p>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
-<% end %>
 
-<h2 class="mt-3 mb-2 font-bold text-2xl">Recent transactions</h2>
+  <div class="col-span-3 flex flex-col">
+    <h2 class="mt-3 mb-2 font-bold text-2xl">Recent transactions</h2>
 
-<div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md">
-  <% if @recent_transactions.any? %>
-    <% @recent_transactions.each do |transaction| %>
-      <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
-    <% end %>
-  <% else %>
-    <p>No results</p>
-  <% end %>
+    <div class="flex flex-col gap-2 bg-slate-900 p-2 rounded-md grow">
+      <% if @recent_transactions.any? %>
+        <% @recent_transactions.each do |transaction| %>
+          <%= render partial: "transactions/transaction", locals: { transaction: transaction } %>
+        <% end %>
+      <% else %>
+        <p>No results</p>
+      <% end %>
+    </div>
+  </div>
 </div>
 
+<h2 class="mt-3 mb-2 font-bold text-2xl">Graphs</h2>
 
+<%= turbo_frame_tag :graphs, src: graphs_path do %>
+  <p>Loading...</p>
+<% end %>

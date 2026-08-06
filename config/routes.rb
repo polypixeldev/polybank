@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "static_pages#index"
+  get "/graphs" => "static_pages#graphs"
 
   scope :plaid, controller: :plaid, as: "plaid" do
     post "webhook"
@@ -77,10 +78,6 @@ Rails.application.routes.draw do
     collection do
       get "new_modal"
     end
-  end
-
-  scope :stats, controller: :stats, as: :stats do
-    get "/", action: :index
   end
 
   resources :comments, only: [ :create, :edit, :update, :destroy ]
