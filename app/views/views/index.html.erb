@@ -1,0 +1,11 @@
+<% title "Views" %>
+
+<div class="flex gap-3 mb-3">
+  <h2 class="font-bold text-2xl">Views</h2>
+
+  <%= link_to "New", transactions_path, class: "inline-btn" %>
+</div>
+
+<div class="flex flex-col gap-3">
+  <%= render partial: "views/view", collection: @views %>
+</div>

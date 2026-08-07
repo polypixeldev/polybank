@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_060628) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_083148) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -246,6 +246,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_060628) do
     t.string "plaid_id"
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
+  create_table "views", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "category_id"
+    t.integer "counterparty_id"
+    t.datetime "created_at", null: false
+    t.string "direction"
+    t.date "end_date"
+    t.integer "max_amount"
+    t.string "memo"
+    t.integer "min_amount"
+    t.string "name"
+    t.date "start_date"
+    t.integer "tag_id"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["account_id"], name: "index_views_on_account_id"
+    t.index ["category_id"], name: "index_views_on_category_id"
+    t.index ["counterparty_id"], name: "index_views_on_counterparty_id"
+    t.index ["tag_id"], name: "index_views_on_tag_id"
+    t.index ["user_id"], name: "index_views_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

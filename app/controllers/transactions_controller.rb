@@ -9,6 +9,7 @@ class TransactionsController < ApplicationController
     skip_authorization
 
     @show_filters = ActiveModel::Type::Boolean.new.cast(params[:show_filters])
+    @disable_filters = ActiveModel::Type::Boolean.new.cast(params[:disable_filters])
     @reimburse_transaction_id = params[:reimburse_transaction_id]
 
     apply_filters
@@ -117,21 +118,18 @@ class TransactionsController < ApplicationController
     @max_amount = params[:max_amount]
     @direction = params[:direction]
 
-    @transactions = @transactions.where("transactions.memo LIKE ?", "%#{@query}%") if @query.present?
-    @transactions = @transactions.where("transactions.date >= ?", @start_date) if @start_date.present?
-    @transactions = @transactions.where("transactions.date <= ?", @end_date) if @end_date.present?
-    @transactions = @transactions.where(account: @account) if @account.present?
-    @transactions = @transactions.where(category: @category) if @category.present?
-    @transactions = @transactions.joins(:counterparties).where(counterparties: @counterparty) if @counterparty.present?
-    @transactions = @transactions.joins(:tags).where(tags: @tag) if @tag.present?
-    @transactions = @transactions.where("abs(transactions.amount_cents) >= ?", @min_amount.to_f * 100) if @min_amount.present?
-    @transactions = @transactions.where("abs(transactions.amount_cents) <= ?", @max_amount.to_f * 100) if @max_amount.present?
-
-    if @direction == "incoming"
-      @transactions = @transactions.where("transactions.amount_cents > 0")
-    elsif @direction == "outgoing"
-      @transactions = @transactions.where("transactions.amount_cents < 0")
-    end
+    @transactions = Transaction.apply_filters(@transactions, {
+      memo: @query,
+      start_date: @start_date,
+      end_date: @end_date,
+      account: @account,
+      category: @category,
+      counterparty: @counterparty,
+      tag: @tag,
+      min_amount: @min_amount,
+      max_amount: @max_amount,
+      direction: @direction
+    })
 
     @total_amount = @transactions.sum(:amount_cents) / 100.0
   end

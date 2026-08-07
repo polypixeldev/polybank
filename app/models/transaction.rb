@@ -111,6 +111,27 @@ class Transaction < ApplicationRecord
     }
   end
 
+  def self.apply_filters(initial, filters)
+    new_relation = initial
+    new_relation = initial.where("transactions.memo LIKE ?", "%#{filters[:memo]}%") if filters[:memo].present?
+    new_relation = new_relation.where("transactions.date >= ?", filters[:start_date]) if filters[:start_date].present?
+    new_relation = new_relation.where("transactions.date <= ?", filters[:end_date]) if filters[:end_date].present?
+    new_relation = new_relation.where(account: filters[:account]) if filters[:account].present?
+    new_relation = new_relation.where(category: filters[:category]) if filters[:category].present?
+    new_relation = new_relation.joins(:counterparties).where(counterparties: filters[:counterparty]) if filters[:counterparty].present?
+    new_relation = new_relation.joins(:tags).where(tags: filters[:tag]) if filters[:tag].present?
+    new_relation = new_relation.where("abs(transactions.amount_cents) >= ?", filters[:min_amount].to_f * 100) if filters[:min_amount].present?
+    new_relation = new_relation.where("abs(transactions.amount_cents) <= ?", filters[:max_amount].to_f * 100) if filters[:max_amount].present?
+
+    if filters[:direction] == "incoming"
+      new_relation = new_relation.where("transactions.amount_cents > 0")
+    elsif filters[:direction] == "outgoing"
+      new_relation = new_relation.where("transactions.amount_cents < 0")
+    end
+
+    new_relation
+  end
+
   def amount
     amount_cents / 100.0
   end

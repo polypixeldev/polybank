@@ -89,4 +89,6 @@ Rails.application.routes.draw do
       post "dismiss"
     end
   end
+
+  resources :views, except: :new
 end
