@@ -7,7 +7,7 @@
   <%= hidden_field_tag :authenticity_token, value: "" %>
 
   <div class="card w-full! flex-row! gap-5 flex-wrap">
-    <div class="flex gap-5 flex-wrap max-w-full">
+    <div class="flex gap-4 flex-wrap max-w-full">
       <div class="flex flex-col gap-2">
         <%= form.label :query, "Memo" %>
         <%= form.text_field :query, value: @query, class: "bg-white rounded-md text-black p-1", disabled: @disable_filters %>
