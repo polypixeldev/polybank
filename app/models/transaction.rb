@@ -72,27 +72,9 @@ class Transaction < ApplicationRecord
   end
 
   def self.within_period(period, day = Date.today)
-    period_start_date = case period
-    when "week"
-      day.beginning_of_week
-    when "month"
-      day.beginning_of_month
-    when "year"
-      day.beginning_of_year
-    else
-      Date.new(1, 1, 1000)
-    end
+    period_start_date = Budget.period_start_date(period, day)
 
-    period_end_date = case period
-    when "week"
-      day.end_of_week
-    when "month"
-      day.end_of_month
-    when "year"
-      day.end_of_year
-    else
-      Date.new(1, 1, 10000)
-    end
+    period_end_date = Budget.period_end_date(period, day)
 
     where("transactions.date >= ? AND transactions.date <= ?", period_start_date, period_end_date)
   end

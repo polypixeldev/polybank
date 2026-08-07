@@ -24,6 +24,40 @@ class Budget < ApplicationRecord
 
   enum :period, { week: "week", month: "month", year: "year" }, prefix: :week
 
+  def self.period_start_date(period, day = Date.today)
+    case period
+    when "week"
+      day.beginning_of_week
+    when "month"
+      day.beginning_of_month
+    when "year"
+      day.beginning_of_year
+    else
+      Date.new(1, 1, 1000)
+    end
+  end
+
+  def self.period_end_date(period, day = Date.today)
+    case period
+    when "week"
+      day.end_of_week
+    when "month"
+      day.end_of_month
+    when "year"
+      day.end_of_year
+    else
+      Date.new(1, 1, 10000)
+    end
+  end
+
+  def period_start_date(day = Date.today)
+    Budget.period_start_date(period, day)
+  end
+
+  def period_end_date(day = Date.today)
+    Budget.period_end_date(period, day)
+  end
+
   def status_text
     return "Inactive" unless active
     passing? ? "Passing" : "Failing"

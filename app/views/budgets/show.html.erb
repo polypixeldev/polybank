@@ -20,7 +20,7 @@
 
   <div class="card">
     <p>Period</p>
-    <p class="card-headline"><%= @budget.period %></p>
+    <p class="card-headline"><%= @budget.period.humanize %></p>
   </div>
 
   <div class="card">
@@ -35,9 +35,11 @@
 </div>
 
 <%= turbo_frame_tag :transactions_list, src: list_transactions_path({
-  show_filters: true,
+  show_filters: false,
   account_id: @budget.target_type == "Account" ? @budget.target_id : nil,
   category_id: @budget.target_type == "Category" ? @budget.target_id : nil,
   counterparty_id: @budget.target_type == "Counterparty" ? @budget.target_id : nil,
-  tag_id: @budget.target_type == "Tag" ? @budget.target_id : nil
+  tag_id: @budget.target_type == "Tag" ? @budget.target_id : nil,
+  start_date: @budget.period_start_date(Date.today),
+  end_date: @budget.period_end_date(Date.today)
 }.compact) %>

@@ -14,7 +14,7 @@ module Budgetable
   end
 
   def total_budget_amount_cents(user, period, day = Date.today)
-    qualifying_txns = budgetable_transactions(user).effective.within_period(period, day)
+    qualifying_txns = budgetable_transactions(user).effective.and(Transaction.within_period(period, day))
 
     qualifying_txns.includes(:reimbursing_transactions).to_a.sum(&:budget_amount_cents)
   end

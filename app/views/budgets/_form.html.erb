@@ -33,6 +33,6 @@
       <% end %>
     </div>
 
-    <%= form.submit "Create", class: "btn" %>
+    <%= form.submit budget.nil? ? "Create" : "Save", class: "btn" %>
   </div>
 <% end %>

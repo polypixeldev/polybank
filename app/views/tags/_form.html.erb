@@ -15,7 +15,7 @@
         <%= form.text_field :color, class: "bg-white rounded-md text-black p-1" %>
       </div>
 
-      <%= form.submit "Create", class: "btn" %>
+      <%= form.submit tag.nil? ? "Create" : "Save", class: "btn" %>
     </div>
   </div>
 <% end %>
