@@ -23,7 +23,7 @@
 
     <div class="flex flex-col">
       <%= form.label :target, "Target" %>
-      <%= form.select :target_gid, grouped_options_for_select(Budgetable.available_budgetables(User.first)), {}, class: "bg-white rounded-md text-black p-1" %>
+      <%= form.select :target_gid, grouped_options_for_select(Budgetable.available_budgetables(User.first)), { selected: budget&.target_gid }, class: "bg-white rounded-md text-black p-1" %>
     </div>
 
     <div class="flex flex-col">
