@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_06_162316) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_060628) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -158,6 +158,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_06_162316) do
     t.datetime "updated_at", null: false
     t.index ["counterparty_id"], name: "index_counterparty_transactions_on_counterparty_id"
     t.index ["transaction_id"], name: "index_counterparty_transactions_on_transaction_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "dismissed_at"
+    t.datetime "read_at"
+    t.datetime "sent_at"
+    t.integer "source_id"
+    t.string "source_type"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["source_type", "source_id"], name: "index_notifications_on_source"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "plaid_items", force: :cascade do |t|

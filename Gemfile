@@ -95,3 +95,5 @@ gem "grover"
 gem "faker"
 
 gem "blazer"
+
+gem "aasm"
