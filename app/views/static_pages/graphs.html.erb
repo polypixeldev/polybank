@@ -19,7 +19,7 @@
     links: @income_by_category.to_a.map { |c| { source: c[0], target: "Bank", value: c[1].abs } } + @expenses_by_category.to_a.map { |c| { target: "#{c[0]} ", source: "Bank", value: c[1].abs } }
   }, { theme: "dark", options: { tooltip: { trigger: "item", triggerOn: "mousemove", valueFormatter: RailsCharts.js("(value) => '$' + value") } } }) %>
 
-  <div class="grid grid-cols-2 gap-x-10 gap-y-20 mt-10">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-20 mt-10">
     <div>
       <p class="font-bold text-lg text-center">Income by category</p>
       <%= pie_chart @income_by_category, round: 2, zeros: true %>
