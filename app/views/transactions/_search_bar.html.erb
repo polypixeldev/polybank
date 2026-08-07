@@ -1,82 +1,62 @@
 
-<%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-x-5 gap-y-8 flex-wrap", data: { controller: "multi-submit", turbo_frame: "transactions_list" } do |form| %>
+<%= form_with url: list_transactions_path, method: :get, class: "inline-flex gap-x-5 gap-y-8 flex-wrap max-w-full", data: { controller: "multi-submit", turbo_frame: "transactions_list" } do |form| %>
   <%= form.hidden_field :show_filters, value: @show_filters %>
   <%= form.hidden_field :reimburse_transaction_id, value: @reimburse_transaction_id %>
 
   <%= hidden_field_tag :authenticity_token, value: "" %>
 
   <div class="card w-full! flex-row! gap-5 flex-wrap">
-    <div>
+    <div class="flex gap-5 flex-wrap max-w-full">
       <div class="flex flex-col gap-2">
         <%= form.label :query, "Memo" %>
         <%= form.text_field :query, value: @query, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :start_date, "Start date" %>
         <%= form.date_field :start_date, value: @start_date, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :end_date, "End date" %>
         <%= form.date_field :end_date, value: @end_date, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 max-w-full">
         <%= form.label :account_id, "Account" %>
         <%= form.collection_select :account_id, current_user.accounts.order(:name), :id, :name, { selected: @account&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :category_id, "Category" %>
         <%= form.collection_select :category_id, current_user.categories.order(:name), :id, :display_name, { selected: @category&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :counterparty_id, "Counterparty" %>
         <%= form.collection_select :counterparty_id, current_user.counterparties.order(custom_name: :asc, plaid_name: :asc), :id, :name, { selected: @counterparty&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :tag_id, "Tag" %>
         <%= form.collection_select :tag_id, current_user.tags.order(name: :asc), :id, :name, { selected: @tag&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :min_amount, "Min amount" %>
         <%= form.number_field :min_amount, value: @min_amount, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :max_amount, "Max amount" %>
         <%= form.number_field :max_amount, value: @max_amount, class: "bg-white rounded-md text-black p-1" %>
       </div>
-    </div>
 
-    <div>
       <div class="flex flex-col gap-2">
         <%= form.label :direction, "Direction" %>
         <%= form.select :direction, [["Incoming", "incoming"], ["Outgoing", "outgoing"]], { selected: @direction, include_blank: "Both" }, class: "bg-white rounded-md text-black p-1" %>
       </div>
     </div>
-
-    <div class="w-5"></div>
 
     <%= form.submit "Search", class: "btn" %>
 

@@ -3,6 +3,6 @@
 <% sum = category.amount_by_user(current_user) %>
 
 <%= link_to category_path(category), class: "grid grid-cols-10 px-4 py-3 bg-slate-800 rounded-md" do %>
-  <p class="col-span-9"><%= category.display_name %></p>
-  <p class="justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum  %></p>
+  <p class="col-span-7 md:col-span-9"><%= category.display_name %></p>
+  <p class="col-span-3 md:col-span-1 justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum  %></p>
 <% end %>
