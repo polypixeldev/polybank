@@ -1,6 +1,10 @@
 <%# locals: (budget:) %>
 
+<% remaining_amount = budget.remaining_amount_in_period %>
+
 <%= link_to budget_path(budget), class: "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md items-center" do %>
-  <p><%= budget.name %></p>
-  <p><%= budget.period %></p>
+  <div class="rounded-full w-5 h-5 <%= budget.passing? ? "bg-green-500" : "bg-red-500" %>"></div>
+  <p class="col-span-11"><%= budget.name %></p>
+  <p class="col-span-2"><%= number_to_currency budget.limit_amount %> / <%= budget.period %></p>
+  <p class="<%= remaining_amount.positive? ? "text-green-500" : "text-red-500"%>"><%= number_to_currency remaining_amount %> left</p>
 <% end %>
