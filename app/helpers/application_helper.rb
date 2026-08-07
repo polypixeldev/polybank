@@ -3,7 +3,7 @@ module ApplicationHelper
   include Chartkick::Helper
 
   def title(text)
-    content_for :title, text
+    content_for :title, "#{text} | Polybank"
   end
 
   def inline_icon(filename, **options)

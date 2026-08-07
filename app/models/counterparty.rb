@@ -28,6 +28,8 @@ class Counterparty < ApplicationRecord
     custom_name.presence || plaid_name
   end
 
+  alias_method :display_name, :name
+
   def transactions_by_user(user)
     transactions.effective.joins(:account).where("accounts.user_id = ?", user.id)
   end

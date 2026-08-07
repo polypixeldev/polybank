@@ -1,5 +1,5 @@
 class BudgetsController < ApplicationController
-  before_action :set_budget, except: [ :index, :new ]
+  before_action :set_budget, except: [ :index, :new, :create ]
 
   def index
     skip_authorization
@@ -48,7 +48,7 @@ class BudgetsController < ApplicationController
   private
 
   def budget_params
-    params.require(:budget).permit(:name, :active, :period, :target_gid).merge(limit_amount_cents: params[:budget][:limit_amount] * 100)
+    params.require(:budget).permit(:name, :active, :period, :target_gid).merge(limit_amount_cents: params[:budget][:limit_amount].to_f * 100)
   end
 
   def set_budget

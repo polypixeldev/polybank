@@ -21,6 +21,8 @@ class Tag < ApplicationRecord
   has_many :tag_transactions
   has_many :transactions, through: :tag_transactions, source: :associated_transaction
 
+  alias_attribute :display_name, :name
+
   def amount
     @amount ||= transactions.effective.sum(:amount_cents) / 100.0
   end

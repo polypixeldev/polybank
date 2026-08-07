@@ -14,12 +14,16 @@
 
     <div class="flex flex-col">
       <%= form.label :limit_amount, "Limit" %>
-      <%= form.number_field :limit_amount, step: 0.01, min: 0, class: "bg-white rounded-md text-black p-1" %>
+
+      <div class="flex items-center gap-1">
+        <p class="text-lg">$</p>
+        <%= form.number_field :limit_amount, step: 0.01, min: 0, class: "bg-white rounded-md text-black p-1" %>
+      </div>
     </div>
 
     <div class="flex flex-col">
       <%= form.label :target, "Target" %>
-      <%= form.collection_select :target_gid, Budgetable.available_budgetables(current_user), :to_global_id, :to_s, {}, class: "bg-white rounded-md text-black p-1" %>
+      <%= form.select :target_gid, grouped_options_for_select(Budgetable.available_budgetables(User.first)), {}, class: "bg-white rounded-md text-black p-1" %>
     </div>
 
     <div class="flex flex-col">

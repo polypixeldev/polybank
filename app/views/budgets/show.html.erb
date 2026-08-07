@@ -1,0 +1,43 @@
+<% title @budget.name %>
+
+<div class="flex gap-2 items-center mb-3">
+  <h2 class="font-bold text-2xl"><%= @budget.name %></h2>
+
+  <%= link_to "Edit", edit_budget_path(@budget), class: "inline-btn" %>
+  <%= button_to "Delete", budget_path(@budget), method: :delete, class: "inline-btn", data: { turbo_confirm: "Are you sure you want to delete this budget?" } %>
+</div>
+
+<div class="flex gap-5 mb-5">
+  <div class="card">
+    <p>Status</p>
+    <p class="card-headline"><%= @budget.status_text %></p>
+  </div>
+
+  <div class="card">
+    <p><%= @budget.target_type.humanize %></p>
+    <p class="card-headline"><%= link_to @budget.target.display_name, @budget.target %></p>
+  </div>
+
+  <div class="card">
+    <p>Period</p>
+    <p class="card-headline"><%= @budget.period %></p>
+  </div>
+
+  <div class="card">
+    <p>Limit</p>
+    <p class="card-headline"><%= number_to_currency @budget.limit_amount %></p>
+  </div>
+
+  <div class="card">
+    <p>Remaining</p>
+    <p class="card-headline"><%= number_to_currency @budget.remaining_amount_in_period %></p>
+  </div>
+</div>
+
+<%= turbo_frame_tag :transactions_list, src: list_transactions_path({
+  show_filters: true,
+  account_id: @budget.target_type == "Account" ? @budget.target_id : nil,
+  category_id: @budget.target_type == "Category" ? @budget.target_id : nil,
+  counterparty_id: @budget.target_type == "Counterparty" ? @budget.target_id : nil,
+  tag_id: @budget.target_type == "Tag" ? @budget.target_id : nil
+}.compact) %>

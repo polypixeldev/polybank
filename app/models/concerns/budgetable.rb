@@ -1,22 +1,20 @@
 module Budgetable
   extend ActiveSupport::Concern
 
-  def self.budgetable_models
-    ApplicationRecord.descendants.select { |model| model.included_modules.include?(Budgetable) }
-  end
+  BUDGETABLE_MODELS = [ Account, Category, Counterparty, Tag ]
 
   def self.available_budgetables(user)
-    budgetables = []
+    available_budgetables_list = []
 
-    budgetable_models.each do |model|
-      budgetables += model.all.select { |record| Pundit.policy(user, record).budget? }
+    BUDGETABLE_MODELS.each do |model|
+      available_budgetables_list.push [ model.name.humanize, model.all.select { |record| Pundit.policy(user, record).budget? }.map { |r| [ r.display_name, r.to_global_id ] } ]
     end
 
-    budgetables
+    available_budgetables_list
   end
 
   def total_budget_amount_cents(user, period, day = Date.today)
-    qualifying_txns = budgetable_transactions.effective.within_period(period, day)
+    qualifying_txns = budgetable_transactions(user).effective.within_period(period, day)
 
     qualifying_txns.includes(:reimbursing_transactions).to_a.sum(&:budget_amount_cents)
   end

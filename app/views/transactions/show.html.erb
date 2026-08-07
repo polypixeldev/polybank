@@ -1,4 +1,4 @@
-<% title "#{@transaction.memo} | Polybank" %>
+<% title @transaction.memo %>
 
 <p class="text-md text-gray-100"><%= link_to @transaction.account.name, account_path(@transaction.account) %></p>
 

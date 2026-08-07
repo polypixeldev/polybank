@@ -24,12 +24,29 @@ class Budget < ApplicationRecord
 
   enum :period, { week: "week", month: "month", year: "year" }, prefix: :week
 
+  def status_text
+    return "Inactive" unless active
+    passing? ? "Passing" : "Failing"
+  end
+
   def passing?
-    target.total_budget_amount_cents <= limit_amount_cents
+    target.total_budget_amount_cents(user, period, Date.today) <= limit_amount_cents
   end
 
   def failing?
     !passing?
+  end
+
+  def limit_amount
+    limit_amount_cents / 100.0
+  end
+
+  def remaining_amount_in_period(day = Date.today)
+    remaining_amount_cents_in_period(day) / 100.0
+  end
+
+  def remaining_amount_cents_in_period(day = Date.today)
+    limit_amount_cents - target.total_budget_amount_cents(user, period, day)
   end
 
   def target_gid

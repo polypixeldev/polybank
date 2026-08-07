@@ -27,6 +27,8 @@ class Account < ApplicationRecord
 
   validate :plaid_item_belongs_to_user
 
+  alias_attribute :display_name, :name
+
   def balance
     @balance ||= if plaid_item.present?
       item_accounts = PlaidService.get_item_accounts(plaid_item.access_token)
