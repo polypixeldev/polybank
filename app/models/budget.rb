@@ -65,12 +65,12 @@ class Budget < ApplicationRecord
     passing? ? "Passing" : "Failing"
   end
 
-  def passing?
-    target.total_budget_amount_cents(user, period, Date.today) <= limit_amount_cents
+  def passing?(day = Date.today)
+    target.total_budget_amount_cents(user, period, day) <= limit_amount_cents
   end
 
-  def failing?
-    !passing?
+  def failing?(day = Date.today)
+    !passing?(day)
   end
 
   def limit_amount

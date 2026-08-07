@@ -23,6 +23,16 @@ class BudgetsController < ApplicationController
 
   def show
     authorize @budget
+
+    @recent_periods = []
+
+    loop do
+      base_day = (@recent_periods.last&.first || @budget.period_start_date) - 1.day
+
+      break if base_day < @budget.created_at
+
+      @recent_periods.push([ Budget.period_start_date(@budget.period, base_day), Budget.period_end_date(@budget.period, base_day) ])
+    end
   end
 
   def edit
