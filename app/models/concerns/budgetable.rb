@@ -7,7 +7,7 @@ module Budgetable
     available_budgetables_list = []
 
     BUDGETABLE_MODELS.each do |model|
-      available_budgetables_list.push [ model.name.humanize, model.all.select { |record| Pundit.policy(user, record).budget? }.map { |r| [ r.display_name, r.to_global_id ] } ]
+      available_budgetables_list.push [ model.name.humanize, model.all.select { |record| Pundit.policy(user, record).budget? }.map { |r| [ r.display_name, r.to_global_id.to_s ] } ]
     end
 
     available_budgetables_list
