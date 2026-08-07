@@ -24,6 +24,8 @@ class Budget < ApplicationRecord
 
   enum :period, { week: "week", month: "month", year: "year" }, prefix: :week
 
+  scope :active, -> { where(active: true) }
+
   def self.period_start_date(period, day = Date.today)
     case period
     when "week"

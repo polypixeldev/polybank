@@ -3,6 +3,7 @@ class StaticPagesController < ApplicationController
 
   def index
     @recent_transactions = current_user.transactions.effective.order(date: :desc).first(5)
+    @budgets = current_user.budgets.active
   end
 
   def graphs
