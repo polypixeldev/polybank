@@ -19,6 +19,10 @@
 #  index_budgets_on_user_id  (user_id)
 #
 class Budget < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
+
+  BUDGET_WARNING_PERCENTAGE = 0.1
+
   belongs_to :user
   belongs_to :target, polymorphic: true
 
@@ -82,7 +86,15 @@ class Budget < ApplicationRecord
   end
 
   def remaining_amount_cents_in_period(day = Date.today)
-    limit_amount_cents - target.total_budget_amount_cents(user, period, day)
+    limit_amount_cents - spent_amount_cents_in_period(day)
+  end
+
+  def spent_amount_in_period(day = Date.today)
+    spent_amount_cents_in_period(day) / 100.0
+  end
+
+  def spent_amount_cents_in_period(day = Date.today)
+    target.total_budget_amount_cents(user, period, day)
   end
 
   def target_gid
@@ -91,5 +103,37 @@ class Budget < ApplicationRecord
 
   def target_gid=(gid)
     self.target = GlobalID::Locator.locate gid
+  end
+
+  def check
+    if passing? && remaining_amount_cents_in_period < (limit_amount_cents * BUDGET_WARNING_PERCENTAGE)
+      user.notifications.create(
+        source: self,
+        title: "You're almost at your budget for #{name}",
+        key: "budget_#{id}_warning_#{period_start_date}}",
+        content: <<-MSG
+          You're at #{BUDGET_WARNING_PERCENTAGE * 100}% budget remaining for your #{name} budget.
+          You've spent #{number_to_currency spent_amount_in_period} in the current period,
+          and your limit is #{number_to_currency limit_amount}.
+
+          This budget will reset on #{period_end_date.to_fs(:long)}.
+        MSG
+      )
+    end
+
+    if failing?
+      user.notifications.create(
+        source: self,
+        title: "Overbudget for #{name}",
+        key: "budget_#{id}_overbudget_#{period_start_date}",
+        content: <<-MSG
+          You just hit the #{period}'s limit for your #{name} budget.
+          You've spent #{number_to_currency spent_amount_in_period} in the current period,
+          and your limit is #{number_to_currency limit_amount}.
+
+          This budget will reset on #{period_end_date.to_fs(:long)}.
+        MSG
+      )
+    end
   end
 end

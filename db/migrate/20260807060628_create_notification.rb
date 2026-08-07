@@ -6,6 +6,7 @@ class CreateNotification < ActiveRecord::Migration[8.1]
 
       t.string :title
       t.string :content
+      t.string :key
 
       t.string :aasm_state, null: false, default: "pending"
 

@@ -6,6 +6,7 @@
 #  aasm_state   :string           default("pending"), not null
 #  content      :string
 #  dismissed_at :datetime
+#  key          :string
 #  read_at      :datetime
 #  sent_at      :datetime
 #  source_type  :string
@@ -27,6 +28,8 @@ class Notification < ApplicationRecord
   belongs_to :source, polymorphic: true, optional: true
 
   scope :sent_or_read, -> { where(aasm_state: [ "sent", "read" ]) }
+
+  validates :key, uniqueness: { scope: :user_id }
 
   aasm timestamps: true do
     state :pending

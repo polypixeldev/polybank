@@ -72,9 +72,10 @@ class PlaidItem < ApplicationRecord
       update!(transaction_cursor: all_data[:next_cursor])
     end
 
-    user.notifications.create!(
+    user.notifications.create(
       source: self,
       title: "Plaid sync completed for #{name}",
+      key: "plaid_sync_#{transaction_cursor}",
       content: <<-MSG
         Plaid transactions were just synced for all accounts from #{name}.
         #{pluralize(added, "transaction")} #{added == 1 ? "was" : "were"} added,
@@ -83,6 +84,8 @@ class PlaidItem < ApplicationRecord
         #{pluralize(removed, "transaction")} #{removed == 1 ? "was" : "were"} removed.
       MSG
     )
+
+    user.budgets.each(&:check)
   end
 
   def refresh_plaid_transactions

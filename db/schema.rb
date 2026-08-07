@@ -165,6 +165,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_060628) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "dismissed_at"
+    t.string "key"
     t.datetime "read_at"
     t.datetime "sent_at"
     t.integer "source_id"
