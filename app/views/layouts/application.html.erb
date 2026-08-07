@@ -41,7 +41,10 @@
             <%= link_to "Budgets", budgets_path, class: "hover:underline" %>
           </div>
 
-          <%= button_to "Sign out", session_path(current_session), method: :delete, class: "inline-btn" %>
+          <div class="flex gap-8 items-center">
+            <%= link_to "Notifications", notifications_path, class: "hover:underline" %>
+            <%= button_to "Sign out", session_path(current_session), method: :delete, class: "inline-btn" %>
+          </div>
         </nav>
       <% end %>
     </header>

@@ -26,7 +26,9 @@ class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :source, polymorphic: true, optional: true
 
-  aasm do
+  scope :sent_or_read, -> { where(aasm_state: [ "sent", "read" ]) }
+
+  aasm timestamps: true do
     state :pending
     state :sent
     state :read

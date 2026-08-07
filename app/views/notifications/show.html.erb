@@ -1,0 +1,9 @@
+<% title @notification.title %>
+
+<div class="flex gap-2 items-center mb-3">
+  <h2 class="font-bold text-2xl"><%= @notification.title %></h2>
+
+  <%= button_to "Dismiss", dismiss_notification_path(@notification), class: "inline-btn" %>
+</div>
+
+<p><%= @notification.content %></p>

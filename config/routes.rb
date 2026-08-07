@@ -83,4 +83,10 @@ Rails.application.routes.draw do
   resources :comments, only: [ :create, :edit, :update, :destroy ]
 
   resources :budgets
+
+  resources :notifications, only: [ :index, :show ] do
+    member do
+      post "dismiss"
+    end
+  end
 end
