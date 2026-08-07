@@ -28,11 +28,14 @@
 
   <body class="bg-gray-950 text-white">
     <header class="p-5 flex flex-row items-center gap-10">
-      <h1 class="font-bold text-3xl">Polybank</h1>
+      <div class="flex items-center gap-3">
+        <label for="nav-drawer-toggle" class="block md:hidden font-black text-xl cursor-pointer">&gt;</label>
+        <h1 class="font-bold text-3xl">Polybank</h1>
+      </div>
 
       <% if signed_in? %>
         <nav class="flex justify-between items-center w-full">
-          <div class="flex gap-8">
+          <div class="hidden md:flex gap-8">
             <%= link_to "Dashboard", root_path, class: "hover:underline" %>
             <%= link_to "Transactions", transactions_path, class: "hover:underline" %>
             <%= link_to "Counterparties", counterparties_path, class: "hover:underline" %>
@@ -41,8 +44,27 @@
             <%= link_to "Budgets", budgets_path, class: "hover:underline" %>
           </div>
 
-          <div class="flex gap-8 items-center">
-            <%= link_to "Notifications", notifications_path, class: "hover:underline" %>
+          <div class="flex md:hidden">
+            <input type="checkbox" id="nav-drawer-toggle" class="absolute opacity-0 pointer-events-none">
+            <label id="nav-drawer-overlay" for="nav-drawer-toggle" class="menu-overlay fixed top-0 left-0 w-screen h-screen bg-[#00000011] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></label>
+
+            <div id="nav-drawer" class="fixed top-0 left-0 w-[50vw] h-screen bg-black z-50 p-4">
+              <label for="nav-drawer-toggle" id="label">&times;</label>
+
+              <ul class="flex flex-col gap-3">
+                <li><%= link_to "Dashboard", root_path, class: "hover:underline" %></li>
+                <li><%= link_to "Transactions", transactions_path, class: "hover:underline" %></li>
+                <li><%= link_to "Counterparties", counterparties_path, class: "hover:underline" %></li>
+                <li><%= link_to "Categories", categories_path, class: "hover:underline" %></li>
+                <li><%= link_to "Tags", tags_path, class: "hover:underline" %></li>
+                <li><%= link_to "Budgets", budgets_path, class: "hover:underline" %></li>
+                <li><%= link_to "Notifications", notifications_path, class: "hover:underline" %></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex md:gap-8 items-center gap-3">
+            <%= link_to "Notifications", notifications_path, class: "hover:underline hidden md:inline" %>
             <%= button_to "Sign out", session_path(current_session), method: :delete, class: "inline-btn" %>
           </div>
         </nav>
