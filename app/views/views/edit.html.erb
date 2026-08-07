@@ -1,0 +1,5 @@
+<% title "Edit View" %>
+
+<h2 class="font-bold text-2xl mb-3">Edit view: <%= @view.name %></h2>
+
+<%= render partial: "views/form", locals: { view: @view } %>

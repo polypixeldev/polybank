@@ -46,7 +46,7 @@ class View < ApplicationRecord
       min_amount:,
       max_amount:,
       direction:
-    })
+  }.compact)
   end
 
   def amount_cents

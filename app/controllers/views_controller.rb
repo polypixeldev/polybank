@@ -28,7 +28,7 @@ class ViewsController < ApplicationController
 
     @view.update!(view_params)
 
-    redirect_back_or_to view_path(@view)
+    redirect_to view_path(@view)
   end
 
   def destroy

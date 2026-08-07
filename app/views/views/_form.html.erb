@@ -1,7 +1,62 @@
 <%# locals: (view: nil) %>
 
 <%= form_with model: view || View.new do |form| %>
-  <div class="card">
-    
+  <div class="card flex flex-col gap-2">
+    <div class="flex flex-col">
+      <%= form.label :name, "Name" %>
+      <%= form.text_field :name, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :memo, "Memo" %>
+      <%= form.text_field :memo, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :start_date, "Start date" %>
+      <%= form.date_field :start_date, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :end_date, "End date" %>
+      <%= form.date_field :end_date, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2 max-w-full">
+      <%= form.label :account_id, "Account" %>
+      <%= form.collection_select :account_id, current_user.accounts.order(:name), :id, :name, { selected: @account&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :category_id, "Category" %>
+      <%= form.collection_select :category_id, current_user.categories.order(:name), :id, :display_name, { selected: @category&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :counterparty_id, "Counterparty" %>
+      <%= form.collection_select :counterparty_id, current_user.counterparties.order(custom_name: :asc, plaid_name: :asc), :id, :name, { selected: @counterparty&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :tag_id, "Tag" %>
+      <%= form.collection_select :tag_id, current_user.tags.order(name: :asc), :id, :name, { selected: @tag&.id, include_blank: "All" }, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :min_amount, "Min amount" %>
+      <%= form.number_field :min_amount, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :max_amount, "Max amount" %>
+      <%= form.number_field :max_amount, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <%= form.label :direction, "Direction" %>
+      <%= form.select :direction, [["Incoming", "incoming"], ["Outgoing", "outgoing"]], { selected: @direction, include_blank: "Both" }, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <%= form.submit view.nil? ? "Create" : "Save", class: "btn" %>
   </div>
 <% end %>
