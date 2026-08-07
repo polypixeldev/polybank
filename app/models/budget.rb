@@ -72,7 +72,7 @@ class Budget < ApplicationRecord
   end
 
   def limit_amount
-    limit_amount_cents / 100.0
+    limit_amount_cents.nil? ? nil : limit_amount_cents / 100.0
   end
 
   def remaining_amount_in_period(day = Date.today)
