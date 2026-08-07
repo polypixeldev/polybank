@@ -45,9 +45,15 @@ class Notification < ApplicationRecord
     end
   end
 
+  after_create_commit :send!
+
   def send!
     # TODO: Send via email
 
     mark_sent!
+  end
+
+  def source_url
+    Rails.application.routes.url_helpers.url_for(source)
   end
 end

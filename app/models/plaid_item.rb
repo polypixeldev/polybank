@@ -16,6 +16,8 @@
 #  index_plaid_items_on_user_id  (user_id)
 #
 class PlaidItem < ApplicationRecord
+  include ActionView::Helpers::TextHelper
+
   belongs_to :user
   has_many :accounts
   has_many :transactions, through: :accounts
@@ -28,22 +30,59 @@ class PlaidItem < ApplicationRecord
   def sync_plaid_transactions
     all_data = fetch_new_sync_data(transaction_cursor)
 
+    added = 0
+    modified = 0
+    removed = 0
+    settled = 0
+
     ActiveRecord::Base.transaction do
+      added_ids = []
+
       all_data[:added].each do |txn|
         Transaction.create_from_plaid_object(self, txn)
+
+        added += 1
+        added_ids.push txn.transaction_id
       end
 
       all_data[:modified].each do |txn|
         Transaction.find_by(plaid_id: txn.transaction_id, plaid_object: txn)
+
+        modified += 1
       end
 
       all_data[:removed].each do |txn|
         db_txn = Transaction.find_by(plaid_id: txn.transaction_id)
-        db_txn.destroy unless db_txn.settled_transaction.present?
+
+        if db_txn.settled_transaction.present?
+          if added_ids.include? txn.transaction_id
+            added -= 1
+          else
+            modified -= 1
+          end
+
+          settled += 1
+        else
+          db_txn.destroy
+
+          removed += 1
+        end
       end
 
       update!(transaction_cursor: all_data[:next_cursor])
     end
+
+    user.notifications.create!(
+      source: self,
+      title: "Plaid sync completed for #{name}",
+      content: <<-MSG
+        Plaid transactions were just synced for all accounts from #{name}.
+        #{pluralize(added, "transaction")} #{added == 1 ? "was" : "were"} added,
+        #{pluralize(settled, "transaction")} #{settled == 1 ? "was" : "were"} settled,
+        #{pluralize(modified, "transaction")} #{modified == 1 ? "was" : "were"} modified, and
+        #{pluralize(removed, "transaction")} #{removed == 1 ? "was" : "were"} removed.
+      MSG
+    )
   end
 
   def refresh_plaid_transactions
