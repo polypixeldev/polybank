@@ -1,10 +1,6 @@
-class ViewPolicy < ApplicationPolicy
+class SharePolicy < ApplicationPolicy
   def show?
-    record.user == user
-  end
-
-  def share?
-    record.user == user
+    record.user == user || (record.active? && (record.public? ||  record.shared_users.include?(user)))
   end
 
   def update?

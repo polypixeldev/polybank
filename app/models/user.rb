@@ -34,6 +34,8 @@ class User < ApplicationRecord
   has_many :budgets
   has_many :notifications
   has_many :views
+  has_many :shares
+
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

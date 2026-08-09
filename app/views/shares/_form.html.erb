@@ -1,0 +1,27 @@
+<%# locals: (share: nil) %>
+
+<%= form_with model: share || Share.new do |form| %>
+  <div class="card flex flex-col gap-3 items-start">
+    <div class="flex flex-col">
+      <%= form.label :target_gid, "Target" %>
+      <%= form.select :target_gid, grouped_options_for_select(Shareable.available_shareables(current_user), share&.target_gid&.to_s), {}, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <div class="flex flex-col">
+      <%= form.label :expire_at, "Expiration" %>
+
+      <div>
+        <%= form.datetime_local_field :expires_at, class: "bg-white rounded-md text-black p-1" %>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <%= form.label :public do %>
+        <%= form.check_box :public %>
+        Public
+      <% end %>
+    </div>
+
+    <%= form.submit share.nil? ? "Create" : "Save", class: "btn" %>
+  </div>
+<% end %>

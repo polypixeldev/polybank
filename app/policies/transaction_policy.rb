@@ -1,5 +1,9 @@
 class TransactionPolicy < ApplicationPolicy
   def show?
+    record.account.user == user || record.shares.any? { |share| Pundit.policy(user, share).show? }
+  end
+
+  def share?
     record.account.user == user
   end
 

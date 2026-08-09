@@ -45,6 +45,7 @@ class Transaction < ApplicationRecord
   has_many :tag_transactions
   has_many :tags, through: :tag_transactions
   has_many :comments, as: :commentable
+  has_many :shares, as: :target
 
   validate :reimbursements_flow_correctly
 
@@ -150,6 +151,10 @@ class Transaction < ApplicationRecord
 
   def budget_amount_cents
     amount_cents.abs - reimbursed_amount_cents
+  end
+
+  def display_name
+    memo
   end
 
   private

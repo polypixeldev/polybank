@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_083148) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_143840) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -195,6 +195,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_083148) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "share_permissions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "share_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["share_id"], name: "index_share_permissions_on_share_id"
+    t.index ["user_id"], name: "index_share_permissions_on_user_id"
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at"
+    t.boolean "public", default: false, null: false
+    t.integer "target_id", null: false
+    t.string "target_type", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["target_type", "target_id"], name: "index_shares_on_target"
+    t.index ["user_id"], name: "index_shares_on_user_id"
   end
 
   create_table "tag_transactions", force: :cascade do |t|

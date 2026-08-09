@@ -1,0 +1,5 @@
+<% title "Edit Share" %>
+
+<h2>Edit share for <%= @share.target.display_name %></h2>
+
+<%= render partial: "shares/form", locals: { share: @share } %>

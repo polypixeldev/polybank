@@ -34,6 +34,8 @@ class View < ApplicationRecord
   belongs_to :counterparty, optional: true
   belongs_to :tag, optional: true
 
+  alias_attribute :display_name, :name
+
   def transactions
     Transaction.apply_filters(user.transactions.effective, {
       memo:,

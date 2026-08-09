@@ -1,0 +1,11 @@
+<% title "Shares" %>
+
+<div class="flex gap-3 mb-3">
+  <h2 class="font-bold text-2xl">Shares</h2>
+
+  <%= link_to "New", new_share_path, class: "inline-btn" %>
+</div>
+
+<div class="flex flex-col gap-3">
+  <%= render partial: "shares/share", collection: @shares %>
+</div>

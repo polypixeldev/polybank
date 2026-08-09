@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  allow_unauthenticated_access only: :show
   before_action :set_transaction, except: [ :index, :list, :export ]
 
   def index

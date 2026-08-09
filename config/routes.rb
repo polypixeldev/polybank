@@ -91,4 +91,6 @@ Rails.application.routes.draw do
   end
 
   resources :views, except: :new
+
+  resources :shares
 end

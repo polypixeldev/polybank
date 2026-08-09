@@ -43,6 +43,7 @@
             <%= link_to "Tags", tags_path, class: "hover:underline" %>
             <%= link_to "Budgets", budgets_path, class: "hover:underline" %>
             <%= link_to "Views", views_path, class: "hover:underline" %>
+            <%= link_to "Shares", shares_path, class: "hover:underline" %>
           </div>
 
           <div class="flex md:hidden">
@@ -53,14 +54,15 @@
               <label for="nav-drawer-toggle" id="label">&times;</label>
 
               <ul class="flex flex-col gap-3">
-                <li><%= link_to "Dashboard", root_path, class: "hover:underline" %></li>
-                <li><%= link_to "Transactions", transactions_path, class: "hover:underline" %></li>
-                <li><%= link_to "Counterparties", counterparties_path, class: "hover:underline" %></li>
-                <li><%= link_to "Categories", categories_path, class: "hover:underline" %></li>
-                <li><%= link_to "Tags", tags_path, class: "hover:underline" %></li>
-                <li><%= link_to "Budgets", budgets_path, class: "hover:underline" %></li>
-                <li><%= link_to "Views", views_path, class: "hover:underline" %></li>
-                <li><%= link_to "Notifications", notifications_path, class: "hover:underline" %></li>
+                <li><%= link_to "Dashboard", root_path %></li>
+                <li><%= link_to "Transactions", transactions_path %></li>
+                <li><%= link_to "Counterparties", counterparties_path %></li>
+                <li><%= link_to "Categories", categories_path %></li>
+                <li><%= link_to "Tags", tags_path %></li>
+                <li><%= link_to "Budgets", budgets_path %></li>
+                <li><%= link_to "Views", views_path %></li>
+                <li><%= link_to "Shares", shares_path %>
+                <li><%= link_to "Notifications", notifications_path %></li>
               </ul>
             </div>
           </div>

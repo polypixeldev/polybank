@@ -1,0 +1,23 @@
+<% title @share.target.display_name %>
+
+<div class="flex gap-2 items-center mb-1">
+  <h2 class="font-bold text-2xl">Share link for <%= @share.target.display_name %></h2>
+
+  <% if policy(@share).edit? %>
+    <%= link_to "Edit", edit_share_path(@share), class: "inline-btn" %>
+  <% end %>
+
+  <% if policy(@share).destroy? %>
+    <%= button_to "Delete", share_path(@share), method: :delete, class: "inline-btn", data: { turbo_confirm: "Are you sure you want to delete this share?" } %>
+  <% end %>
+</div>
+
+<div class="flex mb-5 gap-5">
+  <p><%= @share.public? ? "Public" : "Private" %></p>
+
+  <% if @share.expires_at.present? %>
+    <p>Expires at <%= @share.expires_at.to_fs(:long) %></p>
+  <% end %>
+</div>
+
+<%= turbo_frame_tag :share_content, src: @share.target_path, target: "_top" %>
