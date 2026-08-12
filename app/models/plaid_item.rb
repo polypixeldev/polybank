@@ -4,6 +4,7 @@
 #
 #  id                 :integer          not null, primary key
 #  access_token       :string           not null
+#  deleted_at         :datetime
 #  name               :string
 #  transaction_cursor :string
 #  created_at         :datetime         not null
@@ -17,6 +18,8 @@
 #
 class PlaidItem < ApplicationRecord
   include ActionView::Helpers::TextHelper
+
+  acts_as_paranoid
 
   belongs_to :user
   has_many :accounts

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_143840) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_011955) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
@@ -180,6 +180,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_143840) do
   create_table "plaid_items", force: :cascade do |t|
     t.string "access_token", null: false
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.string "item_id", null: false
     t.string "name"
     t.string "transaction_cursor"
