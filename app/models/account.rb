@@ -34,7 +34,7 @@ class Account < ApplicationRecord
       item_accounts = PlaidService.get_item_accounts(plaid_item.access_token)
       account_data = item_accounts.find { |a| a.account_id == plaid_id }
 
-      if account_type == "credit"
+      if account_type.include? "credit"
         account_data.balances.current
       else
         account_data.balances.available || account_data.balances.current
