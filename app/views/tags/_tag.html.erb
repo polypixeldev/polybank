@@ -6,7 +6,9 @@
       <p><%= tag.name %></p>
     <% end %>
 
-    <%= button_to "X", toggle_tag_transaction_path(transaction, tag_id: tag.id), class: "cursor-pointer" %>
+    <% if policy(transaction).toggle_tag? && policy(tag).toggle_tag? %>
+      <%= button_to "X", toggle_tag_transaction_path(transaction, tag_id: tag.id), class: "cursor-pointer" %>
+    <% end %>
   <% else %>
     <p><%= tag.name %></p>
   <% end %>

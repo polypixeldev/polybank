@@ -20,4 +20,4 @@
   <% end %>
 </div>
 
-<%= turbo_frame_tag :share_content, src: @share.target_path, target: "_top" %>
+<%= turbo_frame_tag :share_content, src: @share.signed_target_path, target: "_top" %>

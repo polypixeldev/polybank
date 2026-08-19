@@ -41,8 +41,10 @@
           <div class="flex mt-3 gap-2">
             <p class="card-headline mt-0!"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
 
-            <%= link_to edit_category_transaction_path, class: "cursor-pointer" do %>
-              <%= inline_icon :edit, size: 32 %>
+            <% if policy(@transaction).edit_category? %>
+              <%= link_to edit_category_transaction_path(@transaction), class: "cursor-pointer" do %>
+                <%= inline_icon :edit, size: 32 %>
+              <% end %>
             <% end %>
           </div>
         <% end %>
@@ -71,7 +73,11 @@
             <img src="<%= party.logo_url %>" class="w-8 h-8 rounded-sm">
           <% end %>
           <p class="card-headline mt-0!">
-            <%= link_to party.name, counterparty_path(party) %>
+            <% if policy(party).show? %>
+              <%= link_to party.name, counterparty_path(party) %>
+            <% else %>
+              <%= party.name %>
+            <% end %>
           </p>
         </div>
       </div>
@@ -85,14 +91,24 @@
           <%= render partial: "tags/tag", locals: { tag:, transaction: @transaction } %>
         <% end %>
 
-        <%= link_to "+ Add", add_tag_modal_transaction_path(@transaction), class: "py-2 px-3 rounded-full bg-gray-800", data: {turbo_frame: "modal"} %>
+        <% if policy(@transaction).add_tag_modal? %>
+          <%= link_to "+ Add", add_tag_modal_transaction_path(@transaction), class: "py-2 px-3 rounded-full bg-gray-800", data: {turbo_frame: "modal"} %>
+        <% elsif @transaction.tags.none? %>
+          <p class="card-headline mt-0!">None</p>
+        <% end %>
       </div>
     </div>
 
     <% if @transaction.reimbursement_for.present? %>
       <div class="card">
         <p>Reimbursing</p>
-        <p class="card-headline"><%= link_to @transaction.reimbursement_for.memo, @transaction.reimbursement_for, class: "underline" %></p>
+        <p class="card-headline">
+          <% if policy(@transaction.reimbursement_for).show? %>
+            <%= link_to @transaction.reimbursement_for.memo, @transaction.reimbursement_for, class: "underline" %>
+          <% else %>
+            <%= @transaction.reimbursement_for.memo %>
+          <% end %>
+        </p>
       </div>
     <% end %>
   </div>
@@ -105,7 +121,9 @@
         <ul class="list-disc list-inside">
           <% @transaction.reimbursing_transactions.each do |txn| %>
             <div class="flex gap-5 w-full items-center">
-              <%= button_to "X", remove_reimbursement_for_transaction_path(txn), class: "text-red-500 cursor-pointer" %>
+              <% if policy(txn).remove_reimbursement_for? %>
+                <%= button_to "X", remove_reimbursement_for_transaction_path(txn), class: "text-red-500 cursor-pointer" %>
+              <% end %>
 
               <div class="grow">
                 <%= render partial: "transactions/transaction", locals: { transaction: txn } %>
@@ -114,11 +132,13 @@
           <% end %>
         </ul>
 
-        <% unless @transaction.reimbursed? %>
+        <% if !@transaction.reimbursed? && policy(@transaction).reimburse_modal? %>
           <%= link_to "Add reimbursing transactions", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
         <% end %>
-      <% else%>
+      <% elsif policy(@transaction).reimburse_modal? %>
         <%= link_to "Mark as reimbursed", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
+      <% else %>
+        <p>None</p>
       <% end %>
     </div>
   <% end %>
@@ -126,8 +146,11 @@
   <% if @transaction.pending_transaction.present? %>
     <div class="mb-3 mt-5 flex gap-2">
       <h3 class="font-bold text-xl">Pending transaction</h3>
-      <%= link_to @transaction.pending_transaction do %>
-        <%= inline_icon :link, size: 32 %>
+
+      <% if policy(@transaction.pending_transaction).show? %>
+        <%= link_to @transaction.pending_transaction do %>
+          <%= inline_icon :link, size: 32 %>
+        <% end %>
       <% end %>
     </div>
 
@@ -149,7 +172,7 @@
     </div>
   <% end %>
 
-  <% if @transaction.settled_transaction.present? %>
+  <% if @transaction.settled_transaction.present? && policy(@transaction.settled_transaction).show? %>
     <div class="mb-3 mt-5 flex gap-2">
       <h3 class="font-bold text-xl">Settled transaction</h3>
       <%= link_to @transaction.settled_transaction do %>
@@ -158,6 +181,8 @@
     </div>
   <% end %>
 
-  <%= render partial: "comments/list", locals: { commentable: @transaction } %>
+  <% if policy(@transaction).show? %>
+    <%= render partial: "comments/list", locals: { commentable: @transaction } %>
+  <% end %>
 <% end %>
 

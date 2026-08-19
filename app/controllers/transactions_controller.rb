@@ -1,5 +1,7 @@
 class TransactionsController < ApplicationController
-  allow_unauthenticated_access only: :show
+  include TransactionList
+
+  allow_unauthenticated_access only: [ :show, :list ]
   before_action :set_transaction, except: [ :index, :list, :export ]
 
   def index
@@ -13,13 +15,13 @@ class TransactionsController < ApplicationController
     @disable_filters = ActiveModel::Type::Boolean.new.cast(params[:disable_filters])
     @reimburse_transaction_id = params[:reimburse_transaction_id]
 
-    apply_filters
+    apply_transaction_filters(current_user)
   end
 
   def export
     skip_authorization
 
-    apply_filters
+    apply_transaction_filters(current_user)
 
     respond_to do |format|
       format.csv do
@@ -36,7 +38,7 @@ class TransactionsController < ApplicationController
   end
 
   def show
-    authorize @transaction
+    authorize_with_share @transaction, params[:share_sid]
   end
 
   def edit_memo
@@ -55,6 +57,8 @@ class TransactionsController < ApplicationController
     authorize @transaction
 
     tag = Tag.find(params[:tag_id])
+
+    authorize tag
 
     if @transaction.tags.include? tag
       TagTransaction.find_by(tag:, associated_transaction: @transaction).destroy
@@ -104,34 +108,5 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:memo, :category_id)
-  end
-
-  def apply_filters
-    @transactions = current_user.transactions.effective.order(pending: :desc, date: :desc)
-    @query = params[:query]
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
-    @account = current_user.accounts.find_by(id: params[:account_id])
-    @category = current_user.categories.find_by(id: params[:category_id])
-    @counterparty = current_user.counterparties.find_by(id: params[:counterparty_id])
-    @tag = current_user.tags.find_by(id: params[:tag_id])
-    @min_amount = params[:min_amount]
-    @max_amount = params[:max_amount]
-    @direction = params[:direction]
-
-    @transactions = Transaction.apply_filters(@transactions, {
-      memo: @query,
-      start_date: @start_date,
-      end_date: @end_date,
-      account: @account,
-      category: @category,
-      counterparty: @counterparty,
-      tag: @tag,
-      min_amount: @min_amount,
-      max_amount: @max_amount,
-      direction: @direction
-    })
-
-    @total_amount = @transactions.sum(:amount_cents) / 100.0
   end
 end

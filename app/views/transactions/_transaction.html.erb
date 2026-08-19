@@ -15,8 +15,12 @@
   <%= button_to mark_reimbursed_transaction_path(id: reimburse_transaction_id, reimbursing_transaction_id: transaction.id), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
     <%= content %>
   <% end %>
-<% else %>
+<% elsif policy(transaction).show? %>
   <%= link_to transaction_path(transaction), class: "grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md #{transaction.pending ? "border-orange-500 border-2": ""}", data: { turbo_frame: "_top" } do %>
     <%= content %>
   <% end %>
+<% else %>
+  <div class="grid grid-cols-10 justify-between px-4 py-3 bg-slate-800 rounded-md <%= transaction.pending ? "border-orange-500 border-2": "" %>">
+    <%= content %>
+  </div>
 <% end %>

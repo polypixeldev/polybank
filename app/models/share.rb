@@ -40,6 +40,10 @@ class Share < ApplicationRecord
     Rails.application.routes.url_helpers.url_for([ target, only_path: true ])
   end
 
+  def signed_target_path
+    Rails.application.routes.url_helpers.url_for([ target, share_sid: signed_id, only_path: true ])
+  end
+
   def target_gid
     target&.to_global_id
   end

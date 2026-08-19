@@ -1,4 +1,7 @@
 class ViewsController < ApplicationController
+  include TransactionList
+
+  allow_unauthenticated_access only: :show
   before_action :set_view, except: [ :index, :create ]
 
   def index
@@ -16,7 +19,9 @@ class ViewsController < ApplicationController
   end
 
   def show
-    authorize @view
+    authorize_with_share @view, params[:share_sid]
+
+    apply_transaction_filters(@view.user)
   end
 
   def edit

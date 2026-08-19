@@ -75,6 +75,14 @@
       <% end %>
     </header>
 
+    <div id="flash">
+      <% if flash[:error].present? %>
+        <div class="card mx-5">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+    </div>
+
     <main class="container mt-5 px-5 flex flex-col">
       <%= yield %>
     </main>
