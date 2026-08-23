@@ -10,11 +10,6 @@
                         onchange: "this.form.submit()" %>
       </div>
     </div>
-
-    <%= form.submit "Export",
-                    formaction: export_transactions_path,
-                    formmethod: :post,
-                    class: "card justify-center! cursor-pointer", data: { turbo: false } %>
   <% end %>
 
   <p class="font-bold text-lg text-center">Money Flow</p>
