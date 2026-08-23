@@ -11,6 +11,7 @@ and investment accounts.
 It currently supports:
 - Basic user creation and authentication
 - Connecting to financial institutions via [Plaid Link](https://plaid.com/docs/link/)
+- Importing transaction data from a user's transparent organizations on [HCB](https://hackclub.com/fiscal-sponsorship)
 - Viewing account balances
 - Viewing, searching, and filtering transactions
 - Exporting transactions to CSV or PDF
@@ -24,7 +25,8 @@ Polybank is built using Ruby on Rails, TailwindCSS, and several other helpful ge
 
 Polybank uses [Plaid](https://plaid.com/) to connect to financial institutions
 and import data in real time. However, it is designed to not require Plaid in order
-to use Polybank.
+to use Polybank. It can also import transaction data from transparent organizations
+on [HCB](https://hackclub.com/fiscal-sponsorship) if a user ID is configured.
 
 ## Getting started
 
