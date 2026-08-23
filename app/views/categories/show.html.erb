@@ -2,4 +2,6 @@
 
 <h2 class="font-bold text-2xl mb-3"><%= @category.display_name %></h2>
 
-<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, category_id: @category.id) %>
+<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, category_id: @category.id) do %>
+  <p>Loading transactions...</p>
+<% end %>

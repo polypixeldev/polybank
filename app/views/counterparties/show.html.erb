@@ -10,4 +10,6 @@
   </div>
 <% end %>
 
-<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, counterparty_id: @counterparty.id) %>
+<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, counterparty_id: @counterparty.id) do %>
+  <p>Loading transactions...</p>
+<% end %>

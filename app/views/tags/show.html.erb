@@ -8,4 +8,6 @@
   <%= button_to "Delete", tag_path(@tag), method: :delete, class: "inline-btn", data: { "turbo-confirm": "Are you sure you want to delete this tag?" } %>
 </div>
 
-<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, tag_id: @tag.id) %>
+<%= turbo_frame_tag :transactions_list, src: list_transactions_path(show_filters: true, tag_id: @tag.id) do %>
+  <p>Loading transactions...</p>
+<% end %>
