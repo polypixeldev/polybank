@@ -7,6 +7,7 @@
 #  currency               :string           default("USD"), not null
 #  date                   :date
 #  deleted_at             :datetime
+#  hcb_object             :json
 #  memo                   :string
 #  pending                :boolean          default(FALSE), not null
 #  plaid_object           :json
@@ -14,6 +15,7 @@
 #  updated_at             :datetime         not null
 #  account_id             :integer          not null
 #  category_id            :integer
+#  hcb_id                 :string
 #  pending_transaction_id :integer
 #  plaid_id               :string
 #  reimbursement_for_id   :integer
@@ -90,6 +92,14 @@ class Transaction < ApplicationRecord
     account.transactions.create!(attributes_from_plaid_object(plaid_object))
   end
 
+  def self.create_from_hcb_object(hcb_org, hcb_object)
+    if hcb_object["organization"]["id"] != hcb_org.hcb_id
+      raise StandardError, "This transaction does not belong to the provided organization"
+    end
+
+    hcb_org.account.transactions.create!(attributes_from_hcb_object(hcb_object))
+  end
+
   def self.attributes_from_plaid_object(plaid_object)
     plaid_object_hash = plaid_object.is_a?(Hash) ? plaid_object : plaid_object.to_hash
     plaid_object_hash.symbolize_keys!
@@ -109,6 +119,18 @@ class Transaction < ApplicationRecord
       pending_transaction:,
       plaid_id: plaid_object_hash[:transaction_id],
       plaid_object:
+    }
+  end
+
+  def self.attributes_from_hcb_object(hcb_object)
+    {
+      amount_cents: hcb_object["amount_cents"],
+      currency: "USD",
+      date: hcb_object["date"],
+      memo: hcb_object["memo"],
+      pending: hcb_object["pending"],
+      hcb_id: hcb_object["id"],
+      hcb_object:
     }
   end
 

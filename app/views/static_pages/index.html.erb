@@ -4,7 +4,7 @@
   <div class="col-span-2">
     <div class="flex gap-3 items-baseline mb-3">
       <h2 class="font-bold text-2xl">Accounts</h2>
-      <%= button_to "(sync all)", refresh_and_sync_all_plaid_items_path, class: "cursor-pointer" %>
+      <%= button_to "(sync all)", sync_all_accounts_path, class: "cursor-pointer" %>
     </div>
 
     <% if current_user.accounts.none? %>

@@ -2,30 +2,37 @@
 #
 # Table name: accounts
 #
-#  id            :integer          not null, primary key
-#  account_type  :string           not null
-#  mask          :string
-#  name          :string           not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  plaid_id      :string
-#  plaid_item_id :integer
-#  user_id       :integer
+#  id                  :integer          not null, primary key
+#  account_type        :string           not null
+#  deleted_at          :datetime
+#  mask                :string
+#  name                :string           not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  hcb_organization_id :integer
+#  plaid_id            :string
+#  plaid_item_id       :integer
+#  user_id             :integer
 #
 # Indexes
 #
-#  index_accounts_on_plaid_item_id  (plaid_item_id)
-#  index_accounts_on_user_id        (user_id)
+#  index_accounts_on_hcb_organization_id  (hcb_organization_id)
+#  index_accounts_on_plaid_item_id        (plaid_item_id)
+#  index_accounts_on_user_id              (user_id)
 #
 class Account < ApplicationRecord
   include Budgetable
 
+  acts_as_paranoid
+
   belongs_to :plaid_item, optional: true
+  belongs_to :hcb_organization, optional: true
   belongs_to :user
 
   has_many :transactions
 
   validate :plaid_item_belongs_to_user
+  validate :hcb_organization_belongs_to_user
 
   alias_attribute :display_name, :name
 
@@ -72,11 +79,35 @@ class Account < ApplicationRecord
     transactions
   end
 
+  def sync_from_source
+    if plaid_item.present?
+      Rails.cache.fetch("item_#{plaid_item.id}_refreshed_at", expires_in: 1.minute) do
+        plaid_item.refresh_plaid_transactions
+
+        Time.now
+      end
+
+      plaid_item.sync_plaid_transactions
+    elsif hcb_organization.present?
+      hcb_organization.sync_hcb_transactions
+    end
+
+    true
+  rescue
+    false
+  end
+
   private
 
   def plaid_item_belongs_to_user
     if plaid_item.present? && plaid_item&.user != user
       errors.add(:plaid_item, "must belong to user")
+    end
+  end
+
+  def hcb_organization_belongs_to_user
+    if hcb_organization.present? && hcb_organization&.user != user
+      errors.add(:hcb_organization, "must belong to user")
     end
   end
 end

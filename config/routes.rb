@@ -28,22 +28,27 @@ Rails.application.routes.draw do
     post "generate_link_token"
   end
 
-  resources :users, only: [ :new, :create ]
+  resources :users, only: [ :new, :create, :update ]
+
+  get "/settings" => "users#settings"
 
   resources :accounts, only: [ :show ] do
     collection do
       post "generate_demo"
+      post "sync_all"
     end
   end
 
   resources :plaid_items, only: [] do
-    collection do
-      post "refresh_and_sync_all"
-    end
-
     member do
       post "sync"
       post "refresh"
+    end
+  end
+
+  resources :hcb_organizations, only: [] do
+    member do
+      post "sync"
     end
   end
 

@@ -10,16 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_12_011955) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_182135) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_type", null: false
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.integer "hcb_organization_id"
     t.string "mask"
     t.string "name", null: false
     t.string "plaid_id"
     t.integer "plaid_item_id"
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.index ["hcb_organization_id"], name: "index_accounts_on_hcb_organization_id"
     t.index ["plaid_item_id"], name: "index_accounts_on_plaid_item_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
@@ -160,6 +163,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_011955) do
     t.index ["transaction_id"], name: "index_counterparty_transactions_on_transaction_id"
   end
 
+  create_table "hcb_organizations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.string "hcb_id", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_hcb_organizations_on_user_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.string "aasm_state", default: "pending", null: false
     t.string "content"
@@ -245,6 +258,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_011955) do
     t.string "currency", default: "USD", null: false
     t.date "date"
     t.datetime "deleted_at"
+    t.string "hcb_id"
+    t.json "hcb_object"
     t.string "memo"
     t.boolean "pending", default: false, null: false
     t.integer "pending_transaction_id"
@@ -262,6 +277,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_011955) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
+    t.string "hcb_id"
     t.boolean "is_admin", default: false, null: false
     t.string "name", null: false
     t.string "password_digest", null: false

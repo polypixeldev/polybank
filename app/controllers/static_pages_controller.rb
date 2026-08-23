@@ -32,11 +32,13 @@ class StaticPagesController < ApplicationController
     @counterparties = current_user.counterparties
     @tags = current_user.tags
 
-    @income_by_category = @positive_transactions.group_by(&:category_id)
+    @income_by_category = @positive_transactions.select { |txn| txn.category_id.present? }
+                                                .group_by(&:category_id)
                                                 .transform_keys { |id| Category.find(id).display_name }
                                                 .transform_values { |txns| txns.sum(&:budget_amount_cents)  / 100.0 }
 
-    @expenses_by_category = @negative_transactions.group_by(&:category_id)
+    @expenses_by_category = @negative_transactions.select { |txn| txn.category_id.present? }
+      .group_by(&:category_id)
       .transform_keys { |id| Category.find(id).display_name }
       .transform_values { |txns| txns.sum(&:budget_amount_cents) / 100.0 }
 

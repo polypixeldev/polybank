@@ -55,6 +55,14 @@ class AccountsController < ApplicationController
     end
   end
 
+  def sync_all
+    skip_authorization
+
+    current_user.accounts.each(&:sync_from_source)
+
+    redirect_back_or_to root_path
+  end
+
   private
 
   def set_account

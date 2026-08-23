@@ -97,3 +97,5 @@ gem "faker"
 gem "blazer"
 
 gem "aasm"
+
+gem "faraday"

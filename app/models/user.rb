@@ -9,6 +9,7 @@
 #  password_digest :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  hcb_id          :string
 #  plaid_id        :string
 #
 # Indexes
@@ -36,10 +37,11 @@ class User < ApplicationRecord
   has_many :views
   has_many :shares
 
-
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   after_create_commit :create_plaid_user
+
+  after_update_commit :refresh_hcb_organizations, if: -> { hcb_id_previously_changed? }
 
   def self.demo_user
     u = User.find_by(email_address: DEMO_EMAIL)
@@ -64,5 +66,24 @@ class User < ApplicationRecord
 
     plaid_id = PlaidService.create_user(public_id)
     update!(plaid_id:)
+  end
+
+  def refresh_hcb_organizations
+    return if hcb_id.nil?
+
+    orgs = HcbService.get_organizations
+    orgs_with_user = orgs.select { |org| org["users"].any? { |u| u["id"] == hcb_id } }
+
+    refreshed_ids = orgs_with_user.map { |org| org["id"] }
+    deleted_orgs = HcbOrganization.where.not(hcb_id: refreshed_ids, user: self)
+    new_org_ids = refreshed_ids.reject { |id| HcbOrganization.where(hcb_id: id).exists? }
+
+    ActiveRecord::Base.transaction do
+      deleted_orgs.each(&:destroy)
+
+      new_org_ids.each do |id|
+        HcbOrganization.create!(user: self, hcb_id: id)
+      end
+    end
   end
 end

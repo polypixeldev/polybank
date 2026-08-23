@@ -458,6 +458,7 @@ DEPENDENCIES
   debug
   dotenv
   faker
+  faraday
   grover
   hashid-rails
   image_processing (~> 1.2)

@@ -1,0 +1,14 @@
+<% title "Settings" %>
+
+<h2 class="font-bold text-2xl mb-3">Settings</h2>
+
+<div class="card">
+  <%= form_with model: @user, class: "flex flex-col gap-3" do |form| %>
+    <div class="flex flex-col">
+      <%= form.label :hcb_id, "HCB ID" %>
+      <%= form.text_field :hcb_id, class: "bg-white rounded-md text-black p-1" %>
+    </div>
+
+    <%= form.submit "Save", class: "btn" %>
+  <% end %>
+</div>
