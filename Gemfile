@@ -99,3 +99,5 @@ gem "blazer"
 gem "aasm"
 
 gem "faraday"
+
+gem "redcarpet"

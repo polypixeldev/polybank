@@ -6,7 +6,10 @@
   <% commentable.comments.each do |comment| %>
     <%= turbo_frame_tag "comment_#{comment.id}" do %>
       <div class="card">
-        <p class="text-lg"><strong><%= comment.author.name %>:</strong> <%= comment.content %></p>
+        <p class="text-lg">
+          <strong><%= comment.author.name %>:</strong>
+          <%= render_markdown comment.content %>
+        </p>
 
         <% if comment.attachment.attached? %>
           <% if comment.attachment.representable? %>
@@ -29,6 +32,8 @@
 
 <div class="card mt-3">
   <p class="font-bold">New comment</p>
+  <p class="text-sm mb-2">Markdown is supported</p>
+
   <%= form_with model: Comment.new, class: "flex flex-col items-start gap-1" do |form| %>
     <%= form.hidden_field :commentable_type, value: commentable.class.to_s %>
     <%= form.hidden_field :commentable_id, value: commentable.id %>
