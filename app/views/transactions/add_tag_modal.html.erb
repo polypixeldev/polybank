@@ -3,7 +3,7 @@
 
   <div class="flex gap-5">
     <% current_user.tags.each do |tag| %>
-      <%= button_to toggle_tag_transaction_path(@transaction, tag_id: tag.id), data: { turbo_frame: "_top"  } do %>
+      <%= button_to toggle_tag_transaction_path(@transaction, tag_id: tag.id), data: { turbo_frame: "_top" } do %>
         <%= render partial: "tags/tag", locals: { tag: } %>
       <% end %>
     <% end %>

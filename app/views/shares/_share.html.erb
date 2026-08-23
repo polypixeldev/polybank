@@ -2,5 +2,7 @@
 
 <%= link_to share_path(share), class: "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md items-center" do %>
   <p class="col-span-10"><%= share.target.display_name %></p>
-  <p class="col-span-5 justify-self-end"><%= share.expires_at.present? ? "Expires at #{share.expires_at.to_fs(:long)}" : "No expiry" %></p>
+  <p class="col-span-5 justify-self-end">
+    <%= share.expires_at.present? ? "Expires at #{share.expires_at.to_fs(:long)}" : "No expiry" %>
+  </p>
 <% end %>

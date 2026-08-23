@@ -101,3 +101,5 @@ gem "aasm"
 gem "faraday"
 
 gem "redcarpet"
+
+gem "erb_lint", require: false

@@ -6,5 +6,11 @@
   <div class="rounded-full w-5 h-5 <%= budget.passing? ? "bg-green-500" : "bg-red-500" %>"></div>
   <p class="col-span-5 md:col-span-10"><%= budget.name %></p>
   <p class="col-span-5 md:col-span-2"><%= number_to_currency budget.limit_amount %> / <%= budget.period %></p>
-  <p class="col-span-4 md:col-span-2 justify-self-end <%= remaining_amount.positive? ? "text-green-500" : "text-red-500"%>"><%= number_to_currency remaining_amount %> left</p>
+  <p class="<%= class_names(
+                  "col-span-4 md:col-span-2 justify-self-end",
+                  "text-green-500" => remaining_amount.positive?,
+                  "text-red-500" => remaining_amount.negative?
+                ) %>">
+    <%= number_to_currency remaining_amount %> left
+  </p>
 <% end %>

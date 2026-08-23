@@ -5,5 +5,11 @@
 <div class="grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md items-center">
   <div class="rounded-full w-5 h-5 <%= budget.passing?(period.first) ? "bg-green-500" : "bg-red-500" %>"></div>
   <p class="col-span-12"><%= period.first.to_fs(:long) %> - <%= period.last.to_fs(:long) %></p>
-  <p class="col-span-2 justify-self-end <%= remaining_amount > 0 ? "text-green-500" : "text-red-500"%>"><%= number_to_currency remaining_amount %> at end</p>
+  <p class="<%= class_names(
+              "col-span-2 justify-self-end",
+              "text-green-500" => remaining_amount.positive?
+              "text-red-500" => remaining_amount.negative?
+            ) %>">
+    <%= number_to_currency remaining_amount %> at end
+  </p>
 </div>

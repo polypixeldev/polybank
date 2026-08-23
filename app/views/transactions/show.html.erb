@@ -39,7 +39,9 @@
 
         <%= turbo_frame_tag "#{@transaction.id}_edit_category" do %>
           <div class="flex mt-3 gap-2">
-            <p class="card-headline mt-0!"><%= link_to @transaction.category.display_name, category_path(@transaction.category) %></p>
+            <p class="card-headline mt-0!">
+              <%= link_to @transaction.category.display_name, category_path(@transaction.category) %>
+            </p>
 
             <% if policy(@transaction).edit_category? %>
               <%= link_to edit_category_transaction_path(@transaction), class: "cursor-pointer" do %>
@@ -85,14 +87,17 @@
 
     <div class="card">
       <p class="mb-3">Tags</p>
-      
+
       <div class="flex gap-3">
         <% @transaction.tags.each do |tag| %>
           <%= render partial: "tags/tag", locals: { tag:, transaction: @transaction } %>
         <% end %>
 
         <% if policy(@transaction).add_tag_modal? %>
-          <%= link_to "+ Add", add_tag_modal_transaction_path(@transaction), class: "py-2 px-3 rounded-full bg-gray-800", data: {turbo_frame: "modal"} %>
+          <%= link_to "+ Add",
+                      add_tag_modal_transaction_path(@transaction),
+                      class: "py-2 px-3 rounded-full bg-gray-800",
+                      data: { turbo_frame: "modal" } %>
         <% elsif @transaction.tags.none? %>
           <p class="card-headline mt-0!">None</p>
         <% end %>
@@ -133,10 +138,16 @@
         </ul>
 
         <% if !@transaction.reimbursed? && policy(@transaction).reimburse_modal? %>
-          <%= link_to "Add reimbursing transactions", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
+          <%= link_to "Add reimbursing transactions",
+                      reimburse_modal_transaction_path(@transaction),
+                      class: "inline-btn w-fit",
+                      data: { turbo_frame: "modal" } %>
         <% end %>
       <% elsif policy(@transaction).reimburse_modal? %>
-        <%= link_to "Mark as reimbursed", reimburse_modal_transaction_path(@transaction), class: "inline-btn w-fit", data: { turbo_frame: "modal" } %>
+        <%= link_to "Mark as reimbursed",
+                    reimburse_modal_transaction_path(@transaction),
+                    class: "inline-btn w-fit",
+                    data: { turbo_frame: "modal" } %>
       <% else %>
         <p>None</p>
       <% end %>
@@ -185,4 +196,3 @@
     <%= render partial: "comments/list", locals: { commentable: @transaction } %>
   <% end %>
 <% end %>
-

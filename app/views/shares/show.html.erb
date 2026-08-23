@@ -8,7 +8,11 @@
   <% end %>
 
   <% if policy(@share).destroy? %>
-    <%= button_to "Delete", share_path(@share), method: :delete, class: "inline-btn", data: { turbo_confirm: "Are you sure you want to delete this share?" } %>
+    <%= button_to "Delete",
+                  share_path(@share),
+                  method: :delete,
+                  class: "inline-btn",
+                  data: { turbo_confirm: "Are you sure you want to delete this share?" } %>
   <% end %>
 </div>
 

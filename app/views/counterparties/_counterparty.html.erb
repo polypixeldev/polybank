@@ -9,5 +9,11 @@
     <p class="col-span-2 md:col-span-1"></p>
   <% end %>
   <p class="col-span-9 md:col-span-13"><%= counterparty.name %></p>
-  <p class="col-span-4 md:col-span-1 justify-self-end <%= sum < 0 ? "text-red-500" : "text-green-500" %>"><%= number_to_currency sum %></p>
+  <p class=<%= class_names(
+                 "col-span-4 md:col-span-1 justify-self-end",
+                 "text-red-500" => sum.negative?,
+                 "text-green-500" => sum.positive?
+               ) %>">
+    <%= number_to_currency sum %>
+  </p>
 <% end %>

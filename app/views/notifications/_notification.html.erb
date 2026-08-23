@@ -1,6 +1,11 @@
 <%# locals: (notification:) %>
 
-<%= link_to notification_path(notification), class: "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md items-center #{"border-blue-400 border-2" if notification.sent? || notification.aasm_state_previously_changed?(from: :sent)}" do %>
+<%= link_to notification_path(notification),
+            class: class_names(
+              "grid grid-cols-15 px-4 py-3 bg-slate-800 rounded-md items-center",
+              "border-blue-400 border-2" => notification.sent? ||
+                notification.aasm_state_previously_changed?(from: :sent)
+            ) %>
   <p class="font-semibold col-span-5 md:col-span-2"><%= notification.sent_at.to_fs(:long) %></p>
   <p class="font-bold col-span-10 md:col-span-5"><%= notification.title %></p>
   <p class="col-span-8 truncate hidden md:block"><%= notification.content %></p>

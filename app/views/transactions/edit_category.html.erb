@@ -1,5 +1,11 @@
 <%= turbo_frame_tag "#{@transaction.id}_edit_category" do %>
   <%= form_with model: @transaction, method: :put do |form| %>
-    <%= form.collection_select :category_id, Category.order(name: :asc), :id, :display_name, {}, class: "bg-white rounded-md px-2 my-1 font-bold text-xl text-black", onchange: "this.form.submit()" %>
+    <%= form.collection_select :category_id,
+                               Category.order(name: :asc),
+                               :id,
+                               :display_name,
+                               {},
+                               class: "bg-white rounded-md px-2 my-1 font-bold text-xl text-black",
+                               onchange: "this.form.submit()" %>
   <% end %>
 <% end %>
