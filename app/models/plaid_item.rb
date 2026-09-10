@@ -139,7 +139,7 @@ class PlaidItem < ApplicationRecord
     plaid_accounts = PlaidService.get_item_accounts(access_token)
 
     plaid_accounts.each do |account|
-      accounts.create!(account_type: account.subtype, mask: account.mask, name: account.name, plaid_id: account.account_id)
+      accounts.create!(account_type: account.subtype, mask: account.mask, name: account.name, plaid_id: account.account_id, user:)
     end
   end
 end

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def create
     user = User.create!(initial_user_params)
 
-    redirect_to home_path(user)
+    redirect_to root_path
   end
 
   def settings
