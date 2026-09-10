@@ -65,7 +65,7 @@ class Account < ApplicationRecord
 
     if plaid_item.present?
       current_balance = balance * 100
-      difference = current_balance - balances_from_start[Date.today.to_s]
+      difference = current_balance - (balances_from_start[Date.today.to_s] || 0)
 
       balances_from_start.transform_values { |b| (b + difference) / 100.0 }
     else
