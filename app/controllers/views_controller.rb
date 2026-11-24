@@ -21,7 +21,8 @@ class ViewsController < ApplicationController
   def show
     authorize_with_share @view, params[:share_sid]
 
-    apply_transaction_filters(@view.user)
+    # Only expose the view's saved filters; never let request params widen what a share reveals.
+    @transactions = @view.transactions.order(pending: :desc, date: :desc)
   end
 
   def edit

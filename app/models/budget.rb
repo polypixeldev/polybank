@@ -102,7 +102,7 @@ class Budget < ApplicationRecord
   end
 
   def target_gid=(gid)
-    self.target = GlobalID::Locator.locate gid
+    self.target = GlobalID::Locator.locate gid, only: Budgetable::BUDGETABLE_MODELS
   end
 
   def check

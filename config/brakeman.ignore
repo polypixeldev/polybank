@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "51340ee55ae328d9b09c9b772ecb46c655d573b987b48413cfe83f32a540db7e",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/views_controller.rb",
+      "line": 71,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:view).permit(:name, :memo, :start_date, :end_date, :account_id, :category_id, :counterparty_id, :tag_id, :min_amount, :max_amount, :direction)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ViewsController",
+        "method": "view_params"
+      },
+      "user_input": ":account_id",
+      "confidence": "High",
+      "cwe_id": [
+        915
+      ],
+      "note": "Foreign keys are validated against the owning user in View#filters_belong_to_user."
+    }
+  ],
+  "brakeman_version": "8.1.1"
+}

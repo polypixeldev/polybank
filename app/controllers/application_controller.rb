@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     if share_sid.present?
       share = Share.find_signed(share_sid)
 
-      if share.target == record
+      if share.present? && share.target == record
         authorize share
       else
         raise Pundit::NotAuthorizedError

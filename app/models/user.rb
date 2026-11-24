@@ -75,7 +75,7 @@ class User < ApplicationRecord
     orgs_with_user = orgs.select { |org| org["users"].any? { |u| u["id"] == hcb_id } }
 
     refreshed_ids = orgs_with_user.map { |org| org["id"] }
-    deleted_orgs = HcbOrganization.where.not(hcb_id: refreshed_ids, user: self)
+    deleted_orgs = HcbOrganization.where(user: self).where.not(hcb_id: refreshed_ids)
     new_org_ids = refreshed_ids.reject { |id| HcbOrganization.where(hcb_id: id).exists? }
 
     ActiveRecord::Base.transaction do

@@ -7,7 +7,7 @@
   <p class="col-span-12"><%= period.first.to_fs(:long) %> - <%= period.last.to_fs(:long) %></p>
   <p class="<%= class_names(
               "col-span-2 justify-self-end",
-              "text-green-500" => remaining_amount.positive?
+              "text-green-500" => remaining_amount.positive?,
               "text-red-500" => remaining_amount.negative?
             ) %>">
     <%= number_to_currency remaining_amount %> at end

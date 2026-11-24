@@ -57,6 +57,6 @@ module Authentication
 
     def require_admin
       blazer_user = find_session_by_cookie&.user
-      redirect_to my_app.root_path unless blazer_user.present? && blazer_user.admin?
+      redirect_to main_app.root_path unless blazer_user.present? && blazer_user.admin?
     end
 end

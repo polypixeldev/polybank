@@ -49,6 +49,6 @@ class Share < ApplicationRecord
   end
 
   def target_gid=(gid)
-    self.target = GlobalID::Locator.locate gid
+    self.target = GlobalID::Locator.locate gid, only: Shareable::SHAREABLE_MODELS
   end
 end

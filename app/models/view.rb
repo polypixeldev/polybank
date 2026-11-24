@@ -36,6 +36,8 @@ class View < ApplicationRecord
 
   alias_attribute :display_name, :name
 
+  validate :filters_belong_to_user
+
   def transactions
     Transaction.apply_filters(user.transactions.effective, {
       memo:,
@@ -57,5 +59,14 @@ class View < ApplicationRecord
 
   def amount
     amount_cents / 100.0
+  end
+
+  private
+
+  def filters_belong_to_user
+    errors.add(:account, "is invalid") if account.present? && account.user_id != user_id
+    errors.add(:tag, "is invalid") if tag.present? && tag.user_id != user_id
+    errors.add(:category, "is invalid") if category.present? && !user.categories.exists?(category.id)
+    errors.add(:counterparty, "is invalid") if counterparty.present? && !user.counterparties.exists?(counterparty.id)
   end
 end

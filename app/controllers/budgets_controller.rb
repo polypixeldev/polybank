@@ -40,9 +40,11 @@ class BudgetsController < ApplicationController
   end
 
   def update
+    @budget.assign_attributes(budget_params)
+
     authorize @budget
 
-    @budget.update!(budget_params)
+    @budget.save!
 
     redirect_to budget_path(@budget)
   end

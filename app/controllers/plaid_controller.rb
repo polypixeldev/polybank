@@ -1,15 +1,18 @@
 class PlaidController < ApplicationController
-  before_action :verify_signature, only: [ :webhook ]
+  allow_unauthenticated_access only: :webhook
+  before_action :verify_webhook, only: [ :webhook ]
   skip_forgery_protection only: :webhook
   skip_after_action :verify_authorized
 
   def webhook
-    if params[:webhook_type] = "TRANSACTIONS" && params[:webhook_code] = "SYNC_UPDATES_AVAILABLE"
+    if params[:webhook_type] == "TRANSACTIONS" && params[:webhook_code] == "SYNC_UPDATES_AVAILABLE"
       if params[:historical_update_complete]
-        item = PlaidItem.find_by(plaid_id: params[:item_id])
-        item.sync_plaid_transactions
+        item = PlaidItem.find_by(item_id: params[:item_id])
+        item&.sync_plaid_transactions
       end
     end
+
+    head :ok
   end
 
   def linked
@@ -38,6 +41,11 @@ class PlaidController < ApplicationController
   def verify_webhook
     raw_jwt = request.headers["Plaid-Verification"]
 
+    if raw_jwt.blank?
+      head :unauthorized
+      return
+    end
+
     encoded_token = JWT::EncodedToken.new(raw_jwt)
 
     unless encoded_token.header["alg"] == "ES256"
@@ -53,17 +61,19 @@ class PlaidController < ApplicationController
     encoded_token.verify!(signature: { algorithm: "ES256", key: jwk })
 
     claimed_hash = encoded_token.payload["request_body_sha256"]
-    body_hash = Digest::SHA256.hexdigest(request.body)
+    body_hash = Digest::SHA256.hexdigest(request.raw_post)
 
-    unless ActiveSupport::SecurityUtils.secure_compare(claimed_hash, body_hash)
+    unless claimed_hash.is_a?(String) && ActiveSupport::SecurityUtils.secure_compare(claimed_hash, body_hash)
       head :unauthorized
       return
     end
 
     iat = encoded_token.payload["iat"]
 
-    if Time.now.to_i - iat > 60 * 5
+    unless iat.is_a?(Integer) && Time.now.to_i - iat <= 60 * 5
       head :unauthorized
     end
+  rescue JWT::DecodeError
+    head :unauthorized
   end
 end

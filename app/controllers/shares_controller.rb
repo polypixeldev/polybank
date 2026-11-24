@@ -31,9 +31,11 @@ class SharesController < ApplicationController
   end
 
   def update
+    @share.assign_attributes(share_params)
+
     authorize @share
 
-    @share.update!(share_params)
+    @share.save!
 
     redirect_to share_path(@share)
   end
